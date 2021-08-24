@@ -19,12 +19,11 @@ assignees: ''
 
 ### Estimated time
 > Pick one
-### `0.5h`
 ### `1h`
-### `1.5h`
-### `2h`
-### `2.5h`
 ### `3h`
+### `5h`
+### `7h`
+### `9h`
 ### `1d`
 
 ### Labels
