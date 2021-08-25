@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
-import img from "./photo1.png";
+import img from "./image/main.jpeg";
 const Main = () => {
-  const MainSide = styled.div`
+  const MainContainer = styled.div`
     position: relative;
-    height: 100%;
+    height: 50vh;
   `;
 
   const IntroText = styled.div`
@@ -19,7 +19,7 @@ const Main = () => {
     position: relative;
     display: flex;
     align-items: flex-end;
-    margin-top: 60px;
+    margin-top: 5rem;
     width: 100vw;
     height: 40vh;
     border: 1px solid black;
@@ -36,7 +36,7 @@ const Main = () => {
   `;
 
   return (
-    <MainSide>
+    <MainContainer>
       <IntroContainer>
         <IntroText>
           <p />
@@ -45,7 +45,7 @@ const Main = () => {
           건강하고 즐거운 일상 속 운동 라이프 디자이너
         </IntroText>
       </IntroContainer>
-    </MainSide>
+    </MainContainer>
   );
 };
 
