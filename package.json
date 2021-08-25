@@ -1,0 +1,22 @@
+{
+  "name": "exercisetoday",
+  "version": "1.0.0",
+  "description": "hello",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spirited-hunger/exercisetoday.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spirited-hunger/exercisetoday/issues"
+  },
+  "homepage": "https://github.com/spirited-hunger/exercisetoday#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
