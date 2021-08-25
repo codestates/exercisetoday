@@ -1,10 +1,10 @@
-import { useState } from "react";
 import styled from "styled-components";
 import img from "./photo1.png";
 const Main = () => {
   const MainSide = styled.div`
     position: relative;
     height: 100%;
+    padding-top: 20px;
   `;
 
   const IntroText = styled.div`
