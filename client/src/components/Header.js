@@ -21,24 +21,24 @@ const Header = () => {
 
   const Logo = styled.img`
     width: 12em;
-    padding-left: 10rem;
-    vertical-align: top;
+    padding-left: 14rem;
   `;
 
   const NavigationContainer = styled.nav`
-    vertical-align: middle;
     float: right;
+    position: relative;
+    top: 10px;
   `;
 
   const UserIcon = styled(UserSvg)`
-    padding: 2px 5px;
+    padding: 2px 10px;
     border: 0;
     outline: 0;
     :hover {
       color: darkblue;
       cursor: pointer;
     }
-    width: 60px;
+    width: 40px;
   `;
 
   const BikingIcon = styled(Biking)`
@@ -48,7 +48,7 @@ const Header = () => {
       color: darkblue;
       cursor: pointer;
     }
-    width: 80px;
+    width: 60px;
   `;
 
   return (
