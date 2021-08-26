@@ -6,7 +6,6 @@ import { ReactComponent as Biking } from "../svgs/biking-solid.svg";
 const Header = () => {
   const HeaderContainer = styled.div`
     width: 100%;
-    display: block;
     text-align: center;
     margin: 0px auto;
     position: fixed;
@@ -14,8 +13,7 @@ const Header = () => {
     left: 0;
     right: 0;
     height: 80px;
-    background-color: beige;
-    justify-content: space-between;
+    background-color: white;
     z-index: 1000;
   `;
 
