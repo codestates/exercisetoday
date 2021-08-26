@@ -110,7 +110,7 @@ const SignUpPage = () => {
     if (
       !email ||
       !password ||
-      passwordCheck ||
+      !passwordCheck ||
       !full_name ||
       !nick_name ||
       !gender ||
