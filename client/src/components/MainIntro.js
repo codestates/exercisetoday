@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import img from "./image/main.jpeg";
-const Main = () => {
+
+const MainIntro = () => {
   const MainContainer = styled.div`
     position: relative;
     height: 50vh;
@@ -20,9 +21,8 @@ const Main = () => {
     display: flex;
     align-items: flex-end;
     margin-top: 5rem;
-    width: 100vw;
+    width: 100%;
     height: 40vh;
-    border: 1px solid black;
     background-color: rgb(255, 0, 0);
     background-image: url(${img});
     background-repeat: no-repeat;
@@ -49,4 +49,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default MainIntro;
