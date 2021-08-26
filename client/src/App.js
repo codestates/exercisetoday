@@ -1,14 +1,14 @@
 import React from "react";
 import "./App.css";
-import Main from "./components/Main";
-import Challenge from "./components/Challenge";
+import MainPage from "./components/MainPage";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 function App() {
   return (
     <div className="App">
       <Header />
-      <Main></Main>
-      <Challenge></Challenge>
+      <MainPage></MainPage>
+      <Footer />
     </div>
   );
 }

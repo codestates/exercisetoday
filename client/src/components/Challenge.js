@@ -4,7 +4,6 @@ import imgSec from "./image/climbing.jpeg";
 import imgThr from "./image/homeworkout.jpeg";
 import imgFo from "./image/bicycle.jpeg";
 
-import "./Challenge.css";
 const Challenge = () => {
   const ChallengeContainer = styled.div`
     display: flex;
