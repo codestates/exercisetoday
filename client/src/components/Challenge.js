@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import img from "./image/running.jpeg";
 import imgSec from "./image/climbing.jpeg";
@@ -63,7 +62,6 @@ const Challenge = () => {
         </ChallengeContent>
         <ChallengeContentSec>ddddd</ChallengeContentSec>
       </ChallengeContainer>
-
       <ChallengeContainer>
         <ChallengeContentThr />
         <ChallengeContentFo />
