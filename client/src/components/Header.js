@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as UserSvg } from "../svgs/user-solid.svg";
 import { ReactComponent as Biking } from "../svgs/biking-solid.svg";
+import Modal from "./Modal";
+import LoginModal from "./LoginModal";
 
 const Header = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [loginOpen, setLogin] = useState(false);
+  const loginModal = () => {
+    setLogin(!loginOpen);
+  };
+
+  const loginClicked = () => {
+    setModalOpen(false);
+    setLoginModalVisible(true);
+  };
+
   const HeaderContainer = styled.div`
     width: 100%;
     text-align: center;
@@ -13,13 +27,13 @@ const Header = () => {
     left: 0;
     right: 0;
     height: 80px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.3);
     z-index: 1000;
   `;
 
   const Logo = styled.img`
-    width: 12em;
-    padding-left: 14rem;
+    width: 10em;
+    padding-left: 8em;
   `;
 
   const NavigationContainer = styled.nav`
@@ -55,9 +69,19 @@ const Header = () => {
         <Logo src={"/logo.png"} />
         <NavigationContainer>
           <BikingIcon />
-          <UserIcon />
+          <UserIcon onClick={() => setModalOpen(!modalOpen)} />
         </NavigationContainer>
       </HeaderContainer>
+      <Modal
+        visible={modalOpen}
+        setVisible={setModalOpen}
+        loginFunc={loginClicked}
+      />
+      <LoginModal
+        visible={loginModalVisible}
+        setVisible={setLoginModalVisible}
+        loginModal={loginModal}
+      />
     </>
   );
 };
