@@ -1,19 +1,35 @@
 import React from "react";
 import "./App.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import MainPage from "./components/MainPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Mypage from "./components/Mypage";
+import SignUpPage from "./components/SignUpPage";
+import ChallengePage from "./components/ChallengePage";
+
 function App() {
   return (
-    <div className="App">
-      <Header />
-<<<<<<< HEAD
-      <MainPage />
-=======
-      <MainPage></MainPage>
->>>>>>> 8338e68966a0f8c56ae6d0979bcededd58a5aef5
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <Switch>
+          <Route exact path="/">
+            <MainPage />
+          </Route>
+          <Route path="/signuppage">
+            <SignUpPage />
+          </Route>
+          <Route path="/challenge">
+            <ChallengePage />
+          </Route>
+          <Route path="/mypage">
+            <Mypage />
+          </Route>
+        </Switch>
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 
