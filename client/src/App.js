@@ -17,7 +17,7 @@ function App() {
           <Route exact path="/">
             <MainPage />
           </Route>
-          <Route path="/signuppage">
+          <Route path="/signup">
             <SignUpPage />
           </Route>
           <Route path="/challenge">
