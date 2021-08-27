@@ -1,9 +1,10 @@
+import { useState } from "react";
 import styled from "styled-components";
 import img from "./image/running.jpeg";
 import imgSec from "./image/climbing.jpeg";
 import imgThr from "./image/homeworkout.jpeg";
 import imgFo from "./image/bicycle.jpeg";
-//import Modal from "./Modal";
+
 const ChallengeContainer = styled.div`
   display: flex;
   align-items: center;
@@ -117,14 +118,21 @@ const ChallengeText = styled.div`
 `;
 
 const Challenge = () => {
+  const [deleteOpen, setDelete] = useState(false);
+
+  const deleteModalHandler = () => {
+    setDelete(!deleteOpen);
+  };
+
   return (
     <>
       <ChallengeContainer>
         <ChallengeContent>
           <ChallengeText>30분 데일리 러닝 챌린지</ChallengeText>
-          <button className="seeMoreBtn">더보기</button>
+          <button className="seeMoreBtn" onClick={() => deleteModalHandler()}>
+            더보기
+          </button>
         </ChallengeContent>
-
         <ChallengeContentSec>
           <ChallengeText>
             위캔드

@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import img from "./image/main.jpeg";
 
+const MainIntro = () => {
+  const MainContainer = styled.div`
+    position: relative;
+    height: 50vh;
+  `;
 const MainContainer = styled.div`
   position: relative;
   height: 50vh;
@@ -48,4 +53,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default MainIntro;

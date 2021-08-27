@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import SocialLogin from "./SignUpComponent/SocialLogIn";
+import SocialLogin from "./SignUpComponent/SocialLogin";
 
 const Main = styled.main`
+  box-sizing: border-box;
   font-family: Dotum, "돋움", Helvetica, sans-serif;
   font-size: 12px;
   margin-top: 11vh;
@@ -22,7 +23,7 @@ const Slogan = styled.div`
 `;
 
 const Section = styled.section`
-  margin: 20px;
+  margin: 30px;
 `;
 
 const LabelText = styled.h2`
@@ -30,33 +31,31 @@ const LabelText = styled.h2`
 `;
 
 const InputBox = styled.input`
-  padding: 0 10px;
   width: 100%;
   height: 50px;
-  margin: 5px 0;
+  padding: 0 2px;
+  margin: 10px 0;
   font-size: 20px;
   font-family: Georgia;
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
-    margin: 0;
   }
   ::-webkit-outer-spin-button {
     -webkit-appearance: none;
-    margin: 0;
   }
 `;
 
 const GenderSelect = styled.select`
   padding: 0 10px;
-  width: 103.3%;
+  width: 100%;
   height: 50px;
-  margin: 5px 0;
+  margin: 5px 3.5px;
   font-size: 20px;
   font-family: Georgia;
 `;
 
 const SignUpButton = styled.button`
-  width: 103.3%;
+  width: 40%;
   height: 40px;
   font-size: 20px;
   font-family: "Lucida" Grande, sans-serif;
@@ -66,10 +65,12 @@ const SignUpButton = styled.button`
 `;
 
 const ErrMessage = styled.div`
-  width: 103.3%;
   color: white;
+  vertical-align: middle;
+  font-weight: bold;
+  height: 43px;
   font-family: system-ui;
-  font-size: 20px;
+  font-size: 26px;
   background: red;
   margin: 10px 0;
 `;
@@ -81,13 +82,13 @@ const SignUpPage = () => {
     passwordCheck: "",
     full_name: "",
     nick_name: "",
-    gender: "",
+    gender: "성별",
     mobile: "",
   });
 
   const [errMessage, setErrMessage] = useState("");
 
-  const handleInputValue = key => e => {
+  const handleInputValue = (key) => (e) => {
     setUserInfo({ ...userInfo, [key]: e.target.value });
   };
 
@@ -103,7 +104,12 @@ const SignUpPage = () => {
     } = userInfo;
 
     if (password !== passwordCheck) {
-      setErrMessage("비밀번호와 비밀번호 확인이 일치하지 않습니다");
+      setErrMessage("비밀번호가 일치하지 않습니다");
+      return;
+    }
+
+    if (gender === "성별") {
+      setErrMessage("성별을 선택해 주세요");
       return;
     }
 
@@ -119,6 +125,9 @@ const SignUpPage = () => {
       setErrMessage("모든 항목을 기입해 주세요");
       return;
     }
+
+    setErrMessage("");
+    // 이메일 닉네임 중복확인
   };
 
   return (
@@ -131,7 +140,7 @@ const SignUpPage = () => {
             <SocialLogin />
           </Section>
           <Slogan>모든 항목은 필수 입니다.</Slogan>
-          <form onSubmit={e => e.preventDefault()}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <Section>
               <LabelText>이메일</LabelText>
               <InputBox
@@ -169,9 +178,9 @@ const SignUpPage = () => {
               />
             </Section>
             <Section>
-              <LabelText>성별</LabelText>
+              <LabelText>성별 선택</LabelText>
               <GenderSelect onChange={handleInputValue("gender")}>
-                <option>선택안함</option>
+                <option>성별</option>
                 <option>남</option>
                 <option>여</option>
               </GenderSelect>
@@ -181,16 +190,16 @@ const SignUpPage = () => {
                 휴대폰 번호 (숫자만 입력하세오)
               </LabelText>
               <InputBox
-                placeholder="'-' 제외 숫자만 입력하세요"
+                placeholder="' - ' 제외 숫자만 입력하세요"
                 type="number"
                 onChange={handleInputValue("mobile")}
               />
             </Section>
+            {errMessage ? <ErrMessage>{errMessage}</ErrMessage> : null}
             <Section>
               <SignUpButton type="submit" onClick={handleSignUp}>
                 가입하기
               </SignUpButton>
-              {errMessage ? <ErrMessage>{errMessage}</ErrMessage> : null}
             </Section>
           </form>
         </Article>
