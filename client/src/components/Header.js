@@ -35,34 +35,34 @@ const Header = () => {
     width: 10em;
     padding-left: 8em;
   `;
+const NavigationContainer = styled.nav`
+  float: right;
+  position: relative;
+  top: 10px;
+`;
 
-  const NavigationContainer = styled.nav`
-    float: right;
-    position: relative;
-    top: 10px;
-  `;
+const UserIcon = styled(UserSvg)`
+  padding: 2px 10px;
+  border: 0;
+  outline: 0;
+  :hover {
+    color: darkblue;
+    cursor: pointer;
+  }
+  width: 40px;
+`;
 
-  const UserIcon = styled(UserSvg)`
-    padding: 2px 10px;
-    border: 0;
-    outline: 0;
-    :hover {
-      color: darkblue;
-      cursor: pointer;
-    }
-    width: 40px;
-  `;
+const BikingIcon = styled(Biking)`
+  border: 0;
+  outline: 0;
+  :hover {
+    color: darkblue;
+    cursor: pointer;
+  }
+  width: 60px;
+`;
 
-  const BikingIcon = styled(Biking)`
-    border: 0;
-    outline: 0;
-    :hover {
-      color: darkblue;
-      cursor: pointer;
-    }
-    width: 60px;
-  `;
-
+const Header = () => {
   return (
     <>
       <HeaderContainer>
