@@ -1,52 +1,51 @@
 import React from "react";
 import styled from "styled-components";
 
-const Footer = () => {
-  const FooterContainer = styled.div`
-    display: flex;
-    bottom: 0;
-    width: 100%;
-    padding: 10px 0;
-    background-color: white;
-  `;
+const FooterContainer = styled.div`
+  display: flex;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0;
+  background-color: white;
+`;
 
-  const TeamName = styled.div`
-    flex: 1 auto;
-    padding-left: 10px;
-    font-family: "Helvetica", "Arial", sans-serif;
-    font-weight: bold;
+const TeamName = styled.div`
+  flex: 1 auto;
+  padding-left: 10px;
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-weight: bold;
+  color: #003150;
+`;
+
+const TeamMember = styled.div`
+  text-align: right;
+`;
+
+const Names = styled.a`
+  padding-right: 5px;
+  :link {
     color: #003150;
-  `;
+    text-decoration: none;
+    border: rgba(75, 112, 253, 0.3) solid;
+    border-width: 0 0 6px 0;
+  }
+  :visited {
+    color: #003150;
+    text-decoration: none;
+    border: rgba(75, 112, 253, 0.3) solid;
+    border-width: 0 0 6px 0;
+  }
+  display: inline;
+`;
 
-  const TeamMember = styled.div`
-    text-align: right;
-  `;
+const Kang = styled(Names)``;
 
-  const Names = styled.a`
-    padding-right: 5px;
-    :link {
-      color: #003150;
-      text-decoration: none;
-      border: rgba(75, 112, 253, 0.3) solid;
-      border-width: 0 0 6px 0;
-    }
-    :visited {
-      color: #003150;
-      text-decoration: none;
-      border: rgba(75, 112, 253, 0.3) solid;
-      border-width: 0 0 6px 0;
-    }
-    display: inline;
-  `;
+const Kim = styled(Names)``;
 
-  const Kang = styled(Names)``;
+const Sim = styled(Names)``;
 
-  const Kim = styled(Names)``;
-
-  const Sim = styled(Names)``;
-
-  const Lee = styled(Names)``;
-
+const Lee = styled(Names)``;
+const Footer = () => {
   return (
     <>
       <FooterContainer>
