@@ -8,7 +8,8 @@ const ChallengeName = styled.div`
   font-size: 20px;
   font-weight: bold;
   border: 2px solid #150bd9;
-  border-radius: 5px;
+  border-left-style: none;
+  border-right-style: none;
 `;
 
 const ButtonContiner = styled.article``;
@@ -19,14 +20,14 @@ const ChallengeJoinButton = styled.button`
   font-size: 20px;
   font-family: "Lucida" Grande, sans-serif;
   color: white;
-  background: ${(props) =>
+  background: ${props =>
     props.isJoin === "챌린지 도전 하기"
       ? "rgba(8, 51, 130, 1)"
       : "rgba(189, 32, 48, 1)"};
   border-radius: 10px;
   float: right;
   :hover {
-    background: ${(props) =>
+    background: ${props =>
       props.isJoin === "챌린지 도전 하기"
         ? "rgba(16, 24, 117, 1)"
         : "rgba(165, 27, 27, 1)"};
