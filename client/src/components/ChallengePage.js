@@ -8,7 +8,7 @@ const Main = styled.main`
   box-sizing: border-box;
   font-family: Dotum, "돋움", Helvetica, sans-serif;
   font-size: 12px;
-  margin-top: 7%;
+  margin-top: 5rem;
   height: 100%;
   width: 100%;
 `;

@@ -36,6 +36,7 @@ const CommentNickName = styled.div`
 
 const Comment = styled.div`
   padding: 3px;
+  font-weight: bold;
 `;
 
 const LikeButton = styled.button`

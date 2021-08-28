@@ -6,7 +6,7 @@ const Main = styled.main`
   box-sizing: border-box;
   font-family: Dotum, "돋움", Helvetica, sans-serif;
   font-size: 12px;
-  margin-top: 11vh;
+  margin-top: 5rem;
   height: 100%;
   width: 100%;
   text-align: center;
@@ -88,7 +88,7 @@ const SignUpPage = () => {
 
   const [errMessage, setErrMessage] = useState("");
 
-  const handleInputValue = (key) => (e) => {
+  const handleInputValue = key => e => {
     setUserInfo({ ...userInfo, [key]: e.target.value });
   };
 
@@ -140,7 +140,7 @@ const SignUpPage = () => {
             <SocialLogin />
           </Section>
           <Slogan>모든 항목은 필수 입니다.</Slogan>
-          <form onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={e => e.preventDefault()}>
             <Section>
               <LabelText>이메일</LabelText>
               <InputBox

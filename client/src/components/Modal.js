@@ -1,10 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   position: relative;
-  opacity: ${(props) => (props.visible ? 1 : 0)};
-  pointer-events: ${(props) => (props.visible ? "initial" : "none")};
+  opacity: ${props => (props.visible ? 1 : 0)};
+  pointer-events: ${props => (props.visible ? "initial" : "none")};
 `;
 
 const ModalContainer = styled.div`
@@ -58,7 +59,12 @@ const Modal = ({ visible, setVisible, loginFunc }) => {
           <ModalText>Login</ModalText>
         </ModalLogin>
         <ModalSign>
-          <ModalText>Sign Up</ModalText>
+          <Link
+            to="signup"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            <ModalText>Sign Up</ModalText>
+          </Link>
         </ModalSign>
       </ModalContainer>
     </Container>
