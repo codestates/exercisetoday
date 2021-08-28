@@ -76,9 +76,12 @@ const MypageCompletedChall = styled.div`
 const Mypage = () => {
   const [selectedFile, setFile] = useState(null);
 
-  const handlePhoto = (e) => {
+  const handlePhoto = e => {
     const temp = [];
     const photoToAdd = e.target.files;
+    if (photoToAdd.length === 0) {
+      return;
+    }
     for (let i = 0; i < photoToAdd.length; i++) {
       temp.push({
         id: photoToAdd[i].name,
@@ -88,8 +91,6 @@ const Mypage = () => {
     }
     setFile(temp);
   };
-
-  console.log("프로필사진 id, url", selectedFile);
 
   const imageRef = useRef();
   //   const formData = new FormData(form);
@@ -112,7 +113,7 @@ const Mypage = () => {
               type="file"
               accpet="image/*"
               name="profile"
-              onChange={(e) => handlePhoto(e)}
+              onChange={e => handlePhoto(e)}
             />
           </ProfilePhoto>
           <button className="PhotoEdit" onClick={onImgInputBtn}>
