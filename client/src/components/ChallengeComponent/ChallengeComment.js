@@ -5,7 +5,7 @@ import { ReactComponent as Thumb } from "../../svgs/thumbs-up-regular.svg";
 const CommentsContainer = styled.article`
   border: 1px solid;
   padding: 3px;
-  background: #d0dafa;
+  background: rgba(120, 178, 209, 0.4);
 `;
 
 const SingleCommentContainer = styled.section`

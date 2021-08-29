@@ -24,13 +24,13 @@ const TeamMember = styled.div`
 const Name = styled.a`
   padding-right: 5px;
   :link {
-    color: #003150;
+    color: black;
     text-decoration: none;
     border: rgba(75, 112, 253, 0.3) solid;
     border-width: 0 0 6px 0;
   }
   :visited {
-    color: #003150;
+    color: black;
     text-decoration: none;
     border: rgba(75, 112, 253, 0.3) solid;
     border-width: 0 0 6px 0;

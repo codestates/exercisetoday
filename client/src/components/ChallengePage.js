@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ChallengeContent from "./ChallengeComponent/ChallengeContent";
 import ChallengeButtons from "./ChallengeComponent/ChallengeButtons";
 import ChallengeComment from "./ChallengeComponent/ChallengeComment";
 
@@ -19,23 +18,17 @@ const Article = styled.article`
 `;
 
 const ChallengePage = () => {
-  const [join, setJoin] = useState("챌린지 도전 하기");
+  const [join, setJoin] = useState(true);
+
   const handleJoin = () => {
-    if (join === "챌린지 도전 하기") {
-      setJoin("챌린지 도전 취소");
-    } else {
-      setJoin("챌린지 도전 하기");
-    }
+    setJoin(!join);
   };
 
   return (
     <>
       <Main>
         <Article>
-          <ChallengeContent join={join} handleJoin={handleJoin} />
-        </Article>
-        <Article>
-          <ChallengeButtons join={join} />
+          <ChallengeButtons join={join} handleJoin={handleJoin} />
         </Article>
         <Article>
           <ChallengeComment />
