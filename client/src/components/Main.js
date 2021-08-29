@@ -40,7 +40,7 @@ const Main = () => {
           <p />
           운동 라이프를 즐기는 당신을 위한,
           <p />
-          건강하고 즐거운 일상 속 운동 라이프 디자이너 test
+          건강하고 즐거운 일상 속 운동 라이프 디자이너
         </IntroText>
       </IntroContainer>
     </MainContainer>
