@@ -83,7 +83,7 @@ const SocialLoginButton = styled.button`
   margin: 10px 30px;
   font-size: 25px;
   border-radius: 10px;
-  background: rgba(255, 220, 3, 0.8);
+  background: rgba(255, 220, 3, 1);
   :hover {
     cursor: pointer;
     background: rgba(235, 200, 3, 1);
@@ -157,8 +157,8 @@ const SignUpPage = () => {
           <Section>
             <LabelText>소셜 로그인</LabelText>
             <SocialLoginButton>
+              카카오로 회원가입
               <KakaoIcon />
-              으로 회원가입
             </SocialLoginButton>
           </Section>
           <Slogan>모든 항목은 필수 입니다.</Slogan>

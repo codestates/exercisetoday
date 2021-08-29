@@ -5,9 +5,9 @@ const ChallengeName = styled.div`
   text-align: center;
   margin: 1%;
   padding: 0.3%;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
-  border: 2px solid #150bd9;
+  border: 5px solid #150bd9;
   border-left-style: none;
   border-right-style: none;
 `;
