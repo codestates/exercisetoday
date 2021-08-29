@@ -25,6 +25,11 @@ const ChallengeButtonContainer = styled.article`
   text-align: center;
 `;
 
+const ChallengeRecommend = styled.div`
+  font-family: Georgia, Serif;
+  font-size: 40px;
+`;
+
 const arr = [
   { buttonId: 0, isFinished: true },
   { buttonId: 1, isFinished: false },
@@ -34,7 +39,7 @@ const arr = [
   { buttonId: 5, isFinished: true },
 ];
 
-const ChallengeButtons = () => {
+const ChallengeButtons = ({ join }) => {
   const [buttonList, setButtonList] = useState(arr);
 
   const buttonClick = key => () => {
@@ -51,17 +56,23 @@ const ChallengeButtons = () => {
   return (
     <>
       <ChallengeButtonContainer>
-        {buttonList.map(button => {
-          return (
-            <ChallengeButton
-              key={button.buttonId}
-              onClick={buttonClick(button.buttonId)}
-              isClick={button.isFinished}
-            >
-              {button.buttonId + 1} 일차
-            </ChallengeButton>
-          );
-        })}
+        {join === "챌린지 도전 하기" ? (
+          <ChallengeRecommend>
+            "챌린지 도전 하기" 버튼을 눌러 챌린지 시작하기
+          </ChallengeRecommend>
+        ) : (
+          buttonList.map(button => {
+            return (
+              <ChallengeButton
+                key={button.buttonId}
+                onClick={buttonClick(button.buttonId)}
+                isClick={button.isFinished}
+              >
+                {button.buttonId + 1} 일차
+              </ChallengeButton>
+            );
+          })
+        )}
       </ChallengeButtonContainer>
     </>
   );

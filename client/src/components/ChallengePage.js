@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ChallengeContent from "./ChallengeComponent/ChallengeContent";
 import ChallengeButtons from "./ChallengeComponent/ChallengeButtons";
@@ -19,14 +19,23 @@ const Article = styled.article`
 `;
 
 const ChallengePage = () => {
+  const [join, setJoin] = useState("챌린지 도전 하기");
+  const handleJoin = () => {
+    if (join === "챌린지 도전 하기") {
+      setJoin("챌린지 도전 취소");
+    } else {
+      setJoin("챌린지 도전 하기");
+    }
+  };
+
   return (
     <>
       <Main>
         <Article>
-          <ChallengeContent />
+          <ChallengeContent join={join} handleJoin={handleJoin} />
         </Article>
         <Article>
-          <ChallengeButtons />
+          <ChallengeButtons join={join} />
         </Article>
         <Article>
           <ChallengeComment />

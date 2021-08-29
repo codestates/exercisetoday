@@ -35,16 +35,7 @@ const ChallengeJoinButton = styled.button`
   }
 `;
 
-const ChallengeContent = () => {
-  const [join, setJoin] = useState("챌린지 도전 하기");
-  const handleJoin = () => {
-    if (join === "챌린지 도전 하기") {
-      setJoin("챌린지 도전 취소");
-    } else {
-      setJoin("챌린지 도전 하기");
-    }
-  };
-
+const ChallengeContent = ({ join, handleJoin }) => {
   return (
     <>
       <ChallengeName>/챌린지 이름/ 챌린지에 오신것을 환영합니다</ChallengeName>
