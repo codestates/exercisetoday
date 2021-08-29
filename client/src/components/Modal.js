@@ -13,8 +13,8 @@ const ModalContainer = styled.div`
   flex-direction: column;
   z-index: 999;
   position: fixed;
-  width: 200px;
-  height: 150px;
+  width: 170px;
+  height: 96px;
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.25);
   border-radius: 0.8rem;
@@ -55,6 +55,7 @@ const Modal = ({ visible, setVisible, loginFunc }) => {
   const loginOpenHandler = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <Container visible={visible}>
       <ModalContainer>

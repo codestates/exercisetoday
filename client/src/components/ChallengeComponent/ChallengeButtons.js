@@ -28,8 +28,8 @@ const ChallengeButtonContainer = styled.article`
   text-align: center;
   background: ${props =>
     props.join === "챌린지 도전 하기"
-      ? "rgba(230, 230, 230, 0.5)"
-      : "rgba(30, 12, 242, 0.05)"};
+      ? "rgba(230, 230, 230, 0.6)"
+      : "rgba(30, 12, 242, 0.1)"};
 `;
 
 const ChallengeRecommend = styled.div`
@@ -65,7 +65,7 @@ const ChallengeButtons = ({ join }) => {
       <ChallengeButtonContainer join={join}>
         {join === "챌린지 도전 하기" ? (
           <ChallengeRecommend>
-            "챌린지 도전 하기" 버튼을 눌러 챌린지 시작하기
+            "챌린지 도전 하기" 버튼을 눌러 시작
           </ChallengeRecommend>
         ) : (
           buttonList.map(button => {
