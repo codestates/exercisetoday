@@ -7,22 +7,34 @@ const ChallengeButton = styled.button`
   height: 80px;
   color: white;
   background: ${props =>
-    props.isClick ? "rgba(209, 0, 43, 1)" : "rgba(0, 79, 255, 1)"};
+    props.isClick ? "rgba(209, 0, 43, 1)" : "rgba(93, 0, 224, 1)"};
   font-size: 16px;
+  font-family: Georgia;
+  font-weight: bold;
   border: none;
   border-radius: 50px;
   box-shadow: 0 4px 20px
     ${props =>
-      props.isClick ? "rgba(209, 0, 43, 0.5)" : "rgba(0, 79, 255, 0.5)"};
+      props.isClick ? "rgba(209, 0, 43, 0.5)" : "rgba(93, 0, 224, 0.5)"};
   :hover {
-    background: rgb(209, 0, 43);
+    background: ${props =>
+      props.isClick ? "rgba(93, 0, 224, 1)" : "rgba(209, 0, 43, 1)"};
     cursor: pointer;
   }
 `;
 const ChallengeButtonContainer = styled.article`
   margin: 7% 15%;
-  border: 1px solid;
+  border: 2px solid rgb(70, 12, 242);
   text-align: center;
+  background: ${props =>
+    props.join === "챌린지 도전 하기"
+      ? "rgba(230, 230, 230, 0.6)"
+      : "rgba(30, 12, 242, 0.1)"};
+`;
+
+const ChallengeRecommend = styled.div`
+  font-family: Georgia, Serif;
+  font-size: 28px;
 `;
 
 const arr = [
@@ -34,7 +46,7 @@ const arr = [
   { buttonId: 5, isFinished: true },
 ];
 
-const ChallengeButtons = () => {
+const ChallengeButtons = ({ join }) => {
   const [buttonList, setButtonList] = useState(arr);
 
   const buttonClick = key => () => {
@@ -50,18 +62,24 @@ const ChallengeButtons = () => {
 
   return (
     <>
-      <ChallengeButtonContainer>
-        {buttonList.map(button => {
-          return (
-            <ChallengeButton
-              key={button.buttonId}
-              onClick={buttonClick(button.buttonId)}
-              isClick={button.isFinished}
-            >
-              {button.buttonId + 1} 일차
-            </ChallengeButton>
-          );
-        })}
+      <ChallengeButtonContainer join={join}>
+        {join === "챌린지 도전 하기" ? (
+          <ChallengeRecommend>
+            "챌린지 도전 하기" 버튼을 눌러 시작
+          </ChallengeRecommend>
+        ) : (
+          buttonList.map(button => {
+            return (
+              <ChallengeButton
+                key={button.buttonId}
+                onClick={buttonClick(button.buttonId)}
+                isClick={button.isFinished}
+              >
+                {button.buttonId + 1} 일차
+              </ChallengeButton>
+            );
+          })
+        )}
       </ChallengeButtonContainer>
     </>
   );

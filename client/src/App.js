@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import MainPage from "./components/MainPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Mypage from "./components/Mypage";
+import Mypage from "./components/mypage/Mypage";
 import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
 

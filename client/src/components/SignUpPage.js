@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import SocialLogin from "./SignUpComponent/SocialLogin";
+import { ReactComponent as kakaotalk } from "../svgs/kakaotalk.svg";
 
 const Main = styled.main`
   box-sizing: border-box;
@@ -61,7 +61,10 @@ const SignUpButton = styled.button`
   font-family: "Lucida" Grande, sans-serif;
   text-align: center;
   border-radius: 10px;
-  background: white;
+  :hover {
+    background: rgba(104, 177, 237, 0.5);
+    cursor: pointer;
+  }
 `;
 
 const ErrMessage = styled.div`
@@ -73,6 +76,22 @@ const ErrMessage = styled.div`
   font-size: 26px;
   background: red;
   margin: 10px 0;
+`;
+
+const SocialLoginButton = styled.button`
+  width: 55%;
+  margin: 10px 30px;
+  font-size: 25px;
+  border-radius: 10px;
+  background: rgba(255, 220, 3, 1);
+  :hover {
+    cursor: pointer;
+    background: rgba(235, 200, 3, 1);
+  }
+`;
+
+const KakaoIcon = styled(kakaotalk)`
+  width: 30px;
 `;
 
 const SignUpPage = () => {
@@ -137,7 +156,10 @@ const SignUpPage = () => {
           <Slogan>건강하고 즐거운 일상 속 운동 라이프 디자이너</Slogan>
           <Section>
             <LabelText>소셜 로그인</LabelText>
-            <SocialLogin />
+            <SocialLoginButton>
+              카카오로 회원가입
+              <KakaoIcon />
+            </SocialLoginButton>
           </Section>
           <Slogan>모든 항목은 필수 입니다.</Slogan>
           <form onSubmit={e => e.preventDefault()}>

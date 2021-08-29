@@ -5,9 +5,9 @@ const ChallengeName = styled.div`
   text-align: center;
   margin: 1%;
   padding: 0.3%;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
-  border: 2px solid #150bd9;
+  border: 5px solid #150bd9;
   border-left-style: none;
   border-right-style: none;
 `;
@@ -35,16 +35,7 @@ const ChallengeJoinButton = styled.button`
   }
 `;
 
-const ChallengeContent = () => {
-  const [join, setJoin] = useState("챌린지 도전 하기");
-  const handleJoin = () => {
-    if (join === "챌린지 도전 하기") {
-      setJoin("챌린지 도전 취소");
-    } else {
-      setJoin("챌린지 도전 하기");
-    }
-  };
-
+const ChallengeContent = ({ join, handleJoin }) => {
   return (
     <>
       <ChallengeName>/챌린지 이름/ 챌린지에 오신것을 환영합니다</ChallengeName>
