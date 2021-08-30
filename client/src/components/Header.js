@@ -75,6 +75,7 @@ const Header = ({ isLogin, handleLogout, handleLoginTrue }) => {
         setVisible={setLoginModalVisible}
         loginModal={loginModal}
         handleLoginTrue={handleLoginTrue}
+        isLogin={isLogin}
       />
     </>
   );

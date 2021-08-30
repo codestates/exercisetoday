@@ -6,11 +6,7 @@ import Delete from "./Delete";
 import OngoingChallenge from "./OngoingChallenge";
 import CompletedChallenge from "./CompletedChallenge";
 //백엔드의 S3에 이미지를 업로드
-const MypageTitle = styled.div`
-  position: absolute;
-  font-size: 2rem;
-  margin: 2% 0% 0% 4%;
-`;
+
 const OngoingChallContent = styled.div`
   border-top: 3px solid;
   border-color: #003150;
@@ -55,7 +51,6 @@ const MypageContainer = styled.div`
 
 const MypageProfile = styled.div`
   > .firstContent {
-    // ? firstContent
     display: flex;
   }
   > .password {
@@ -199,6 +194,7 @@ const BorderBottom = styled.div`
   margin-left: 3%;
   margin-right: 10%;
 `;
+
 const DeleteBtn = styled.button`
   margin: 2% 0% 0% 9%;
   width: 5vw;
@@ -241,18 +237,16 @@ const Mypage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [nickNameEditClick, setNickName] = useState(false);
-  const [curErrorMessage, setCurErrorMessage] = useState("");
-
-  const deleteModalHandler = () => {
-    setDeleteOpen(!deleteOpen);
-  };
-  //이름바꾸기, 완료버튼누를때 미ㅣ리뜨기 제출전에..
   const [newUserInfo, setNewUserInfo] = useState({
     curPassword: "",
     newPassword: "",
     newPasswordMatch: "",
     nick_name: userInfo.nick_name,
   });
+  const deleteModalHandler = () => {
+    setDeleteOpen(!deleteOpen);
+  };
+  //이름바꾸기, 완료버튼누를때 미ㅣ리뜨기 제출전에..
 
   const userInfoUpdate = () => {
     return;
@@ -268,7 +262,7 @@ const Mypage = () => {
   const handleInputValue = (key) => (e) => {
     if (key === "nick_name") {
       setNewUserInfo({ nick_name: e.target.value });
-    } else if (key === "curPassword" && userInfo.password !== e.target.value) {
+    } else if (key === "curPassword") {
       setNewUserInfo({ ...newUserInfo, [key]: e.target.value });
     } else if (
       key === "newPasswordMatch" &&
@@ -378,7 +372,6 @@ const Mypage = () => {
                       placeholder="현재 비밀번호를 입력하세요"
                       onChange={handleInputValue("curPassword")}
                     /> */}
-                    <ErrMessage>{curErrorMessage}</ErrMessage>
                     신규 비밀번호
                     <InputBox
                       type="password"
@@ -431,7 +424,7 @@ const Mypage = () => {
               </ProfileContent>
               <BorderBottom />
               <ProfileContent>
-                <ProfileTitle>레벨</ProfileTitle>
+                <ProfileTitle>경험치</ProfileTitle>
                 <div className="userContent">{userInfo.level}</div>
               </ProfileContent>
               <BorderBottom />
