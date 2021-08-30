@@ -2,8 +2,8 @@ require('dotenv').config();
 const qs = require('qs');
 const axios = require("axios");
 
-const clientID = process.env.KAKAO_CLIENT_ID;
-const clientSecret = process.env.KAKAO_CLIENT_SECRET;
+const clientID = "ce4c941a6f16b0b73737edf331c2adaf";
+const clientSecret = "Wa3IRUTiJK1FcsyIg2HyYraHu4Ez9ixs";
 
 
 // 카카오로 시작하기 버튼 눌렀을때
@@ -46,7 +46,8 @@ module.exports = {
           data: {
             user_kakaoId: response2.data.id,
             user_email : response2.kakao_account.data.email,
-            user_nickname : response2.data.kakao_account.profile.nickname
+            user_nickname : response2.data.kakao_account.profile.nickname,
+            user_exp : 52,
           },
           message : "ok, kakao token is created in your cookie"
         })
