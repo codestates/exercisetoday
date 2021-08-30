@@ -16,7 +16,6 @@ const Mypage = () => {
   const [nickNameEditClick, setNickName] = useState(false);
   const [curErrorMessage, setCurErrorMessage] = useState("");
 
-  console.log("유저 인포", userInfo);
   const deleteModalHandler = () => {
     setDeleteOpen(!deleteOpen);
   };
@@ -24,6 +23,7 @@ const Mypage = () => {
     curPassword: "",
     newPassword: "",
     newPasswordMatch: "",
+    nick_name: userInfo.nick_name,
   });
 
   const passwordHandler = () => {
@@ -36,7 +36,7 @@ const Mypage = () => {
 
   const handleInputValue = (key) => (e) => {
     if (key === "nick_name") {
-      setUserInfo({ ...userInfo, nick_name: e.target.value });
+      setPasswordEdit({ nick_name: e.target.value });
     } else if (key === "curPassword" && userInfo.password !== e.target.value) {
       setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
     } else if (
@@ -83,7 +83,16 @@ const Mypage = () => {
   const onImgInputBtn = () => {
     imageRef.current.click();
   };
+  const changeNickBtn = () => {
+    if (passwordEdit.nick_name !== userInfo.nick_name) {
+      setUserInfo({ ...userInfo, nick_name: passwordEdit.nick_name });
+    }
+    setNickName(!nickNameEditClick);
+  };
   const onNickNameBtn = () => {
+    if (passwordEdit.nick_name !== userInfo.nick_name) {
+      setPasswordEdit({ nick_name: userInfo.nick_name });
+    }
     setNickName(!nickNameEditClick);
     if (nickNameEditClick === false) {
       nickNameRef.current.focus();
@@ -168,7 +177,7 @@ const Mypage = () => {
                 <InputBoxNickName
                   type="text"
                   ref={nickNameRef}
-                  value={userInfo.nick_name}
+                  value={passwordEdit.nick_name}
                   onChange={handleInputValue("nick_name")}
                   visibleNick={nickNameEditClick}
                   name="nick_name"
@@ -181,7 +190,7 @@ const Mypage = () => {
                 />
                 <NickNameHandleBtn
                   visible={nickNameEditClick}
-                  onClick={onNickNameBtn}
+                  onClick={changeNickBtn}
                 >
                   완료
                 </NickNameHandleBtn>
