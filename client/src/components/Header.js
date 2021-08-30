@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { ReactComponent as UserSvg } from "../svgs/user-solid.svg";
-import { ReactComponent as Biking } from "../svgs/biking-solid.svg";
 import Modal from "./Modal";
 import LoginModal from "./LoginModal";
 
@@ -14,7 +14,7 @@ const HeaderContainer = styled.div`
   left: 0;
   right: 0;
   height: 80px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.6);
   z-index: 1000;
 `;
 
@@ -40,15 +40,6 @@ const UserIcon = styled(UserSvg)`
   width: 40px;
 `;
 
-const BikingIcon = styled(Biking)`
-  border: 0;
-  outline: 0;
-  :hover {
-    color: darkblue;
-    cursor: pointer;
-  }
-  width: 60px;
-`;
 const Header = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -65,9 +56,10 @@ const Header = () => {
   return (
     <>
       <HeaderContainer>
-        <Logo src={"/logo.png"} />
+        <Link to="/">
+          <Logo src={"/logo.png"} onClick={() => setModalOpen(false)} />
+        </Link>
         <NavigationContainer>
-          <BikingIcon />
           <UserIcon onClick={() => setModalOpen(!modalOpen)} />
         </NavigationContainer>
       </HeaderContainer>

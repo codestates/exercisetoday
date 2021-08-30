@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   position: relative;
@@ -56,7 +57,12 @@ const Modal = ({ visible, setVisible, loginFunc }) => {
           <ModalText>Login</ModalText>
         </ModalLogin>
         <ModalSign>
-          <ModalText onClick={() => setVisible(false)}>Sign Up</ModalText>
+          <Link
+            to="signup"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            <ModalText onClick={() => setVisible(false)}>Sign Up</ModalText>
+          </Link>
         </ModalSign>
       </ModalContainer>
     </Container>

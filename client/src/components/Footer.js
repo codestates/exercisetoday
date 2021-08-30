@@ -21,40 +21,40 @@ const TeamMember = styled.div`
   text-align: right;
 `;
 
-const Names = styled.a`
+const Name = styled.a`
   padding-right: 5px;
   :link {
-    color: #003150;
+    color: black;
     text-decoration: none;
     border: rgba(75, 112, 253, 0.3) solid;
     border-width: 0 0 6px 0;
   }
   :visited {
-    color: #003150;
+    color: black;
     text-decoration: none;
     border: rgba(75, 112, 253, 0.3) solid;
     border-width: 0 0 6px 0;
   }
   display: inline;
 `;
-
-const Kang = styled(Names)``;
-
-const Kim = styled(Names)``;
-
-const Sim = styled(Names)``;
-
-const Lee = styled(Names)``;
 const Footer = () => {
   return (
     <>
       <FooterContainer>
         <TeamName>Challengers 제공</TeamName>
         <TeamMember>
-          <Kang href="https://github.com/spirited-hunger">강성진</Kang>
-          <Kim href="https://github.com/KimMinchan95">김민찬</Kim>
-          <Sim href="https://github.com/dankhan102">심상국</Sim>
-          <Lee href="https://github.com/Lee-Duckwon">이덕원</Lee>
+          <Name href="https://github.com/spirited-hunger" target="_blank">
+            강성진
+          </Name>
+          <Name href="https://github.com/KimMinchan95" target="_blank">
+            김민찬
+          </Name>
+          <Name href="https://github.com/dankhan102" target="_blank">
+            심상국
+          </Name>
+          <Name href="https://github.com/Lee-Duckwon" target="_blank">
+            이덕원
+          </Name>
         </TeamMember>
       </FooterContainer>
     </>
