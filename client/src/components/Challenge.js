@@ -124,10 +124,11 @@ const ChallengeText = styled.div`
 `;
 
 const Challenge = ({ isLogin }) => {
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const history = useHistory();
-
   const handleToChallenge = () => {
     if (!isLogin) {
+      setLoginModalVisible(true);
       return;
     }
     history.push("/challenge");
@@ -141,23 +142,33 @@ const Challenge = ({ isLogin }) => {
           <button className="seeMoreBtn" onClick={handleToChallenge}>
             더보기
           </button>
+          <LoginModal
+            visible={loginModalVisible}
+            setVisible={setLoginModalVisible}
+          />
         </ChallengeContent>
         <ChallengeContentSec>
           <ChallengeText>
             위캔드
             <p /> 클라이밍 챌린지
           </ChallengeText>
-          <button className="seeMoreBtnTwo">더보기</button>
+          <button className="seeMoreBtnTwo" onClick={handleToChallenge}>
+            더보기
+          </button>
         </ChallengeContentSec>
       </ChallengeContainer>
       <ChallengeContainer>
         <ChallengeContentThr>
           <ChallengeText>하드코어 홈트레이닝 챌린지</ChallengeText>
-          <button className="seeMoreBtnThr">더보기</button>
+          <button className="seeMoreBtnThr" onClick={handleToChallenge}>
+            더보기
+          </button>
         </ChallengeContentThr>
         <ChallengeContentFo>
           <ChallengeText>자전거 출·퇴근 챌린지</ChallengeText>
-          <button className="seeMoreBtnFo">더보기</button>
+          <button className="seeMoreBtnFo" onClick={handleToChallenge}>
+            더보기
+          </button>
         </ChallengeContentFo>
       </ChallengeContainer>
     </>
