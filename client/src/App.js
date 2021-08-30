@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
@@ -29,6 +29,24 @@ function App() {
   const handleLoginTrue = () => {
     setIsLogin(true);
   };
+
+  useEffect(() => {
+    componentDidMount();
+  }, []);
+
+  const componentDidMount = async () => {
+    const url = new URL(window.location.href);
+    const authorizationCode = url.searchParams.get("code");
+    if (authorizationCode) {
+      await axios({
+        method: "post",
+        url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
+        data: { authorizationCode },
+      }).then((resp) => console.log(resp.data.data));
+      handleLoginTrue();
+    }
+  };
+
   return (
     <div className="App">
       <Header
@@ -41,7 +59,7 @@ function App() {
           <MainPage isLogin={isLogin} />
         </Route>
         <Route path="/signup">
-          <SignUpPage />
+          <SignUpPage handleLoginTrue={handleLoginTrue} />
         </Route>
         {isLogin ? (
           <>
