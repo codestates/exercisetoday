@@ -43,7 +43,11 @@ module.exports = {
         res.cookie("kakao", token);
 
         res.status(200).json({
-          data: response2.data,
+          data: {
+            user_kakaoId: response2.data.id,
+            user_email : response2.kakao_account.data.email,
+            user_nickname : response2.data.kakao_account.profile.nickname
+          },
           message : "ok, kakao token is created in your cookie"
         })
       })
