@@ -57,7 +57,7 @@ const Header = () => {
     <>
       <HeaderContainer>
         <Link to="/">
-          <Logo src={"/logo.png"} />
+          <Logo src={"/logo.png"} onClick={() => setModalOpen(false)} />
         </Link>
         <NavigationContainer>
           <UserIcon onClick={() => setModalOpen(!modalOpen)} />

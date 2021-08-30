@@ -14,6 +14,8 @@ const Mypage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [nickNameEditClick, setNickName] = useState(false);
+  const [curErrorMessage, setCurErrorMessage] = useState("");
+
   console.log("유저 인포", userInfo);
   const deleteModalHandler = () => {
     setDeleteOpen(!deleteOpen);
@@ -25,20 +27,28 @@ const Mypage = () => {
   });
 
   const passwordHandler = () => {
-    const { curPassword, newPassword, newPasswordMatch } = passwordEdit;
-
-    if (newPassword !== newPasswordMatch) {
-      setErrorMessage("신규 비밀번호가 일치하지 않습니다");
+    if (userInfo.password !== passwordEdit.curPassword) {
+      setCurErrorMessage("현재 비밀번호가 일치하지 않습니다");
     } else {
-      setErrorMessage("");
+      setCurErrorMessage("");
     }
   };
 
   const handleInputValue = (key) => (e) => {
     if (key === "nick_name") {
       setUserInfo({ ...userInfo, nick_name: e.target.value });
+    } else if (key === "curPassword" && userInfo.password !== e.target.value) {
+      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
+    } else if (
+      key === "newPasswordMatch" &&
+      passwordEdit.newPassword !== e.target.value
+    ) {
+      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
+      setErrorMessage("신규 비밀번호가 일치하지 않습니다");
+    } else {
+      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
+      setErrorMessage("");
     }
-    setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
   };
   const passwordEditClickHandler = () => {
     setPasswordEditClick(!passwordEditClick);
@@ -74,9 +84,11 @@ const Mypage = () => {
     imageRef.current.click();
   };
   const onNickNameBtn = () => {
-    nickNameRef.current.focus();
     setNickName(!nickNameEditClick);
-    if (nickNameEditClick === true) {
+    if (nickNameEditClick === false) {
+      nickNameRef.current.focus();
+      console.log("포커스온");
+    } else {
       nickNameRef.current.blur();
     }
   };
@@ -84,6 +96,7 @@ const Mypage = () => {
   return (
     <>
       <MypageContainer>
+        {/* <MypageTitle> 육회비빔밥님, 회원정보</MypageTitle> */}
         <MypageProfile>
           <div className="firstContent">
             <ProfileAndContent>
@@ -126,6 +139,7 @@ const Mypage = () => {
                       placeholder="현재 비밀번호를 입력하세요"
                       onChange={handleInputValue("curPassword")}
                     />
+                    <ErrMessage>{curErrorMessage}</ErrMessage>
                     신규 비밀번호
                     <InputBox
                       type="password"
@@ -156,10 +170,25 @@ const Mypage = () => {
                   ref={nickNameRef}
                   value={userInfo.nick_name}
                   onChange={handleInputValue("nick_name")}
+                  visibleNick={nickNameEditClick}
                   name="nick_name"
-                  readonly
                 />
-                <NickNameEditBtn onClick={onNickNameBtn}>
+                <TextNickName
+                  type="text"
+                  visibleNickText={nickNameEditClick}
+                  value={userInfo.nick_name}
+                  readOnly
+                />
+                <NickNameHandleBtn
+                  visible={nickNameEditClick}
+                  onClick={onNickNameBtn}
+                >
+                  완료
+                </NickNameHandleBtn>
+                <NickNameEditBtn
+                  visible={nickNameEditClick}
+                  onClick={onNickNameBtn}
+                >
                   {nickNameEditClick ? "변경취소" : "닉네임 변경"}
                 </NickNameEditBtn>
               </ProfileContent>
@@ -184,9 +213,11 @@ const Mypage = () => {
             </ProfileAndContent2>
           </div>
         </MypageProfile>
+        <OngoingChallContent>현재 진행중인 챌린지</OngoingChallContent>
         <MypageOngoinChall>
           <OngoingChallenge />
         </MypageOngoinChall>
+        <OngoingChallContent>완료된 챌린지</OngoingChallContent>
         <MypageCompletedChall>
           <CompletedChallenge />
         </MypageCompletedChall>
@@ -196,17 +227,32 @@ const Mypage = () => {
 };
 
 export default Mypage;
-
+const MypageTitle = styled.div`
+  position: absolute;
+  font-size: 2rem;
+  margin: 2% 0% 0% 4%;
+`;
+const OngoingChallContent = styled.div`
+  border-top: 3px solid;
+  border-color: #003150;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 5% 0% 3% 3%;
+  font-size: 2rem;
+  @media screen and (max-width: 1024px) {
+    margin: 0%;
+    width: 10%;
+    height: 10%;
+  }
+`;
 const ProfileAndContent = styled.div`
   margin: 5% 0% 0% 5%;
-  width: 10%;
   > .PhotoEdit {
     margin-top: 20px;
     text-decoration: none;
-    border: 1px solid rgb(0, 0, 0);
     padding: 20px;
-    height: 12%;
-    width: 100%;
+    width: 10rem;
     background-color: white;
     border-color: rgba(0, 0, 0, 0.4);
     color: rgb(0, 0, 0);
@@ -229,9 +275,6 @@ const MypageContainer = styled.div`
 `;
 
 const MypageProfile = styled.div`
-  // * ------
-  // * ------
-
   > .firstContent {
     // ? firstContent
     display: flex;
@@ -252,28 +295,16 @@ const ProfilePhoto = styled.div`
   position: relative;
   border: 1px solid;
   border-color: rgba(0, 0, 0, 0.4);
-  width: 150px;
-  height: 200px;
+  width: 90%;
+  height: 10rem;
   > .photo {
     display: none;
   }
   > .photoPreview {
+    // ?
     position: absolute;
     width: 100%;
     height: 100%;
-  }
-`;
-const PasswordEditBtn = styled.button`
-  position: relative;
-  height: 2rem;
-  left: 13%;
-  width: 10%;
-  background-color: white;
-  border-color: rgba(0, 0, 0, 0.4);
-  color: rgb(0, 0, 0);
-  cursor: grab;
-  :hover {
-    border-color: rgba(0, 0, 0, 0.9);
   }
 `;
 
@@ -281,6 +312,20 @@ const MypageOngoinChall = styled.div`
   background-color: white;
 `;
 
+const NickNameHandleBtn = styled.button`
+  display: ${(props) => (props.visible ? "auto" : "none")};
+  position: relative;
+  margin-top: 19px;
+  left: 4%;
+  width: 4%;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: none;
+  color: rgb(0, 0, 0);
+  cursor: grab;
+  :hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+`;
 const MypageCompletedChall = styled.div`
   //  ? ! 66
 `;
@@ -295,6 +340,16 @@ const InputBox = styled.input`
 `;
 
 const InputBoxNickName = styled.input`
+  display: ${(props) => (props.visibleNick ? "auto" : "none")};
+  font-size: 1.2rem;
+  margin: 1% 0% 0% 3%;
+  width: 15%;
+  height: 2rem;
+  border: 0.5px solid gray;
+  color: rgb(0, 0, 0);
+`;
+const TextNickName = styled.input`
+  display: ${(props) => (props.visibleNickText ? "none" : "auto")};
   font-size: 1.2rem;
   margin: 1% 0% 0% 3%;
   width: 15%;
@@ -302,11 +357,24 @@ const InputBoxNickName = styled.input`
   border: none;
   color: rgb(0, 0, 0);
 `;
+const PasswordEditBtn = styled.button`
+  position: relative;
+  height: 2rem;
+  left: 13%;
+  width: 8rem;
+  background-color: white;
+  border-color: rgba(0, 0, 0, 0.4);
+  color: rgb(0, 0, 0);
+  cursor: grab;
+  :hover {
+    border-color: rgba(0, 0, 0, 0.9);
+  }
+`;
 const NickNameEditBtn = styled.button`
   position: relative;
   height: 2rem;
-  left: 28%;
-  width: 10%;
+  left: ${(props) => (props.visible ? 24 : 28)}%;
+  width: 8rem;
   background-color: white;
   border-color: rgba(0, 0, 0, 0.4);
   color: rgb(0, 0, 0);
@@ -335,8 +403,6 @@ const ProfileTitle = styled.div`
 `;
 
 const ProfileContent = styled.div`
-  // ? 콘텐트
-
   padding: 1.5%;
   display: flex;
   > .userContent {
@@ -359,14 +425,11 @@ const DeleteBtn = styled.button`
   width: 5vw;
   height: 2.5rem;
   color: white;
-  background-color: rgba(80, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
   border: none;
   cursor: grab;
   :hover {
-    background-color: rgba(120, 0, 0, 0.6);
-  }
-  @media all and (max-width: 1024px) {
-    width: 3rem;
+    background-color: rgba(0, 0, 0, 0.6);
   }
 `;
 
@@ -377,14 +440,17 @@ const ErrMessage = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  margin: 5% 0% 0% 41%;
+  margin: 5% 0% 0% 37%;
   width: 5rem;
   height: 2.5rem;
   color: white;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(80, 0, 0, 0.6);
   border: none;
   cursor: grab;
   :hover {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(120, 0, 0, 0.6);
+  }
+  @media all and (max-width: 1024px) {
+    width: 3rem;
   }
 `;
