@@ -6,235 +6,6 @@ import Delete from "./Delete";
 import OngoingChallenge from "./OngoingChallenge";
 import CompletedChallenge from "./CompletedChallenge";
 //백엔드의 S3에 이미지를 업로드
-
-const Mypage = () => {
-  const [selectedFile, setFile] = useState(null);
-  const [userInfo, setUserInfo] = useState(...datas);
-  const [passwordEditClick, setPasswordEditClick] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [nickNameEditClick, setNickName] = useState(false);
-  const [curErrorMessage, setCurErrorMessage] = useState("");
-
-  const deleteModalHandler = () => {
-    setDeleteOpen(!deleteOpen);
-  };
-  const [passwordEdit, setPasswordEdit] = useState({
-    curPassword: "",
-    newPassword: "",
-    newPasswordMatch: "",
-    nick_name: userInfo.nick_name,
-  });
-
-  const passwordHandler = () => {
-    if (userInfo.password !== passwordEdit.curPassword) {
-      setCurErrorMessage("현재 비밀번호가 일치하지 않습니다");
-    } else {
-      setCurErrorMessage("");
-    }
-  };
-
-  const handleInputValue = (key) => (e) => {
-    if (key === "nick_name") {
-      setPasswordEdit({ nick_name: e.target.value });
-    } else if (key === "curPassword" && userInfo.password !== e.target.value) {
-      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
-    } else if (
-      key === "newPasswordMatch" &&
-      passwordEdit.newPassword !== e.target.value
-    ) {
-      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
-      setErrorMessage("신규 비밀번호가 일치하지 않습니다");
-    } else {
-      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
-      setErrorMessage("");
-    }
-  };
-  const passwordEditClickHandler = () => {
-    setPasswordEditClick(!passwordEditClick);
-    setPasswordEdit({
-      curPassword: "",
-      newPassword: "",
-      newPasswordMatch: "",
-    });
-    setErrorMessage("");
-  };
-
-  const handlePhoto = (e) => {
-    const temp = [];
-    const photoToAdd = e.target.files;
-    if (photoToAdd.length === 0) {
-      return;
-    }
-    for (let i = 0; i < photoToAdd.length; i++) {
-      temp.push({
-        id: photoToAdd[i].name,
-        file: photoToAdd[i],
-        url: URL.createObjectURL(photoToAdd[i]),
-      });
-    }
-    setFile(temp);
-  };
-
-  console.log("프로필사진 id, url", selectedFile);
-  const imageRef = useRef();
-  const nickNameRef = useRef();
-
-  const onImgInputBtn = () => {
-    imageRef.current.click();
-  };
-  const changeNickBtn = () => {
-    if (passwordEdit.nick_name !== userInfo.nick_name) {
-      setUserInfo({ ...userInfo, nick_name: passwordEdit.nick_name });
-    }
-    setNickName(!nickNameEditClick);
-  };
-  const onNickNameBtn = () => {
-    if (passwordEdit.nick_name !== userInfo.nick_name) {
-      setPasswordEdit({ nick_name: userInfo.nick_name });
-    }
-    setNickName(!nickNameEditClick);
-    if (nickNameEditClick === false) {
-      nickNameRef.current.focus();
-    } else {
-      nickNameRef.current.blur();
-    }
-  };
-  console.log("------>", passwordEdit);
-  return (
-    <>
-      <MypageContainer>
-        {/* <MypageTitle> 육회비빔밥님, 회원정보</MypageTitle> */}
-        <MypageProfile>
-          <div className="firstContent">
-            <ProfileAndContent>
-              <ProfilePhoto>
-                <img
-                  className="photoPreview"
-                  alt="프로필 사진"
-                  src={!selectedFile ? NoImage : selectedFile[0].url}
-                />
-                <input
-                  className="photo"
-                  ref={imageRef}
-                  type="file"
-                  accpet="image/*"
-                  name="profile"
-                  onChange={(e) => handlePhoto(e)}
-                />
-              </ProfilePhoto>
-              <button className="PhotoEdit" onClick={onImgInputBtn}>
-                프로필 등록 및 수정
-              </button>
-            </ProfileAndContent>
-            <ProfileAndContent2>
-              <ProfileContent>
-                <ProfileTitle>이메일</ProfileTitle>
-                <div className="userContent">{userInfo.email}</div>
-              </ProfileContent>
-              <BorderBottom />
-              <ProfileContent>
-                <ProfileTitle>비밀번호</ProfileTitle>
-                <div className="userContent">
-                  {passwordEditClick ? null : (
-                    <div className="userContent">*****</div>
-                  )}
-                  <EditPasswordContainer visible={passwordEditClick}>
-                    현재 비밀번호
-                    <InputBox
-                      type="password"
-                      value={passwordEdit.curPassword}
-                      placeholder="현재 비밀번호를 입력하세요"
-                      onChange={handleInputValue("curPassword")}
-                    />
-                    <ErrMessage>{curErrorMessage}</ErrMessage>
-                    신규 비밀번호
-                    <InputBox
-                      type="password"
-                      value={passwordEdit.newPassword}
-                      onChange={handleInputValue("newPassword")}
-                    />
-                    신규 비밀번호 확인
-                    <InputBox
-                      type="password"
-                      value={passwordEdit.newPasswordMatch}
-                      onChange={handleInputValue("newPasswordMatch")}
-                    />
-                    <ErrMessage>{errorMessage}</ErrMessage>
-                    <PasswordBtn onClick={() => passwordHandler()}>
-                      완료
-                    </PasswordBtn>
-                  </EditPasswordContainer>
-                </div>
-                <PasswordEditBtn onClick={passwordEditClickHandler}>
-                  {passwordEditClick ? "변경취소" : "비밀번호 변경"}
-                </PasswordEditBtn>
-              </ProfileContent>
-              <BorderBottom />
-              <ProfileContent>
-                <ProfileTitle>닉네임</ProfileTitle>
-                <InputBoxNickName
-                  type="text"
-                  ref={nickNameRef}
-                  value={passwordEdit.nick_name}
-                  onChange={handleInputValue("nick_name")}
-                  visibleNick={nickNameEditClick}
-                  name="nick_name"
-                />
-                <TextNickName
-                  type="text"
-                  visibleNickText={nickNameEditClick}
-                  value={userInfo.nick_name}
-                  readOnly
-                />
-                <NickNameHandleBtn
-                  visible={nickNameEditClick}
-                  onClick={changeNickBtn}
-                >
-                  완료
-                </NickNameHandleBtn>
-                <NickNameEditBtn
-                  visible={nickNameEditClick}
-                  onClick={onNickNameBtn}
-                >
-                  {nickNameEditClick ? "변경취소" : "닉네임 변경"}
-                </NickNameEditBtn>
-              </ProfileContent>
-              <BorderBottom />
-              <ProfileContent>
-                <ProfileTitle>레벨</ProfileTitle>
-                <div className="userContent">{userInfo.level}</div>
-              </ProfileContent>
-              <BorderBottom />
-              <ProfileContent>
-                <ProfileTitle>휴대전화</ProfileTitle>
-                <div className="userContent">
-                  010-****-{userInfo.mobile.slice(7)}
-                </div>
-              </ProfileContent>
-              <BorderBottom />
-              <SubmitBtn>제출</SubmitBtn>
-              <DeleteBtn onClick={() => deleteModalHandler()}>
-                회원탈퇴
-              </DeleteBtn>
-              <Delete visible={deleteOpen} setVisible={deleteModalHandler} />
-            </ProfileAndContent2>
-          </div>
-        </MypageProfile>
-        <OngoingChallContent>현재 진행중인 챌린지</OngoingChallContent>
-        <MypageOngoinChall>
-          <OngoingChallenge />
-        </MypageOngoinChall>
-        <OngoingChallContent>완료된 챌린지</OngoingChallContent>
-        <MypageCompletedChall>
-          <CompletedChallenge />
-        </MypageCompletedChall>
-      </MypageContainer>
-    </>
-  );
-};
-
-export default Mypage;
 const MypageTitle = styled.div`
   position: absolute;
   font-size: 2rem;
@@ -462,3 +233,234 @@ const SubmitBtn = styled.button`
     width: 3rem;
   }
 `;
+
+const Mypage = () => {
+  const [selectedFile, setFile] = useState(null);
+  const [userInfo, setUserInfo] = useState(...datas);
+  const [passwordEditClick, setPasswordEditClick] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [nickNameEditClick, setNickName] = useState(false);
+  const [curErrorMessage, setCurErrorMessage] = useState("");
+
+  const deleteModalHandler = () => {
+    setDeleteOpen(!deleteOpen);
+  };
+  //이름바꾸기, 완료버튼누를때 미ㅣ리뜨기 제출전에..
+  const [newUserInfo, setNewUserInfo] = useState({
+    curPassword: "",
+    newPassword: "",
+    newPasswordMatch: "",
+    nick_name: userInfo.nick_name,
+  });
+
+  const userInfoUpdate = () => {
+    return;
+  };
+  // const passwordHandler = () => {
+  //   if (userInfo.password !== passwordEdit.curPassword) {
+  //     setCurErrorMessage("현재 비밀번호가 일치하지 않습니다");
+  //   } else {
+  //     setCurErrorMessage("");
+  //   }
+  // };
+
+  const handleInputValue = (key) => (e) => {
+    if (key === "nick_name") {
+      setNewUserInfo({ nick_name: e.target.value });
+    } else if (key === "curPassword" && userInfo.password !== e.target.value) {
+      setNewUserInfo({ ...newUserInfo, [key]: e.target.value });
+    } else if (
+      key === "newPasswordMatch" &&
+      newUserInfo.newPassword !== e.target.value
+    ) {
+      setNewUserInfo({ ...newUserInfo, [key]: e.target.value });
+      setErrorMessage("신규 비밀번호가 일치하지 않습니다");
+    } else {
+      setNewUserInfo({ ...newUserInfo, [key]: e.target.value });
+      setErrorMessage("");
+    }
+  };
+  const passwordEditClickHandler = () => {
+    setPasswordEditClick(!passwordEditClick);
+    setNewUserInfo({
+      curPassword: "",
+      newPassword: "",
+      newPasswordMatch: "",
+    });
+    setErrorMessage("");
+  };
+
+  const handlePhoto = (e) => {
+    const temp = [];
+    const photoToAdd = e.target.files;
+    if (photoToAdd.length === 0) {
+      return;
+    }
+    for (let i = 0; i < photoToAdd.length; i++) {
+      temp.push({
+        id: photoToAdd[i].name,
+        file: photoToAdd[i],
+        url: URL.createObjectURL(photoToAdd[i]),
+      });
+    }
+    setFile(temp);
+  };
+
+  console.log("프로필사진 id, url", selectedFile);
+  const imageRef = useRef();
+  const nickNameRef = useRef();
+
+  const onImgInputBtn = () => {
+    imageRef.current.click();
+  };
+  const changeNickBtn = () => {
+    if (newUserInfo.nick_name !== userInfo.nick_name) {
+      setUserInfo({ ...userInfo, nick_name: newUserInfo.nick_name });
+    }
+    setNickName(!nickNameEditClick);
+  };
+  const onNickNameBtn = () => {
+    if (newUserInfo.nick_name !== userInfo.nick_name) {
+      setNewUserInfo({ nick_name: userInfo.nick_name });
+    }
+    setNickName(!nickNameEditClick);
+    if (nickNameEditClick === false) {
+      nickNameRef.current.focus();
+    } else {
+      nickNameRef.current.blur();
+    }
+  };
+  console.log("------>", newUserInfo);
+  return (
+    <>
+      <MypageContainer>
+        {/* <MypageTitle> 육회비빔밥님, 회원정보</MypageTitle> */}
+        <MypageProfile>
+          <div className="firstContent">
+            <ProfileAndContent>
+              <ProfilePhoto>
+                <img
+                  className="photoPreview"
+                  alt="프로필 사진"
+                  src={!selectedFile ? NoImage : selectedFile[0].url}
+                />
+                <input
+                  className="photo"
+                  ref={imageRef}
+                  type="file"
+                  accpet="image/*"
+                  name="profile"
+                  onChange={(e) => handlePhoto(e)}
+                />
+              </ProfilePhoto>
+              <button className="PhotoEdit" onClick={onImgInputBtn}>
+                프로필 등록 및 수정
+              </button>
+            </ProfileAndContent>
+            <ProfileAndContent2>
+              <ProfileContent>
+                <ProfileTitle>이메일</ProfileTitle>
+                <div className="userContent">{userInfo.email}</div>
+              </ProfileContent>
+              <BorderBottom />
+              <ProfileContent>
+                <ProfileTitle>비밀번호</ProfileTitle>
+                <div className="userContent">
+                  {passwordEditClick ? null : (
+                    <div className="userContent">*****</div>
+                  )}
+                  <EditPasswordContainer visible={passwordEditClick}>
+                    {/*현재 비밀번호
+                     <InputBox
+                      type="password"
+                      value={passwordEdit.curPassword}
+                      placeholder="현재 비밀번호를 입력하세요"
+                      onChange={handleInputValue("curPassword")}
+                    /> */}
+                    <ErrMessage>{curErrorMessage}</ErrMessage>
+                    신규 비밀번호
+                    <InputBox
+                      type="password"
+                      value={newUserInfo.newPassword}
+                      onChange={handleInputValue("newPassword")}
+                    />
+                    신규 비밀번호 확인
+                    <InputBox
+                      type="password"
+                      value={newUserInfo.newPasswordMatch}
+                      onChange={handleInputValue("newPasswordMatch")}
+                    />
+                    <ErrMessage>{errorMessage}</ErrMessage>
+                    <PasswordBtn onClick={null}>완료</PasswordBtn>
+                  </EditPasswordContainer>
+                </div>
+                <PasswordEditBtn onClick={passwordEditClickHandler}>
+                  {passwordEditClick ? "변경취소" : "비밀번호 변경"}
+                </PasswordEditBtn>
+              </ProfileContent>
+              <BorderBottom />
+              <ProfileContent>
+                <ProfileTitle>닉네임</ProfileTitle>
+                <InputBoxNickName
+                  type="text"
+                  ref={nickNameRef}
+                  value={newUserInfo.nick_name}
+                  onChange={handleInputValue("nick_name")}
+                  visibleNick={nickNameEditClick}
+                  name="nick_name"
+                />
+                <TextNickName
+                  type="text"
+                  visibleNickText={nickNameEditClick}
+                  value={userInfo.nick_name}
+                  readOnly
+                />
+                <NickNameHandleBtn
+                  visible={nickNameEditClick}
+                  onClick={changeNickBtn}
+                >
+                  완료
+                </NickNameHandleBtn>
+                <NickNameEditBtn
+                  visible={nickNameEditClick}
+                  onClick={onNickNameBtn}
+                >
+                  {nickNameEditClick ? "변경취소" : "닉네임 변경"}
+                </NickNameEditBtn>
+              </ProfileContent>
+              <BorderBottom />
+              <ProfileContent>
+                <ProfileTitle>레벨</ProfileTitle>
+                <div className="userContent">{userInfo.level}</div>
+              </ProfileContent>
+              <BorderBottom />
+              <ProfileContent>
+                <ProfileTitle>휴대전화</ProfileTitle>
+                <div className="userContent">
+                  010-****-{userInfo.mobile.slice(7)}
+                </div>
+              </ProfileContent>
+              <BorderBottom />
+              <SubmitBtn onClick={userInfoUpdate}>제출</SubmitBtn>
+              <DeleteBtn onClick={() => deleteModalHandler()}>
+                회원탈퇴
+              </DeleteBtn>
+              <Delete visible={deleteOpen} setVisible={deleteModalHandler} />
+            </ProfileAndContent2>
+          </div>
+        </MypageProfile>
+        <OngoingChallContent>현재 진행중인 챌린지</OngoingChallContent>
+        <MypageOngoinChall>
+          <OngoingChallenge />
+        </MypageOngoinChall>
+        <OngoingChallContent>완료된 챌린지</OngoingChallContent>
+        <MypageCompletedChall>
+          <CompletedChallenge />
+        </MypageCompletedChall>
+      </MypageContainer>
+    </>
+  );
+};
+
+export default Mypage;
