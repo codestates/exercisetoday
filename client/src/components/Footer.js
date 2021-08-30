@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-const FooterContainer = styled.div`
+
+const FooterContainer = styled.footer`
+
   display: flex;
   bottom: 0;
   width: 100%;
   padding: 10px 0;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0);
 `;
 
 const TeamName = styled.div`
@@ -20,23 +22,23 @@ const TeamName = styled.div`
 const TeamMember = styled.div`
   text-align: right;
 `;
-
 const Name = styled.a`
   padding-right: 5px;
   :link {
-    color: black;
+    color: #003150;
     text-decoration: none;
     border: rgba(75, 112, 253, 0.3) solid;
     border-width: 0 0 6px 0;
   }
   :visited {
-    color: black;
+    color: #003150;
     text-decoration: none;
     border: rgba(75, 112, 253, 0.3) solid;
     border-width: 0 0 6px 0;
   }
   display: inline;
 `;
+
 const Footer = () => {
   return (
     <>

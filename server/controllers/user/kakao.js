@@ -42,8 +42,16 @@ module.exports = {
         
         res.cookie("kakao", token);
 
+        // TODO SEQUELIZE 
+
         res.status(200).json({
-          data: response2.data,
+          data: {
+            user_id : null,
+            user_kakaoId: response2.data.id,
+            user_email : response2.data.kakao_account.email,
+            user_nickname : response2.data.kakao_account.profile.nickname,
+            user_exp : 52,
+          },
           message : "ok, kakao token is created in your cookie"
         })
       })
