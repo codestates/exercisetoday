@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
+
 const FooterContainer = styled.footer`
+
   display: flex;
   bottom: 0;
   width: 100%;
@@ -20,7 +22,6 @@ const TeamName = styled.div`
 const TeamMember = styled.div`
   text-align: right;
 `;
-
 const Name = styled.a`
   padding-right: 5px;
   :link {
