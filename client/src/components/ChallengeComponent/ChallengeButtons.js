@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { ReactComponent as Thumb } from "../../svgs/thumbs-up-regular.svg";
 import styled from "styled-components";
 
 const ChallengeButton = styled.button`
@@ -76,6 +77,31 @@ const Message = styled.img`
   width: 50rem;
 `;
 
+const LikeButton = styled.button`
+  margin-left: auto;
+`;
+
+const LikeCount = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const ThumbIcon = styled(Thumb)`
+  border: 0;
+  outline: 0;
+  color: blue;
+  :hover {
+    color: darkblue;
+    cursor: pointer;
+  }
+  width: 60px;
+`;
+
+const LikeButtonContainer = styled.section`
+  text-align: right;
+  padding: 1%;
+`;
+
 const arr = [
   { buttonId: 0, isFinished: true },
   { buttonId: 1, isFinished: false },
@@ -86,6 +112,7 @@ const arr = [
 ];
 
 const ChallengeButtons = ({ join, handleJoin }) => {
+  const [likeCount, setLikeCount] = useState("0");
   const [buttonList, setButtonList] = useState(arr);
   const [percent, setPercent] = useState(
     (arr.reduce((acc, cur) => acc + cur.isFinished, 0) / arr.length) * 100
@@ -118,6 +145,10 @@ const ChallengeButtons = ({ join, handleJoin }) => {
     setPercent(prevState => {
       return prevState + (num / arr.length) * 100;
     });
+  };
+
+  const clickLikeButton = () => {
+    setLikeCount(Number(likeCount) + 1);
   };
 
   return (
@@ -153,6 +184,12 @@ const ChallengeButtons = ({ join, handleJoin }) => {
           )}
         </ChallengeButtonContainer>
       )}
+      <LikeButtonContainer>
+        <LikeButton>
+          <ThumbIcon onClick={clickLikeButton} />
+        </LikeButton>
+        <LikeCount>좋아요: {likeCount}개</LikeCount>
+      </LikeButtonContainer>
     </>
   );
 };
