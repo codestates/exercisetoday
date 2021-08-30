@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import img from "./image/main.jpeg";
 
+
+const MainIntro = () => {
+  const MainContainer = styled.div`
+    position: relative;
+    height: 50vh;
+  `;
+
 const MainContainer = styled.div`
   position: relative;
   height: 50vh;
@@ -32,7 +39,10 @@ const IntroContainer = styled.div`
     filter: brightness(90%);
   }
 `;
-const MainIntro = () => {
+
+
+const Main = () => {
+
   return (
     <MainContainer>
       <IntroContainer>
