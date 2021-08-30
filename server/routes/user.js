@@ -1,4 +1,5 @@
 const userController = require('../controllers/user/index');
+const kakaoController = require('../controllers/user/kakao');
 const signInController = require('../controllers/user/signin');
 const signOutController = require('../controllers/user/signout');
 const signUpController = require('../controllers/user/signup');
@@ -15,6 +16,9 @@ const router = express.Router();
 
 // 탈퇴 delete /user
 // router.delete('/', userController.delete);
+
+// 카카오 가입 로그인 통합 post /user/kakao
+// router.post('/kakao', kakaoController.post);
 
 // 로그인 post /user/signin
 // router.post('/signin', signInController.post);
