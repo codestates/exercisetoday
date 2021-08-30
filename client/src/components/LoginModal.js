@@ -1,12 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import kakao from "./image/kakao.png";
+
 const Container = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.45);
   position: fixed;
-  opacity: ${(props) => (props.visible ? 1 : 0)};
-  pointer-events: ${(props) => (props.visible ? "initial" : "none")};
+  opacity: ${props => (props.visible ? 1 : 0)};
+  pointer-events: ${props => (props.visible ? "initial" : "none")};
   top: 0;
   left: 0;
   bottom: 0;
@@ -114,14 +116,31 @@ const SocialLogin = styled.div`
   }
 `;
 
-const LoginModal = ({ visible, setVisible }) => {
+const LoginModal = ({ visible, setVisible, handleLoginTrue }) => {
   //const [isOpen, setIsOpen] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
 
-  const loginInfoHandler = (key) => (e) => {
+  const handleLogin = () => {
+    const { email, password } = loginInfo;
+    axios({
+      method: "post",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signin",
+      data: { data: { email, password } },
+    })
+      .then(res => {
+        if (res.message) {
+          handleLoginTrue();
+        }
+      })
+      .catch(err => {
+        console.log("login err", err);
+      });
+  };
+
+  const loginInfoHandler = key => e => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
   return (
@@ -146,7 +165,7 @@ const LoginModal = ({ visible, setVisible }) => {
           placeholder="Password"
           onChange={loginInfoHandler("password")}
         />
-        <ModalBtn>로그인</ModalBtn>
+        <ModalBtn onClick={handleLogin}>로그인</ModalBtn>
         <BorderBottom />
         <SocialLogin>
           <button className="socialBtn">
