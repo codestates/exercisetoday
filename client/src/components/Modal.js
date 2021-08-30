@@ -70,7 +70,11 @@ const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
         )}
         <ModalSign>
           {isLogin ? (
-            <Link to="/mypage">
+            <Link
+              to="/mypage"
+              onClick={() => setVisible(false)}
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
               <ModalText>Mypage</ModalText>
             </Link>
           ) : (
