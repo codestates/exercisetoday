@@ -10,7 +10,7 @@ import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
+  const [isLogin, setIsLogin] = useState(true); // URI로 페이지를 움직일수있다.
   const [userData, setUserData] = useState({
     user_id: null,
     user_kakaoId: null,
