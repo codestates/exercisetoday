@@ -42,7 +42,7 @@ module.exports = {
         
         res.cookie("kakao", token);
 
-        return res.status(200).json({
+        res.status(200).json({
           data: response2.data,
           message : "ok, kakao token is created in your cookie"
         })
@@ -58,10 +58,10 @@ module.exports = {
 
 
     // 에러난경우
-    res.status(401).json({
-      data : null,
-      message : "token이나 code 오류. 다시 로그인하세요"
-    });
+    // res.status(401).json({
+    //   data : null,
+    //   message : "token이나 code 오류. 다시 로그인하세요"
+    // });
     
   }
 }
