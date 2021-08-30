@@ -6,3 +6,4 @@ export KAKAO_CLIENT_ID=$(aws ssm get-parameters --region ap-northeast-2 --names 
 export KAKAO_CLIENT_SECRET=$(aws ssm get-parameters --region ap-northeast-2 --names KAKAO_CLIENT_SECRET --query Parameters[0].Value | sed 's/"//g')
 
 authbind --deep pm2 start app.js
+

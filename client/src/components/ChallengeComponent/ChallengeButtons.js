@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const ChallengeButton = styled.button`
@@ -89,6 +90,13 @@ const ChallengeButtons = ({ join, handleJoin }) => {
   const [percent, setPercent] = useState(
     (arr.reduce((acc, cur) => acc + cur.isFinished, 0) / arr.length) * 100
   );
+
+  // useEffect(() => {
+  //   axios({
+  //     method: "GET",
+  //     url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate",
+  //   });
+  // }, []);
 
   const buttonClick = key => () => {
     handlePercent(key);
