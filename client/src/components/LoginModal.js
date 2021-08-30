@@ -7,8 +7,8 @@ const Container = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.45);
   position: fixed;
-  opacity: ${props => (props.visible ? 1 : 0)};
-  pointer-events: ${props => (props.visible ? "initial" : "none")};
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  pointer-events: ${(props) => (props.visible ? "initial" : "none")};
   top: 0;
   left: 0;
   bottom: 0;
@@ -116,7 +116,7 @@ const SocialLogin = styled.div`
   }
 `;
 
-const LoginModal = ({ visible, setVisible, handleLoginTrue }) => {
+const LoginModal = ({ visible, setVisible, handleLoginTrue, isLogin }) => {
   //const [isOpen, setIsOpen] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
     email: "",
@@ -130,17 +130,21 @@ const LoginModal = ({ visible, setVisible, handleLoginTrue }) => {
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signin",
       data: { data: { email, password } },
     })
-      .then(res => {
+      .then((res) => {
         if (res.message) {
           handleLoginTrue();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("login err", err);
       });
   };
-
-  const loginInfoHandler = key => e => {
+  const handleSocialLogin = () => {
+    window.location.assign(
+      "https://kauth.kakao.com/oauth/authorize?client_id=ce4c941a6f16b0b73737edf331c2adaf&redirect_uri=http://localhost:3000&response_type=code"
+    );
+  };
+  const loginInfoHandler = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
   return (
@@ -168,7 +172,7 @@ const LoginModal = ({ visible, setVisible, handleLoginTrue }) => {
         <ModalBtn onClick={handleLogin}>로그인</ModalBtn>
         <BorderBottom />
         <SocialLogin>
-          <button className="socialBtn">
+          <button className="socialBtn" onClick={handleSocialLogin}>
             <img className="kakaoImg" src={kakao} alt="카카오 로고" />
             카카오로 로그인하기
           </button>
