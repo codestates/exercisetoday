@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-
+import kakao from "./image/kakao.png";
 const Container = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.45);
@@ -22,23 +22,24 @@ const ModalContainer = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 50rem;
-  height: 23rem;
+  width: 40rem;
+  height: 22rem;
   padding-top: 60px;
   background-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.25);
   border-radius: 0.8rem;
   transition: all 0.2s ease;
   > .input {
-    margin-top: 10px;
-    width: 50%;
-    height: 3vh;
+    margin-top: 18px;
+    width: 355px;
+    height: 32px;
   }
   > .exit {
     font-size: 25px;
     color: rgba(0, 0, 0, 0.6);
     margin-top: 10px;
     position: absolute;
+    border-radius: 50%;
     top: 0;
     cursor: grab;
     :hover {
@@ -58,11 +59,13 @@ const ModalBtn = styled.button`
   background-color: #003150;
   text-decoration: none;
   border: none;
-  padding: 20px;
+  width: 360px;
+  height: 40px;
   color: white;
-  border-radius: 30px;
   cursor: grab;
-  width: 30%;
+  :hover {
+    opacity: 0.9;
+  }
 `;
 
 // const ModalText = styled.div`
@@ -78,17 +81,35 @@ const ModalBtn = styled.button`
 //     background-color: rgba(0, 0, 0, 0.1);
 //   }
 // `;
-
+const BorderBottom = styled.div`
+  position: absolute;
+  margin-top: 30%;
+  width: 56%;
+  border-bottom: 1px solid;
+  border-color: rgba(0, 0, 0, 0.2);
+`;
 const SocialLogin = styled.div`
   display: flex;
   flex-direction: column;
   > .socialBtn {
-    margin-top: 20px;
-    width: 400px;
+    /* background-image: url(${kakao});
+    background-repeat: no-repeat;
+    background-size: contain; */
+    background-color: rgb(255, 232, 18);
+    border: none;
+    margin-top: 40px;
+    width: 360px;
     height: 40px;
     cursor: grab;
     :hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      opacity: 0.9;
+    }
+    > .kakaoImg {
+      position: absolute;
+      top: 67.1%;
+      left: 38.8%;
+      width: 14px;
+      height: 20px;
     }
   }
 `;
@@ -126,9 +147,12 @@ const LoginModal = ({ visible, setVisible }) => {
           onChange={loginInfoHandler("password")}
         />
         <ModalBtn>로그인</ModalBtn>
+        <BorderBottom />
         <SocialLogin>
-          <button className="socialBtn">구글로 로그인하기</button>
-          <button className="socialBtn">페이스북으로 로그인하기</button>
+          <button className="socialBtn">
+            <img className="kakaoImg" src={kakao} alt="카카오 로고" />
+            카카오로 로그인하기
+          </button>
         </SocialLogin>
       </ModalContainer>
     </Container>

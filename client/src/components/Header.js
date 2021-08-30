@@ -20,7 +20,7 @@ const HeaderContainer = styled.div`
 
 const Logo = styled.img`
   width: 10em;
-  padding-left: 8em;
+  padding-left: 40px;
 `;
 
 const NavigationContainer = styled.nav`
