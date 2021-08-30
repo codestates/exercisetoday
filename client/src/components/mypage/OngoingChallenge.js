@@ -26,7 +26,7 @@ const OngoingBlock = styled.div`
   width: 100%;
 `;
 const OngoingChallPhoto = styled.div`
-  background-image: url(${(props) => (props.photo ? props.photo : null)});
+  background-image: url(${props => (props.photo ? props.photo : null)});
   background-repeat: no-repeat;
   background-size: cover;
   border: 2px solid black;
