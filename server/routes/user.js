@@ -18,7 +18,7 @@ const router = express.Router();
 // router.delete('/', userController.delete);
 
 // 카카오 가입 로그인 통합 post /user/kakao
-// router.post('/kakao', kakaoController.post);
+router.post('/kakao', kakaoController.post);
 
 // 로그인 post /user/signin
 // router.post('/signin', signInController.post);
