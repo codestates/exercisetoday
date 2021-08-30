@@ -40,7 +40,7 @@ const UserIcon = styled(UserSvg)`
   width: 40px;
 `;
 
-const Header = () => {
+const Header = ({ isLogin, handleLogout }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginOpen, setLogin] = useState(false);
@@ -57,13 +57,15 @@ const Header = () => {
     <>
       <HeaderContainer>
         <Link to="/">
-          <Logo src={"/logo.png"} />
+          <Logo src={"/logo.png"} onClick={() => setModalOpen(false)} />
         </Link>
         <NavigationContainer>
           <UserIcon onClick={() => setModalOpen(!modalOpen)} />
         </NavigationContainer>
       </HeaderContainer>
       <Modal
+        handleLogout={handleLogout}
+        isLogin={isLogin}
         visible={modalOpen}
         setVisible={setModalOpen}
         loginFunc={loginClicked}

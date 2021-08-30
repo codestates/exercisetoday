@@ -4,6 +4,8 @@ import img from "./image/running.jpeg";
 import imgSec from "./image/climbing.jpeg";
 import imgThr from "./image/homeworkout.jpeg";
 import imgFo from "./image/bicycle.jpeg";
+import { useHistory } from "react-router-dom";
+import LoginModal from "./LoginModal";
 
 const ChallengeContainer = styled.div`
   display: flex;
@@ -38,6 +40,7 @@ const ChallengeContent = styled.div`
     }
   }
 `;
+
 const ChallengeContentSec = styled.div`
   padding-left: 50px;
   display: flex;
@@ -49,7 +52,7 @@ const ChallengeContentSec = styled.div`
   background-color: #003150;
   width: 40%;
   height: 100%;
-  > .seeMoreBtnRight {
+  > .seeMoreBtnTwo {
     text-align: center;
     background-color: transparent;
     text-decoration: none;
@@ -63,6 +66,7 @@ const ChallengeContentSec = styled.div`
     }
   }
 `;
+
 const ChallengeContentThr = styled.div`
   display: flex;
   flex-direction: column;
@@ -74,7 +78,7 @@ const ChallengeContentThr = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   margin-right: 2rem;
-  > .seeMoreBtnRight {
+  > .seeMoreBtnThr {
     text-align: center;
     background-color: transparent;
     text-decoration: none;
@@ -88,6 +92,7 @@ const ChallengeContentThr = styled.div`
     }
   }
 `;
+
 const ChallengeContentFo = styled.div`
   display: flex;
   flex-direction: column;
@@ -98,7 +103,7 @@ const ChallengeContentFo = styled.div`
   height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
-  > .seeMoreBtnRight {
+  > .seeMoreBtnFo {
     text-align: center;
     background-color: transparent;
     text-decoration: none;
@@ -112,16 +117,21 @@ const ChallengeContentFo = styled.div`
     }
   }
 `;
+
 const ChallengeText = styled.div`
   color: rgb(255, 255, 255);
   font-size: 3rem;
 `;
 
-const Challenge = () => {
-  const [deleteOpen, setDelete] = useState(false);
-
-  const deleteModalHandler = () => {
-    setDelete(!deleteOpen);
+const Challenge = ({ isLogin }) => {
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const history = useHistory();
+  const handleToChallenge = () => {
+    if (!isLogin) {
+      setLoginModalVisible(true);
+      return;
+    }
+    history.push("/challenge");
   };
 
   return (
@@ -129,26 +139,36 @@ const Challenge = () => {
       <ChallengeContainer>
         <ChallengeContent>
           <ChallengeText>30분 데일리 러닝 챌린지</ChallengeText>
-          <button className="seeMoreBtn" onClick={() => deleteModalHandler()}>
+          <button className="seeMoreBtn" onClick={handleToChallenge}>
             더보기
           </button>
+          <LoginModal
+            visible={loginModalVisible}
+            setVisible={setLoginModalVisible}
+          />
         </ChallengeContent>
         <ChallengeContentSec>
           <ChallengeText>
             위캔드
             <p /> 클라이밍 챌린지
           </ChallengeText>
-          <button className="seeMoreBtnRight">더보기</button>
+          <button className="seeMoreBtnTwo" onClick={handleToChallenge}>
+            더보기
+          </button>
         </ChallengeContentSec>
       </ChallengeContainer>
       <ChallengeContainer>
         <ChallengeContentThr>
           <ChallengeText>하드코어 홈트레이닝 챌린지</ChallengeText>
-          <button className="seeMoreBtnRight">더보기</button>
+          <button className="seeMoreBtnThr" onClick={handleToChallenge}>
+            더보기
+          </button>
         </ChallengeContentThr>
         <ChallengeContentFo>
           <ChallengeText>자전거 출·퇴근 챌린지</ChallengeText>
-          <button className="seeMoreBtnRight">더보기</button>
+          <button className="seeMoreBtnFo" onClick={handleToChallenge}>
+            더보기
+          </button>
         </ChallengeContentFo>
       </ChallengeContainer>
     </>
