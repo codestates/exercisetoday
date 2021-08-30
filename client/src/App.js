@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
@@ -17,17 +17,34 @@ function App() {
       method: "post",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
     })
-      .then((res) => {
+      .then(res => {
         if (res.message) {
           setIsLogin(false);
           history.push("/");
         }
       })
-      .catch((err) => console.log("logout err", err));
+      .catch(err => console.log("logout err", err));
   };
 
   const handleLoginTrue = () => {
     setIsLogin(true);
+  };
+
+  useEffect(() => {
+    componentDidMount();
+  }, []);
+
+  const componentDidMount = async () => {
+    const url = new URL(window.location.href);
+    const authorizationCode = url.searchParams.get("code");
+    if (authorizationCode) {
+      await axios({
+        method: "post",
+        url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
+        data: { authorizationCode },
+      }).then(resp => console.log(resp.data.data));
+      handleLoginTrue();
+    }
   };
 
   return (
@@ -42,7 +59,7 @@ function App() {
           <MainPage isLogin={isLogin} />
         </Route>
         <Route path="/signup">
-          <SignUpPage />
+          <SignUpPage handleLoginTrue={handleLoginTrue} />
         </Route>
         {isLogin ? (
           <>
