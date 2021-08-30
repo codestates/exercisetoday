@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`
   position: relative;
-  opacity: ${(props) => (props.visible ? 1 : 0)};
-  pointer-events: ${(props) => (props.visible ? "initial" : "none")};
+  opacity: ${props => (props.visible ? 1 : 0)};
+  pointer-events: ${props => (props.visible ? "initial" : "none")};
 `;
 
 const ModalContainer = styled.div`
@@ -52,12 +52,15 @@ const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
   //   const loginOpenHandler = () => {
   //     setIsOpen(!isOpen);
   //   };
-
+  const logoutHandler = () => {
+    handleLogout();
+    setVisible(!visible);
+  };
   return (
     <Container visible={visible}>
       <ModalContainer>
         {isLogin ? (
-          <ModalLog onClick={handleLogout}>
+          <ModalLog onClick={logoutHandler}>
             <ModalText>Log Out</ModalText>
           </ModalLog>
         ) : (
