@@ -48,6 +48,7 @@ const ModalSign = styled.div`
 
 const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   //   const loginOpenHandler = () => {
   //     setIsOpen(!isOpen);
   //   };
