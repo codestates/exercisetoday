@@ -36,22 +36,5 @@ module.exports = {
       data: null,
       message: "ok, jwt token is created in your cookie"
     });
-  },
-  // kakao 토큰 verify
-  isKakaoAuthorized: async(token) =>{
-    let result;
-    await axios({
-      method: "get",
-      url: "https://kapi.kakao.com/v1/user/access_token_info",
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(res =>{
-      result = res;
-    })
-    .catch(e => {console.log(`Kakao Authorization err ${e}`)})
-    return result;
   }
 }
