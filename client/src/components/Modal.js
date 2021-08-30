@@ -27,7 +27,8 @@ const ModalText = styled.div`
   font-size: 1.2rem;
   line-height: 3rem;
 `;
-const ModalLogin = styled.div`
+
+const ModalLog = styled.div`
   width: 100%;
   border-radius: 0.8rem;
   cursor: grab;
@@ -45,17 +46,24 @@ const ModalSign = styled.div`
   }
 `;
 
-const Modal = ({ visible, setVisible, loginFunc }) => {
+const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const loginOpenHandler = () => {
-    setIsOpen(!isOpen);
-  };
+  //   const loginOpenHandler = () => {
+  //     setIsOpen(!isOpen);
+  //   };
+
   return (
     <Container visible={visible}>
       <ModalContainer>
-        <ModalLogin onClick={loginFunc}>
-          <ModalText>Login</ModalText>
-        </ModalLogin>
+        {isLogin ? (
+          <ModalLog onClick={handleLogout}>
+            <ModalText>Log Out</ModalText>
+          </ModalLog>
+        ) : (
+          <ModalLog onClick={loginFunc}>
+            <ModalText>Log In</ModalText>
+          </ModalLog>
+        )}
         <ModalSign>
           <Link
             to="signup"
