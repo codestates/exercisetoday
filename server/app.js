@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
 
-const port = 80;
+const port = process.env.PORT || 80;
 
 
 // 라우팅 위치 설정
@@ -48,9 +48,9 @@ app.use('/challenge', challengeRouter);
 
 
 
-app.get('/', (req, res) => {
-  res.send('HI EXERCISE TODAY SERVER!')
-})
+// app.get('/', (req, res) => {
+//   res.send('HI EXERCISE TODAY SERVER!')
+// })
 
 
 
@@ -59,3 +59,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Exercise Today app listening at http://localhost:${port}`)
 })
+
+module.exports = app;

@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
-const CompletedTitle = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 2% 0% 1% 0%;
-  font-size: 1.5rem;
-  text-align: center;
-  width: 100%;
-`;
+// const CompletedTitle = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   margin: 2% 0% 1% 0%;
+//   font-size: 1.5rem;
+//   text-align: center;
+//   width: 100%;
+// `;
 
 const CompletedListTitle = styled.div`
   text-align: center;
@@ -41,7 +41,6 @@ const CompletedChall = () => {
   ]);
   return (
     <>
-      <CompletedTitle>완료된 챌린지</CompletedTitle>
       <ListContainer>
         {challList.map((el, i) => {
           return <CompletedListTitle key={i}>{el}</CompletedListTitle>;

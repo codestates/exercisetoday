@@ -1,11 +1,11 @@
 import MainIntro from "./MainIntro";
 import Challenge from "./Challenge";
 
-const MainPage = () => {
+const MainPage = ({ isLogin }) => {
   return (
     <>
       <MainIntro />
-      <Challenge />
+      <Challenge isLogin={isLogin} />
     </>
   );
 };

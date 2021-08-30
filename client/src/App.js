@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import MainPage from "./components/MainPage";
@@ -9,23 +9,31 @@ import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
+  const handleLogout = () => {
+    setIsLogin(false);
+  };
   return (
     <BrowserRouter>
       <div className="App">
-        <Header />
+        <Header isLogin={isLogin} handleLogout={handleLogout} />
         <Switch>
           <Route exact path="/">
-            <MainPage />
+            <MainPage isLogin={isLogin} />
           </Route>
           <Route path="/signup">
             <SignUpPage />
           </Route>
-          <Route path="/challenge">
-            <ChallengePage />
-          </Route>
-          <Route path="/mypage">
-            <Mypage />
-          </Route>
+          {isLogin ? (
+            <>
+              <Route path="/challenge">
+                <ChallengePage />
+              </Route>
+              <Route path="/mypage">
+                <Mypage />
+              </Route>
+            </>
+          ) : null}
         </Switch>
         <Footer />
       </div>
