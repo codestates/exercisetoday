@@ -10,7 +10,18 @@ import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true); // URI로 페이지를 움직일수있다.
+  const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
+  const [userData, setUserData] = useState({
+    user_id: null,
+    user_kakaoId: null,
+    user_email: null,
+    user_name: null,
+    user_nickname: null,
+    user_exp: null,
+    user_photo: null,
+    created_at: null,
+    updated_at: null,
+  });
   const history = useHistory();
   const handleLogout = () => {
     axios({
@@ -42,7 +53,20 @@ function App() {
         method: "post",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
         data: { authorizationCode },
-      }).then(resp => console.log(resp.data.data));
+      })
+        .then(resp => {
+          const { user_email, user_exp, user_id, user_kakaoId, user_nickname } =
+            resp.data.data;
+          setUserData({
+            ...userData,
+            user_email,
+            user_exp,
+            user_id,
+            user_kakaoId,
+            user_nickname,
+          });
+        })
+        .catch(err => console.log("social login err", err));
       handleLoginTrue();
     }
   };
