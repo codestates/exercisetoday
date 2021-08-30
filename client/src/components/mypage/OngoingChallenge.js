@@ -57,8 +57,6 @@ const OngoingChallenge = () => {
   const [photoList, setPhotoList] = useState([img, imgSec, imgThr, imgFo]);
   return (
     <>
-      <OngoingChallContent>현재 진행중인 챌린지</OngoingChallContent>
-
       <OngoingContainer>
         <OngoingBlock>
           <OngoingText>30분 데일리 러닝 챌린지</OngoingText>

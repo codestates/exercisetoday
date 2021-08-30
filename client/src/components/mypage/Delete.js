@@ -73,6 +73,7 @@ const Delete = ({ visible, setVisible }) => {
       setVisible(false);
       alert("회원탈퇴가 완료되었습니다");
       setDelInputCheck("");
+      //
     } else {
       setErrorMessage("회원탈퇴 입력을 다시 확인해주세요");
     }
