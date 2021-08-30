@@ -96,7 +96,6 @@ const Mypage = () => {
     setNickName(!nickNameEditClick);
     if (nickNameEditClick === false) {
       nickNameRef.current.focus();
-      console.log("포커스온");
     } else {
       nickNameRef.current.blur();
     }

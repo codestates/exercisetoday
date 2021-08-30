@@ -5,28 +5,15 @@ import imgSec from "../image/climbing.jpeg";
 import imgThr from "../image/homeworkout.jpeg";
 import imgFo from "../image/bicycle.jpeg";
 
-const OngoingChallContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 5% 0% 3% 0%;
-  font-size: 1.5rem;
-  text-align: center;
-  @media screen and (max-width: 1024px) {
-    margin: 0%;
-    width: 10%;
-    height: 10%;
-  }
-`;
 const OngoingBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 `;
+
 const OngoingChallPhoto = styled.div`
-  background-image: url(${props => (props.photo ? props.photo : null)});
+  background-image: url(${(props) => (props.photo ? props.photo : null)});
   background-repeat: no-repeat;
   background-size: cover;
   border: 2px solid black;
@@ -38,21 +25,20 @@ const OngoingChallPhoto = styled.div`
     filter: brightness(90%);
   }
 `;
+
 const PhotoContainer = styled.div`
   height: 20rem;
 `;
+
 const OngoingText = styled.div`
   margin-left: 2.5rem;
   font-size: 1.2rem;
 `;
+
 const OngoingContainer = styled.div`
   display: flex;
 `;
-const BottomBorder = styled.div`
-  border-bottom: 3px solid;
-  border-color: rgba(0, 0, 0, 0.5);
-  width: 50%;
-`;
+
 const OngoingChallenge = () => {
   const [photoList, setPhotoList] = useState([img, imgSec, imgThr, imgFo]);
   return (

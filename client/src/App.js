@@ -10,20 +10,20 @@ import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
+  const [isLogin, setIsLogin] = useState(true); // URI로 페이지를 움직일수있다.
   const history = useHistory();
   const handleLogout = () => {
     axios({
       method: "post",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
     })
-      .then(res => {
+      .then((res) => {
         if (res.message) {
           setIsLogin(false);
           history.push("/");
         }
       })
-      .catch(err => console.log("logout err", err));
+      .catch((err) => console.log("logout err", err));
   };
 
   const handleLoginTrue = () => {
