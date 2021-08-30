@@ -23,7 +23,14 @@ const OngoingChallPhoto = styled.div`
   cursor: grab;
   :hover {
     filter: brightness(90%);
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+    // transform: scale(1.5, 1.5);
   }
+  //max-width: 100%;
 `;
 
 const PhotoContainer = styled.div`

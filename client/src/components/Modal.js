@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`
   position: relative;
-  opacity: ${props => (props.visible ? 1 : 0)};
-  pointer-events: ${props => (props.visible ? "initial" : "none")};
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  pointer-events: ${(props) => (props.visible ? "initial" : "none")};
 `;
 
 const ModalContainer = styled.div`
