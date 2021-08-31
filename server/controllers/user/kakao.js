@@ -2,8 +2,8 @@ require('dotenv').config();
 const qs = require('qs');
 const axios = require("axios");
 
-const clientID = "ce4c941a6f16b0b73737edf331c2adaf";
-const clientSecret = "Wa3IRUTiJK1FcsyIg2HyYraHu4Ez9ixs";
+const clientID = KAKAO_CLIENT_ID;
+const clientSecret = KAKAO_CLIENT_SECRET;
 
 
 // 카카오로 시작하기 버튼 눌렀을때
