@@ -126,12 +126,12 @@ const SignUpPage = () => {
       user_mobile,
     } = userInfo;
 
-    if (password !== passwordCheck) {
+    if (user_password !== user_passwordCheck) {
       setErrMessage("비밀번호가 일치하지 않습니다");
       return;
     }
 
-    if (gender === "성별") {
+    if (user_gender === "성별") {
       setErrMessage("성별을 선택해 주세요");
       return;
     }
