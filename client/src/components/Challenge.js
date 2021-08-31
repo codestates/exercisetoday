@@ -108,10 +108,10 @@ const Challenge = ({ isLogin, handleChallengeInfo, userData }) => {
           handleChallengeInfo(res.data.data);
           history.push("/challenge");
         } else {
-          console.log("Challenge Progress err", res.data.message);
+          console.log("Challenge Progress Error", res.data.message);
         }
       })
-      .catch((err) => console.log("Challenge Progress err", err));
+      .catch((err) => console.log("Challenge Progress Error", err));
   };
 
   return (

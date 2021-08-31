@@ -55,7 +55,7 @@ const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
   const logoutHandler = () => {
     axios({
       method: "POST",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com//user/signout",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
     })
       .then((res) => {
         if (res.data.message) {

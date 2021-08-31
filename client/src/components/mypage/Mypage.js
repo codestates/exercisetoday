@@ -8,12 +8,10 @@ import CompletedChallenge from "./CompletedChallenge";
 import axios from "axios";
 //백엔드의 S3에 이미지를 업로드
 
-const OngoingChallContent = styled.div`
+const ChallengeTitle = styled.div`
   border-top: 3px solid;
   border-color: #003150;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  // flex
   margin: 5% 0% 3% 3%;
   font-size: 2rem;
   @media screen and (max-width: 1024px) {
@@ -22,6 +20,7 @@ const OngoingChallContent = styled.div`
     height: 10%;
   }
 `;
+
 const ProfileAndContent = styled.div`
   margin: 5% 0% 0% 5%;
   > .PhotoEdit {
@@ -38,10 +37,12 @@ const ProfileAndContent = styled.div`
     }
   }
 `;
+
 const ProfileAndContent2 = styled.div`
   margin: 5% 0% 0% 5%;
   width: 90%;
 `;
+
 const MypageContainer = styled.div`
   margin-top: 5rem;
   display: flex;
@@ -72,10 +73,6 @@ const ProfilePhoto = styled.div`
   }
 `;
 
-const MypageOngoinChall = styled.div`
-  background-color: white;
-`;
-
 const NickNameHandleBtn = styled.button`
   display: ${(props) => (props.visible ? "auto" : "none")};
   position: relative;
@@ -90,13 +87,11 @@ const NickNameHandleBtn = styled.button`
     background-color: rgba(0, 0, 0, 0.4);
   }
 `;
-const MypageCompletedChall = styled.div`
-  //  ? ! 66
-`;
 
 const EditPasswordContainer = styled.div`
   display: ${(props) => (props.visible ? "auto" : "none")};
 `;
+
 const InputBox = styled.input`
   margin-bottom: 5%;
   width: 100%;
@@ -112,6 +107,7 @@ const InputBoxNickName = styled.input`
   border: 0.5px solid gray;
   color: rgb(0, 0, 0);
 `;
+
 const TextNickName = styled.input`
   display: ${(props) => (props.visibleNickText ? "none" : "auto")};
   font-size: 1.2rem;
@@ -121,6 +117,7 @@ const TextNickName = styled.input`
   border: none;
   color: rgb(0, 0, 0);
 `;
+
 const PasswordEditBtn = styled.button`
   position: relative;
   height: 2rem;
@@ -134,6 +131,7 @@ const PasswordEditBtn = styled.button`
     border-color: rgba(0, 0, 0, 0.9);
   }
 `;
+
 const NickNameEditBtn = styled.button`
   position: relative;
   height: 2rem;
@@ -147,6 +145,7 @@ const NickNameEditBtn = styled.button`
     border-color: rgba(0, 0, 0, 0.9);
   }
 `;
+
 const PasswordBtn = styled.button`
   width: 5rem;
   height: 2.5rem;
@@ -238,11 +237,10 @@ const Mypage = ({ userData, deleteUserInfo }) => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
-      data: { user_id: userData.user_id },
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
     })
       .then((res) => {
-        if (res.data.message) {
+        if (res.data.message === "ok") {
           if (res.data.user_photo === null) {
             setUserPhoto(NoImage);
           } else {
@@ -254,12 +252,16 @@ const Mypage = ({ userData, deleteUserInfo }) => {
 
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge",
-      data: { user_id: userData.user_id },
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge?user_id=${userData.user_id}`,
     })
       .then((res) => {
-        if (res.data.message) {
-          setChallengeList(res.data.challenges);
+        if (res.data.message === "ok") {
+          console.log("완료챌린지 5개", res.data.data.challenges);
+          // let on
+          // res.data.data.challenges.map((el) => {
+          //   el
+          // })
+          setChallengeList(res.data.data.challenges);
         }
       })
       .catch((err) => console.log("challenges Error", err));
@@ -275,12 +277,13 @@ const Mypage = ({ userData, deleteUserInfo }) => {
       method: "PUT",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user",
       data: {
-        user_id: userData.user_id,
+        user_id: userInfo.user_id,
         user_nickname: newUserInfo.nick_name,
         user_password: newUserInfo.newPassword,
       },
     })
       .then((res) => {
+        console.log("123123123 ---->", res);
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
@@ -293,7 +296,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
       axios({
         method: "PUT",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/user/photo",
-        data: { user_photo: userPhoto.slice(5) },
+        data: { user_photo: userPhoto?.slice(5) },
       })
         .then((res) => {
           if (res.data.message === "ok") {
@@ -322,6 +325,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
       setErrorMessage("");
     }
   };
+
   const passwordEditClickHandler = () => {
     setPasswordEditClick(!passwordEditClick);
     setNewUserInfo({
@@ -357,7 +361,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
   };
   const changeNickBtn = () => {
     if (newUserInfo.nick_name !== userInfo.user_nickname) {
-      setUserInfo({ ...userInfo, nick_name: newUserInfo.nick_name });
+      setUserInfo({ ...userInfo, user_nickname: newUserInfo.nick_name });
     }
     setNickName(!nickNameEditClick);
   };
@@ -476,16 +480,14 @@ const Mypage = ({ userData, deleteUserInfo }) => {
             />
           </ProfileAndContent2>
         </MypageProfile>
-        <OngoingChallContent challengeList={challengeList}>
+        <ChallengeTitle>
           현재 진행중인 챌린지
-        </OngoingChallContent>
-        <MypageOngoinChall>
-          <OngoingChallenge />
-        </MypageOngoinChall>
-        <OngoingChallContent>완료된 챌린지</OngoingChallContent>
-        <MypageCompletedChall>
+          <OngoingChallenge challengeList={challengeList} />
+        </ChallengeTitle>
+        <ChallengeTitle>
+          완료된 챌린지
           <CompletedChallenge />
-        </MypageCompletedChall>
+        </ChallengeTitle>
       </MypageContainer>
     </>
   );

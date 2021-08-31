@@ -64,6 +64,7 @@ const ErrMessage = styled.div`
   font-size: 15px;
   color: red;
 `;
+
 const Delete = ({ visible, setVisible, deleteUserInfo }) => {
   const [delInputCheck, setDelInputCheck] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -76,8 +77,10 @@ const Delete = ({ visible, setVisible, deleteUserInfo }) => {
       axios({
         method: "DELETE",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user",
+        withCredentials: true,
       })
         .then((res) => {
+          console.log(res.data);
           if (res.data.message === "ok") {
             deleteUserInfo();
             setVisible(false);
