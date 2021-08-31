@@ -14,7 +14,7 @@ const DeleteContainer = styled.div`
   width: 100%;
   height: 100%;
   z-index: 9999;
-  display: ${(props) => (props.isvisible ? "auto" : "none")};
+  display: ${props => (props.isvisible ? "auto" : "none")};
 `;
 const DeleteBack = styled.div`
   display: flex;
@@ -65,11 +65,11 @@ const ErrMessage = styled.div`
   color: red;
 `;
 
-const Delete = ({ visible, setVisible, deleteUserInfo }) => {
+const Delete = ({ visible, setVisible, deleteUserInfo, token }) => {
   const [delInputCheck, setDelInputCheck] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
-  const handleDelInputValue = (e) => {
+  const handleDelInputValue = e => {
     setDelInputCheck(e.target.value);
   };
   const checkDeleteValue = () => {
@@ -77,9 +77,9 @@ const Delete = ({ visible, setVisible, deleteUserInfo }) => {
       axios({
         method: "DELETE",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user",
-        withCredentials: true,
+        headers: { authorization: token },
       })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           if (res.data.message === "ok") {
             deleteUserInfo();
@@ -91,7 +91,7 @@ const Delete = ({ visible, setVisible, deleteUserInfo }) => {
             console.log("User Delete Error", res.data.message);
           }
         })
-        .catch((err) => console.log("User Delete Error", err));
+        .catch(err => console.log("User Delete Error", err));
     } else {
       setErrorMessage("회원탈퇴 입력을 다시 확인해주세요");
     }
@@ -110,7 +110,7 @@ const Delete = ({ visible, setVisible, deleteUserInfo }) => {
             type="text"
             name="deleteInputBox"
             value={delInputCheck}
-            onChange={(e) => handleDelInputValue(e)}
+            onChange={e => handleDelInputValue(e)}
           />
           <ErrMessage>{errorMessage}</ErrMessage>
           <DeleteBtn onClick={checkDeleteValue}> 회원탈퇴 </DeleteBtn>

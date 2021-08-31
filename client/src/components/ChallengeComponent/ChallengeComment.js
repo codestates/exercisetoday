@@ -63,7 +63,7 @@ const CommentSubmit = styled.button`
   font-size: 15px;
 `;
 
-const ChallengeComment = ({ challengeInfo }) => {
+const ChallengeComment = ({ challengeInfo, token }) => {
   const [myComment, setMyComment] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -78,6 +78,7 @@ const ChallengeComment = ({ challengeInfo }) => {
       method: "POST",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment",
       data: { user_id, challenge_id, comment_content: myComment },
+      headers: { authorization: token },
     }).catch(err => console.log("comment submit err", err));
   };
 
@@ -94,7 +95,7 @@ const ChallengeComment = ({ challengeInfo }) => {
       .catch(err => {
         console.log("comment err", err);
       });
-  }, []);
+  }, [myComment]);
 
   return (
     <>
@@ -118,9 +119,7 @@ const ChallengeComment = ({ challengeInfo }) => {
               maxLength="80"
               placeholder="최대 80글자 까지 입력가능 / 공백 포함"
               onChange={e => handleMyComment(e)}
-            >
-              {myComment}
-            </UserComment>
+            ></UserComment>
             <CommentSubmit type="submit" onClick={handleSubmitMyComment}>
               등록
             </CommentSubmit>

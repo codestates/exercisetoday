@@ -117,6 +117,8 @@ const LoginModal = ({
   handleLoginTrue,
   isLogin,
   handleUserInfo,
+  handleJwtToken,
+  handleKakaoToken,
 }) => {
   //const [isOpen, setIsOpen] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
@@ -132,11 +134,12 @@ const LoginModal = ({
       data: { user_email: email, user_password: password },
     })
       .then(res => {
-        console.log("res.data.data :", res.data.data);
         if (res.data.message) {
           handleLoginTrue();
           setLoginInfo({ ...loginInfo, password: "" });
           handleUserInfo(res.data.data);
+          handleJwtToken(res.data.token);
+          setVisible(false);
         }
       })
       .catch(err => {
