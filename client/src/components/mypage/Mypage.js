@@ -51,18 +51,7 @@ const MypageContainer = styled.div`
 `;
 
 const MypageProfile = styled.div`
-  > .firstContent {
-    display: flex;
-  }
-  > .password {
-    margin-top: 20px;
-    text-align: center;
-    padding: 20px;
-    width: 20wh;
-    height: 2%;
-    border-color: #003150;
-    color: rgb(0, 0, 0);
-  }
+  display: flex;
 `;
 
 const ProfilePhoto = styled.div`
@@ -387,107 +376,103 @@ const Mypage = ({ userData, deleteUserInfo }) => {
       <MypageContainer>
         {/* <MypageTitle> 육회비빔밥님, 회원정보</MypageTitle> */}
         <MypageProfile>
-          <div className="firstContent">
-            <ProfileAndContent>
-              <ProfilePhoto>
-                <img
-                  className="photoPreview"
-                  alt="프로필 사진"
-                  src={!userPhoto ? NoImage : userPhoto}
-                />
-                <input
-                  className="photo"
-                  ref={imageRef}
-                  type="file"
-                  accpet="image/*"
-                  name="profile"
-                  onChange={(e) => handlePhoto(e)}
-                />
-              </ProfilePhoto>
-              <button className="PhotoEdit" onClick={onImgInputBtn}>
-                프로필 등록 및 수정
-              </button>
-            </ProfileAndContent>
-            <ProfileAndContent2>
-              <ProfileContent>
-                <ProfileTitle>이메일</ProfileTitle>
-                <div className="userContent">{userInfo.user_email}</div>
-              </ProfileContent>
-              <BorderBottom />
-              <ProfileContent>
-                <ProfileTitle>비밀번호</ProfileTitle>
-                <div className="userContent">
-                  {passwordEditClick ? null : (
-                    <div className="userContent">*****</div>
-                  )}
-                  <EditPasswordContainer visible={passwordEditClick}>
-                    신규 비밀번호
-                    <InputBox
-                      type="password"
-                      value={newUserInfo.newPassword}
-                      onChange={handleInputValue("newPassword")}
-                    />
-                    신규 비밀번호 확인
-                    <InputBox
-                      type="password"
-                      value={newUserInfo.newPasswordMatch}
-                      onChange={handleInputValue("newPasswordMatch")}
-                    />
-                    <ErrMessage>{errorMessage}</ErrMessage>
-                    <PasswordBtn onClick={null}>완료</PasswordBtn>
-                  </EditPasswordContainer>
-                </div>
-                <PasswordEditBtn onClick={passwordEditClickHandler}>
-                  {passwordEditClick ? "변경취소" : "비밀번호 변경"}
-                </PasswordEditBtn>
-              </ProfileContent>
-              <BorderBottom />
-              <ProfileContent>
-                <ProfileTitle>닉네임</ProfileTitle>
-                <InputBoxNickName
-                  type="text"
-                  ref={nickNameRef}
-                  value={newUserInfo.nick_name}
-                  onChange={handleInputValue("nick_name")}
-                  visibleNick={nickNameEditClick}
-                  name="nick_name"
-                />
-                <TextNickName
-                  type="text"
-                  visibleNickText={nickNameEditClick}
-                  value={userInfo.user_nickname}
-                  readOnly
-                />
-                <NickNameHandleBtn
-                  visible={nickNameEditClick}
-                  onClick={changeNickBtn}
-                >
-                  완료
-                </NickNameHandleBtn>
-                <NickNameEditBtn
-                  visible={nickNameEditClick}
-                  onClick={onNickNameBtn}
-                >
-                  {nickNameEditClick ? "변경취소" : "닉네임 변경"}
-                </NickNameEditBtn>
-              </ProfileContent>
-              <BorderBottom />
-              <ProfileContent>
-                <ProfileTitle>경험치</ProfileTitle>
-                <div className="userContent">{userInfo.user_exp}</div>
-              </ProfileContent>
-              <BorderBottom />
-              <SubmitBtn onClick={userInfoUpdate}>제출</SubmitBtn>
-              <DeleteBtn onClick={() => deleteModalHandler()}>
-                회원탈퇴
-              </DeleteBtn>
-              <Delete
-                visible={deleteOpen}
-                setVisible={deleteModalHandler}
-                deleteUserInfo={deleteUserInfo}
+          <ProfileAndContent>
+            <ProfilePhoto>
+              <img
+                className="photoPreview"
+                alt="프로필 사진"
+                src={!userPhoto ? NoImage : userPhoto}
               />
-            </ProfileAndContent2>
-          </div>
+              <input
+                className="photo"
+                ref={imageRef}
+                type="file"
+                accpet="image/*"
+                name="profile"
+                onChange={(e) => handlePhoto(e)}
+              />
+            </ProfilePhoto>
+            <button className="PhotoEdit" onClick={onImgInputBtn}>
+              프로필 등록 및 수정
+            </button>
+          </ProfileAndContent>
+          <ProfileAndContent2>
+            <ProfileContent>
+              <ProfileTitle>이메일</ProfileTitle>
+              <div className="userContent">{userInfo.user_email}</div>
+            </ProfileContent>
+            <BorderBottom />
+            <ProfileContent>
+              <ProfileTitle>비밀번호</ProfileTitle>
+              <div className="userContent">
+                {passwordEditClick ? null : (
+                  <div className="userContent">*****</div>
+                )}
+                <EditPasswordContainer visible={passwordEditClick}>
+                  신규 비밀번호
+                  <InputBox
+                    type="password"
+                    value={newUserInfo.newPassword}
+                    onChange={handleInputValue("newPassword")}
+                  />
+                  신규 비밀번호 확인
+                  <InputBox
+                    type="password"
+                    value={newUserInfo.newPasswordMatch}
+                    onChange={handleInputValue("newPasswordMatch")}
+                  />
+                  <ErrMessage>{errorMessage}</ErrMessage>
+                  <PasswordBtn onClick={null}>완료</PasswordBtn>
+                </EditPasswordContainer>
+              </div>
+              <PasswordEditBtn onClick={passwordEditClickHandler}>
+                {passwordEditClick ? "변경취소" : "비밀번호 변경"}
+              </PasswordEditBtn>
+            </ProfileContent>
+            <BorderBottom />
+            <ProfileContent>
+              <ProfileTitle>닉네임</ProfileTitle>
+              <InputBoxNickName
+                type="text"
+                ref={nickNameRef}
+                value={newUserInfo.nick_name}
+                onChange={handleInputValue("nick_name")}
+                visibleNick={nickNameEditClick}
+                name="nick_name"
+              />
+              <TextNickName
+                type="text"
+                visibleNickText={nickNameEditClick}
+                value={userInfo.user_nickname}
+                readOnly
+              />
+              <NickNameHandleBtn
+                visible={nickNameEditClick}
+                onClick={changeNickBtn}
+              >
+                완료
+              </NickNameHandleBtn>
+              <NickNameEditBtn
+                visible={nickNameEditClick}
+                onClick={onNickNameBtn}
+              >
+                {nickNameEditClick ? "변경취소" : "닉네임 변경"}
+              </NickNameEditBtn>
+            </ProfileContent>
+            <BorderBottom />
+            <ProfileContent>
+              <ProfileTitle>경험치</ProfileTitle>
+              <div className="userContent">{userInfo.user_exp}</div>
+            </ProfileContent>
+            <BorderBottom />
+            <SubmitBtn onClick={userInfoUpdate}>제출</SubmitBtn>
+            <DeleteBtn onClick={() => deleteModalHandler()}>회원탈퇴</DeleteBtn>
+            <Delete
+              visible={deleteOpen}
+              setVisible={deleteModalHandler}
+              deleteUserInfo={deleteUserInfo}
+            />
+          </ProfileAndContent2>
         </MypageProfile>
         <OngoingChallContent challengeList={challengeList}>
           현재 진행중인 챌린지
