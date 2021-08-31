@@ -65,15 +65,15 @@ const CommentSubmit = styled.button`
 
 const ChallengeComment = ({ challengeInfo }) => {
   const [myComment, setMyComment] = useState("");
+  const [comments, setComments] = useState([]);
 
-  let comments;
+  const { user_id, challenge_id } = challengeInfo;
 
   const handleMyComment = e => {
     setMyComment(e.target.value);
   };
 
   const handleSubmitMyComment = () => {
-    const { user_id, challenge_id } = challengeInfo;
     axios({
       method: "POST",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment",
@@ -84,40 +84,17 @@ const ChallengeComment = ({ challengeInfo }) => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment?challenge_id=${challengeInfo.challenge_id}`,
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment?challenge_id=${challenge_id}`,
     })
       .then(res => {
         if (res.data.message) {
-          comments = res.data.data;
+          setComments(res.data.data.comments);
         }
       })
       .catch(err => {
-        console.log("comments err", err);
+        console.log("comment err", err);
       });
-  }, [handleSubmitMyComment]);
-
-  //여기만 지우면 됨
-  comments = [
-    {
-      user_nickname: "sim",
-      user_exp: 110,
-      likes: 6,
-      was_liked: true,
-      progress_rate: 10,
-      comment_content: " 생각보다 힘드네 ",
-      created_at: "created_at",
-    },
-    {
-      user_nickname: "kang",
-      user_exp: 560,
-      likes: 3,
-      was_liked: false,
-      progress_rate: 70,
-      comment_content: " 열심히 합시 ",
-      created_at: "created_at",
-    },
-  ];
-  // 여기만 지우면 됨
+  }, []);
 
   return (
     <>
@@ -128,7 +105,7 @@ const ChallengeComment = ({ challengeInfo }) => {
               <ChallengeOnGoing>진행도: {data.progress_rate}%</ChallengeOnGoing>
               <CommentNickName>
                 {data.user_nickname}
-                <sup>경험치: {data.user_exp}</sup>
+                <sup>경험치: {Math.round(data.user_exp)}</sup>
               </CommentNickName>
               <Comment>{data.comment_content}</Comment>
             </SingleCommentContainer>

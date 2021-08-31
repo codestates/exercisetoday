@@ -103,17 +103,9 @@ const LikeButtonContainer = styled.section`
 `;
 
 const ChallengeDesc = styled.div`
-  font-size: 20px;
+  font-size: 25px;
+  text-align: center;
 `;
-
-const arr = [
-  { buttonId: 0, isFinished: true },
-  { buttonId: 1, isFinished: false },
-  { buttonId: 2, isFinished: true },
-  { buttonId: 3, isFinished: false },
-  { buttonId: 4, isFinished: false },
-  { buttonId: 5, isFinished: true },
-];
 
 const ChallengeButtons = ({ challengeInfo }) => {
   const [likeCount, setLikeCount] = useState(challengeInfo.challenge_likes);
@@ -146,7 +138,12 @@ const ChallengeButtons = ({ challengeInfo }) => {
     axios({
       method: "PUT",
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate`,
-      data: { user_id, challenge_id, progress_buttons: buttonList },
+      data: {
+        user_id,
+        challenge_id,
+        progress_buttons: buttonList,
+        process_rate: percent,
+      },
     }).catch(err => {
       console.log("Put Progressrate err", err);
     });
@@ -158,7 +155,7 @@ const ChallengeButtons = ({ challengeInfo }) => {
       num = -1;
     }
     setPercent(prevState => {
-      return prevState + (num / arr.length) * 100;
+      return prevState + (num / buttonList.length) * 100;
     });
   };
 
@@ -171,19 +168,19 @@ const ChallengeButtons = ({ challengeInfo }) => {
       <ChallengeName>
         {challengeInfo.challenge_name} 챌린지에 오신것을 환영합니다
       </ChallengeName>
-      <ChallengeDesc>challengeInfo.challenge_desc</ChallengeDesc>
-      {join ? null : (
+      <ChallengeDesc>{challengeInfo.challenge_desc}</ChallengeDesc>
+      {join || percent !== 0 ? (
         <PercentContainer>
           <ChallengePercent>진행도: {Math.round(percent)}%</ChallengePercent>
         </PercentContainer>
-      )}
-      {percent === 100 ? (
+      ) : null}
+      {Math.round(percent) === 100 ? (
         <CongratsContainer>
           <Message src={"/pngwing.com.png"} />
         </CongratsContainer>
       ) : (
         <ChallengeButtonContainer join={join}>
-          {join ? (
+          {join || percent !== 0 ? (
             buttonList.map(button => {
               return (
                 <ChallengeButton
