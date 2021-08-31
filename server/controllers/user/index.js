@@ -8,8 +8,16 @@ module.exports = {
 
     const userDataToChange = req.body;
     
-    const kakao = req.cookies.kakao;
-    const jwt = req.cookies.jwt;
+    const token = req.headers.authorization;
+    const jwt = false;
+    const kakao = false;
+    
+    if(token.split(" ")[0] === "kakao") {
+      kakao = true;
+    } else if (token.split(" ")[0] === "jwt") {
+      jwt = true;
+    }
+    
 
     if(jwt) {
       // jwt 토큰 있는경우
