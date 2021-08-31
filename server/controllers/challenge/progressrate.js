@@ -162,6 +162,7 @@ module.exports = {
             { buttonId: 13, isFinished: false },
             { buttonId: 14, isFinished: false },
           ],
+          "challenge_likes" : 21, 
         },
         message: "ok"
       })
@@ -192,6 +193,7 @@ module.exports = {
             { buttonId: 18, isFinished: false },
             { buttonId: 19, isFinished: false }
           ],
+          "challenge_likes" : 102, 
         },
         message: "ok"
       })
