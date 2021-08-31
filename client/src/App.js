@@ -28,13 +28,13 @@ function App() {
       method: "post",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
     })
-      .then((res) => {
+      .then(res => {
         if (res.message) {
           setIsLogin(false);
           history.push("/");
         }
       })
-      .catch((err) => console.log("logout err", err));
+      .catch(err => console.log("logout err", err));
   };
 
   const handleLoginTrue = () => {
@@ -54,7 +54,7 @@ function App() {
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
         data: { authorizationCode },
       })
-        .then((resp) => {
+        .then(resp => {
           const { user_email, user_exp, user_id, user_kakaoId, user_nickname } =
             resp.data.data;
           setUserData({
@@ -66,7 +66,7 @@ function App() {
             user_nickname,
           });
         })
-        .catch((err) => console.log("social login err", err));
+        .catch(err => console.log("social login err", err));
       handleLoginTrue();
     }
   };
