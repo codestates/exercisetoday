@@ -22,22 +22,34 @@ function App() {
     created_at: null,
     updated_at: null,
   });
+  const [challengeInfo, setChallengeInfo] = useState({
+    progress_id: null,
+    user_id: null,
+    challenge_id: null,
+    challenge_name: null,
+    challenge_desc: null,
+    progress_rate: null,
+    progress_buttons: null,
+    progress_likes: null,
+    created_at: null,
+    updated_at: null,
+  });
   const history = useHistory();
   const handleLogout = () => {
     axios({
       method: "post",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
     })
-      .then((res) => {
+      .then(res => {
         if (res.message) {
           setIsLogin(false);
           history.push("/");
         }
       })
-      .catch((err) => console.log("logout err", err));
+      .catch(err => console.log("logout err", err));
   };
 
-  const handleUserInfo = (data) => {
+  const handleUserInfo = data => {
     setUserData({ ...userData, ...data });
   };
 
@@ -59,6 +71,10 @@ function App() {
     setIsLogin(true);
   };
 
+  const handleChallengeInfo = data => {
+    setChallengeInfo({ ...challengeInfo, ...data });
+  };
+
   useEffect(() => {
     componentDidMount();
   }, []);
@@ -72,7 +88,7 @@ function App() {
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
         data: { authorizationCode },
       })
-        .then((resp) => {
+        .then(resp => {
           const { user_email, user_exp, user_id, user_kakaoId, user_nickname } =
             resp.data.data;
           setUserData({
@@ -84,7 +100,7 @@ function App() {
             user_nickname,
           });
         })
-        .catch((err) => console.log("social login err", err));
+        .catch(err => console.log("social login err", err));
       handleLoginTrue();
     }
   };
@@ -99,7 +115,11 @@ function App() {
       />
       <Switch>
         <Route exact path="/">
-          <MainPage isLogin={isLogin} />
+          <MainPage
+            isLogin={isLogin}
+            userData={userData}
+            handleChallengeInfo={handleChallengeInfo}
+          />
         </Route>
         <Route path="/signup">
           <SignUpPage handleLoginTrue={handleLoginTrue} />
@@ -107,7 +127,7 @@ function App() {
         {isLogin ? (
           <>
             <Route path="/challenge">
-              <ChallengePage />
+              <ChallengePage challengeInfo={challengeInfo} />
             </Route>
             <Route path="/mypage">
               <Mypage userData={userData} deleteUserInfo={deleteUserInfo} />

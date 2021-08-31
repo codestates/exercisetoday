@@ -88,7 +88,7 @@ const MypageOngoinChall = styled.div`
 `;
 
 const NickNameHandleBtn = styled.button`
-  display: ${(props) => (props.visible ? "auto" : "none")};
+  display: ${props => (props.visible ? "auto" : "none")};
   position: relative;
   margin-top: 19px;
   left: 4%;
@@ -106,7 +106,7 @@ const MypageCompletedChall = styled.div`
 `;
 
 const EditPasswordContainer = styled.div`
-  display: ${(props) => (props.visible ? "auto" : "none")};
+  display: ${props => (props.visible ? "auto" : "none")};
 `;
 const InputBox = styled.input`
   margin-bottom: 5%;
@@ -115,7 +115,7 @@ const InputBox = styled.input`
 `;
 
 const InputBoxNickName = styled.input`
-  display: ${(props) => (props.visibleNick ? "auto" : "none")};
+  display: ${props => (props.visibleNick ? "auto" : "none")};
   font-size: 1.2rem;
   margin: 1% 0% 0% 3%;
   width: 15%;
@@ -124,7 +124,7 @@ const InputBoxNickName = styled.input`
   color: rgb(0, 0, 0);
 `;
 const TextNickName = styled.input`
-  display: ${(props) => (props.visibleNickText ? "none" : "auto")};
+  display: ${props => (props.visibleNickText ? "none" : "auto")};
   font-size: 1.2rem;
   margin: 1% 0% 0% 3%;
   width: 15%;
@@ -148,7 +148,7 @@ const PasswordEditBtn = styled.button`
 const NickNameEditBtn = styled.button`
   position: relative;
   height: 2rem;
-  left: ${(props) => (props.visible ? 24 : 28)}%;
+  left: ${props => (props.visible ? 24 : 28)}%;
   width: 8rem;
   background-color: white;
   border-color: rgba(0, 0, 0, 0.4);
@@ -248,10 +248,9 @@ const Mypage = ({ userData, deleteUserInfo }) => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
-      data: { user_id: userData.user_id },
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
     })
-      .then((res) => {
+      .then(res => {
         if (res.data.message) {
           if (res.data.user_photo === null) {
             setUserPhoto(NoImage);
@@ -260,19 +259,18 @@ const Mypage = ({ userData, deleteUserInfo }) => {
           }
         }
       })
-      .catch((err) => console.log("Photo Error", err));
+      .catch(err => console.log("Photo Error", err));
 
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge",
-      data: { user_id: userData.user_id },
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge?user_id=${userData.user_id}`,
     })
-      .then((res) => {
+      .then(res => {
         if (res.data.message) {
           setChallengeList(res.data.challenges);
         }
       })
-      .catch((err) => console.log("challenges Error", err));
+      .catch(err => console.log("challenges Error", err));
   }, []);
   const deleteModalHandler = () => {
     setDeleteOpen(!deleteOpen);
@@ -289,7 +287,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
         user_password: newUserInfo.newPassword,
       },
     })
-      .then((res) => {
+      .then(res => {
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
@@ -297,25 +295,25 @@ const Mypage = ({ userData, deleteUserInfo }) => {
           console.log("userInfoUpdate Error", res.data.message);
         }
       })
-      .catch((err) => console.log("userInfoUpdate Error", err));
+      .catch(err => console.log("userInfoUpdate Error", err));
     if (userPhoto !== NoImage) {
       axios({
         method: "PUT",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/user/photo",
         data: { user_photo: userPhoto.slice(5) },
       })
-        .then((res) => {
+        .then(res => {
           if (res.data.message === "ok") {
             setUserPhoto(res.data.user_photo); //blob제거
           } else {
             console.log("User Photo Error", res.data.message);
           }
         })
-        .catch((err) => console.log("User Photo Error", err));
+        .catch(err => console.log("User Photo Error", err));
     }
   };
 
-  const handleInputValue = (key) => (e) => {
+  const handleInputValue = key => e => {
     if (key === "nick_name") {
       setNewUserInfo({ nick_name: e.target.value });
     } else if (key === "curPassword") {
@@ -341,7 +339,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
     setErrorMessage("");
   };
 
-  const handlePhoto = (e) => {
+  const handlePhoto = e => {
     const temp = [];
     const photoToAdd = e.target.files;
     if (photoToAdd.length === 0) {
@@ -401,7 +399,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
                   type="file"
                   accpet="image/*"
                   name="profile"
-                  onChange={(e) => handlePhoto(e)}
+                  onChange={e => handlePhoto(e)}
                 />
               </ProfilePhoto>
               <button className="PhotoEdit" onClick={onImgInputBtn}>

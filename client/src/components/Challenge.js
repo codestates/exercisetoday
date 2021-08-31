@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import img from "./image/running.jpeg";
 import imgSec from "./image/climbing.jpeg";
 import imgThr from "./image/homeworkout.jpeg";
@@ -63,7 +64,7 @@ const SeeMoreBtn = styled.button`
   color: rgb(255, 255, 255);
   cursor: grab;
   :hover {
-    background-color: #${(props) => props.color};
+    background-color: #${props => props.color};
     -webkit-transition: all 0.1s ease-in-out;
     -moz-transition: all 0.1s ease-in-out;
     -ms-transition: all 0.1s ease-in-out;
@@ -89,15 +90,27 @@ const ChallengeText = styled.div`
   font-size: 3rem;
 `;
 
-const Challenge = ({ isLogin }) => {
+const Challenge = ({ isLogin, handleChallengeInfo, userData }) => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const history = useHistory();
-  const handleToChallenge = () => {
+  const handleToChallenge = id => {
     if (!isLogin) {
       setLoginModalVisible(true);
       return;
     }
-    history.push("/challenge");
+
+    axios({
+      mehtod: "GET",
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate?challenge_id=${id}&user_id=${userData.user_id}`,
+    })
+      .then(res => {
+        if (res.data.message === "ok") {
+          handleChallengeInfo(res.data.data);
+        } else {
+          console.log("Challenge Progress err", res.data.message);
+        }
+      })
+      .catch(err => console.log("Challenge Progress err", err));
   };
 
   return (
@@ -105,7 +118,7 @@ const Challenge = ({ isLogin }) => {
       <ChallengeContainer>
         <ChallengeContent>
           <ChallengeText>30분 데일리 러닝 챌린지</ChallengeText>
-          <SeeMoreBtn onClick={handleToChallenge} color={373514}>
+          <SeeMoreBtn onClick={() => handleToChallenge(1)} color={373514}>
             더보기
           </SeeMoreBtn>
           <LoginModal
@@ -118,7 +131,7 @@ const Challenge = ({ isLogin }) => {
             위캔드
             <p /> 클라이밍 챌린지
           </ChallengeText>
-          <SeeMoreBtn onClick={handleToChallenge} color={"023c63"}>
+          <SeeMoreBtn onClick={() => handleToChallenge(2)} color={"023c63"}>
             더보기
           </SeeMoreBtn>
         </ChallengeContentSec>
@@ -126,13 +139,13 @@ const Challenge = ({ isLogin }) => {
       <ChallengeContainer>
         <ChallengeContentThr>
           <ChallengeText>하드코어 홈트레이닝 챌린지</ChallengeText>
-          <SeeMoreBtn onClick={handleToChallenge} color={"50150a"}>
+          <SeeMoreBtn onClick={() => handleToChallenge(3)} color={"50150a"}>
             더보기
           </SeeMoreBtn>
         </ChallengeContentThr>
         <ChallengeContentFo>
           <ChallengeText>자전거 출·퇴근 챌린지</ChallengeText>
-          <SeeMoreBtn onClick={handleToChallenge} color={966018}>
+          <SeeMoreBtn onClick={() => handleToChallenge(4)} color={966018}>
             더보기
           </SeeMoreBtn>
         </ChallengeContentFo>

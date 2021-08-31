@@ -18,21 +18,15 @@ const Article = styled.article`
   margin: 2% 0;
 `;
 
-const ChallengePage = () => {
-  const [join, setJoin] = useState(true);
-
-  const handleJoin = () => {
-    setJoin(!join);
-  };
-
+const ChallengePage = ({ challengeInfo }) => {
   return (
     <>
       <Main>
         <Article>
-          <ChallengeButtons join={join} handleJoin={handleJoin} />
+          <ChallengeButtons challengeInfo={challengeInfo} />
         </Article>
         <Article>
-          <ChallengeComment />
+          <ChallengeComment challengeInfo={challengeInfo} />
         </Article>
       </Main>
     </>
