@@ -21,7 +21,7 @@ const router = express.Router();
 router.post('/kakao', kakaoController.post);
 
 // 로그인 post /user/signin
-// router.post('/signin', signInController.post);
+router.post('/signin', signInController.post);
 
 // 로그아웃 post /user/signout
 // router.post('/signout', signOutController.post);
