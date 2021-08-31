@@ -36,7 +36,7 @@ router.get('/photo', photoController.get);
 router.put('/photo', photoController.put);
 
 // 진행, 완료 챌린지 get /user/challenge
-// router.get('/challenge', challengeController.get);
+router.get('/challenge', challengeController.get);
 
 
 module.exports = router;
