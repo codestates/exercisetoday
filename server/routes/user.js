@@ -21,13 +21,13 @@ const router = express.Router();
 router.post('/kakao', kakaoController.post);
 
 // 로그인 post /user/signin
-// router.post('/signin', signInController.post);
+router.post('/signin', signInController.post);
 
 // 로그아웃 post /user/signout
 // router.post('/signout', signOutController.post);
 
 // 가입 post /user/signup
-// router.post('/signup', signUpController.post);
+router.post('/signup', signUpController.post);
 
 // 프사 get /user/photo
 // router.get('/photo', photoController.get);

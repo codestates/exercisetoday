@@ -70,11 +70,6 @@ const ModalBtn = styled.button`
   }
 `;
 
-// const ModalText = styled.div`
-//   text-align: center;
-//   font-size: 1.2rem;
-//   line-height: 3rem;
-// `;
 // const ModalLogin = styled.div`
 //   width: 100%;
 //   border-radius: 0.8rem;
@@ -116,7 +111,13 @@ const SocialLogin = styled.div`
   }
 `;
 
-const LoginModal = ({ visible, setVisible, handleLoginTrue, isLogin }) => {
+const LoginModal = ({
+  visible,
+  setVisible,
+  handleLoginTrue,
+  isLogin,
+  handleUserInfo,
+}) => {
   //const [isOpen, setIsOpen] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
     email: "",
@@ -126,13 +127,16 @@ const LoginModal = ({ visible, setVisible, handleLoginTrue, isLogin }) => {
   const handleLogin = () => {
     const { email, password } = loginInfo;
     axios({
-      method: "post",
+      method: "POST",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signin",
-      data: { data: { email, password } },
+      data: { user_email: email, user_password: password },
     })
       .then((res) => {
-        if (res.message) {
+        console.log("res.data.data :", res.data.data);
+        if (res.data.message) {
           handleLoginTrue();
+          setLoginInfo({ ...loginInfo, password: "" });
+          handleUserInfo(res.data.data);
         }
       })
       .catch((err) => {

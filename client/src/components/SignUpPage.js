@@ -111,7 +111,7 @@ const SignUpPage = () => {
 
   const [errMessage, setErrMessage] = useState("");
 
-  const handleInputValue = key => e => {
+  const handleInputValue = (key) => (e) => {
     setUserInfo({ ...userInfo, [key]: e.target.value });
   };
 
@@ -155,18 +155,16 @@ const SignUpPage = () => {
       method: "post",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signup",
       data: {
-        data: {
-          user_id: null,
-          user_email: email,
-          user_password: password,
-          user_name: full_name,
-          user_nickname: nick_name,
-          user_gender: gender,
-          user_mobile: mobile,
-        },
+        user_id: null,
+        user_email: email,
+        user_password: password,
+        user_name: full_name,
+        user_nickname: nick_name,
+        user_gender: gender,
+        user_mobile: mobile,
       },
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.message === "ok") {
           setUserInfo(null);
           history.push("/");
@@ -175,7 +173,7 @@ const SignUpPage = () => {
           setErrMessage(res.data.message);
         }
       })
-      .catch(err => console.log("signup err", err));
+      .catch((err) => console.log("signup err", err));
   };
 
   const handleSocialLogin = () => {
@@ -197,7 +195,7 @@ const SignUpPage = () => {
             </SocialLoginButton>
           </Section>
           <Slogan>모든 항목은 필수 입니다.</Slogan>
-          <form onSubmit={e => e.preventDefault()}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <Section>
               <LabelText>이메일</LabelText>
               <InputBox

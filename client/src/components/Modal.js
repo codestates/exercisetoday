@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 const Container = styled.div`
   position: relative;
   opacity: ${(props) => (props.visible ? 1 : 0)};
@@ -31,7 +31,7 @@ const ModalText = styled.div`
 const ModalLog = styled.div`
   width: 100%;
   border-radius: 0.8rem;
-  cursor: grab;
+  cursor: pointer;
   :hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
@@ -40,7 +40,7 @@ const ModalLog = styled.div`
 const ModalSign = styled.div`
   width: 100%;
   border-radius: 0.8rem;
-  cursor: grab;
+  cursor: pointer;
   :hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
@@ -53,8 +53,17 @@ const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
   //     setIsOpen(!isOpen);
   //   };
   const logoutHandler = () => {
-    handleLogout();
-    setVisible(!visible);
+    axios({
+      method: "POST",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com//user/signout",
+    })
+      .then((res) => {
+        if (res.data.message) {
+          handleLogout();
+          setVisible(!visible);
+        }
+      })
+      .catch((err) => console.log("로그아웃 Error", err));
   };
   return (
     <Container visible={visible}>

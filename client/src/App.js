@@ -10,7 +10,7 @@ import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true); // URI로 페이지를 움직일수있다.
+  const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
   const [userData, setUserData] = useState({
     user_id: null,
     user_kakaoId: null,
@@ -35,6 +35,24 @@ function App() {
         }
       })
       .catch(err => console.log("logout err", err));
+  };
+
+  const handleUserInfo = (data) => {
+    setUserData({ ...userData, ...data });
+  };
+
+  const deleteUserInfo = () => {
+    setUserData({
+      user_id: null,
+      user_kakaoId: null,
+      user_email: null,
+      user_name: null,
+      user_nickname: null,
+      user_exp: null,
+      user_photo: null,
+      created_at: null,
+      updated_at: null,
+    });
   };
 
   const handleLoginTrue = () => {
@@ -77,6 +95,7 @@ function App() {
         isLogin={isLogin}
         handleLogout={handleLogout}
         handleLoginTrue={handleLoginTrue}
+        handleUserInfo={handleUserInfo}
       />
       <Switch>
         <Route exact path="/">
@@ -91,7 +110,7 @@ function App() {
               <ChallengePage />
             </Route>
             <Route path="/mypage">
-              <Mypage />
+              <Mypage userData={userData} deleteUserInfo={deleteUserInfo} />
             </Route>
           </>
         ) : null}
