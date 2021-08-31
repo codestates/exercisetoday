@@ -17,9 +17,7 @@ module.exports = {
     } else if (token.split(" ")[0] === "jwt") {
       jwt = token.split(" ")[1];
     }
-
-
-
+      
     if(jwt) {
       // jwt 토큰 있는경우
       console.log(jwt)
@@ -49,7 +47,6 @@ module.exports = {
         })
 
       }
-
     } else if(kakao) {
       // 카카오 토큰 있는경우
 
@@ -75,7 +72,6 @@ module.exports = {
           appId: 630711
         }
         */
-
         // TODO Sequelize 로 정보수정해서 바뀐거 보내기
         
         // ! 카카오 토큰있고 유효한경우
@@ -115,8 +111,6 @@ module.exports = {
     } else if (token.split(" ")[0] === "jwt") {
       jwt = token.split(" ")[1];
     }
-
-
     if(jwt) {
       // jwt 토큰 있는경우
 
@@ -141,7 +135,6 @@ module.exports = {
         })
 
       }
-
     } else if(kakao) {
       // 카카오 토큰 있는경우
 
@@ -191,4 +184,4 @@ module.exports = {
     }
 
   }
-}
+}   
