@@ -8,12 +8,10 @@ import CompletedChallenge from "./CompletedChallenge";
 import axios from "axios";
 //백엔드의 S3에 이미지를 업로드
 
-const OngoingChallContent = styled.div`
+const ChallengeTitle = styled.div`
   border-top: 3px solid;
   border-color: #003150;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  // flex
   margin: 5% 0% 3% 3%;
   font-size: 2rem;
   @media screen and (max-width: 1024px) {
@@ -22,6 +20,7 @@ const OngoingChallContent = styled.div`
     height: 10%;
   }
 `;
+
 const ProfileAndContent = styled.div`
   margin: 5% 0% 0% 5%;
   > .PhotoEdit {
@@ -38,10 +37,12 @@ const ProfileAndContent = styled.div`
     }
   }
 `;
+
 const ProfileAndContent2 = styled.div`
   margin: 5% 0% 0% 5%;
   width: 90%;
 `;
+
 const MypageContainer = styled.div`
   margin-top: 5rem;
   display: flex;
@@ -72,12 +73,8 @@ const ProfilePhoto = styled.div`
   }
 `;
 
-const MypageOngoinChall = styled.div`
-  background-color: white;
-`;
-
 const NickNameHandleBtn = styled.button`
-  display: ${(props) => (props.visible ? "auto" : "none")};
+  display: ${props => (props.visible ? "auto" : "none")};
   position: relative;
   margin-top: 19px;
   left: 4%;
@@ -90,13 +87,11 @@ const NickNameHandleBtn = styled.button`
     background-color: rgba(0, 0, 0, 0.4);
   }
 `;
-const MypageCompletedChall = styled.div`
-  //  ? ! 66
-`;
 
 const EditPasswordContainer = styled.div`
-  display: ${(props) => (props.visible ? "auto" : "none")};
+  display: ${props => (props.visible ? "auto" : "none")};
 `;
+
 const InputBox = styled.input`
   margin-bottom: 5%;
   width: 100%;
@@ -104,7 +99,7 @@ const InputBox = styled.input`
 `;
 
 const InputBoxNickName = styled.input`
-  display: ${(props) => (props.visibleNick ? "auto" : "none")};
+  display: ${props => (props.visibleNick ? "auto" : "none")};
   font-size: 1.2rem;
   margin: 1% 0% 0% 3%;
   width: 15%;
@@ -112,8 +107,9 @@ const InputBoxNickName = styled.input`
   border: 0.5px solid gray;
   color: rgb(0, 0, 0);
 `;
+
 const TextNickName = styled.input`
-  display: ${(props) => (props.visibleNickText ? "none" : "auto")};
+  display: ${props => (props.visibleNickText ? "none" : "auto")};
   font-size: 1.2rem;
   margin: 1% 0% 0% 3%;
   width: 15%;
@@ -121,6 +117,7 @@ const TextNickName = styled.input`
   border: none;
   color: rgb(0, 0, 0);
 `;
+
 const PasswordEditBtn = styled.button`
   position: relative;
   height: 2rem;
@@ -134,10 +131,11 @@ const PasswordEditBtn = styled.button`
     border-color: rgba(0, 0, 0, 0.9);
   }
 `;
+
 const NickNameEditBtn = styled.button`
   position: relative;
   height: 2rem;
-  left: ${(props) => (props.visible ? 24 : 28)}%;
+  left: ${props => (props.visible ? 24 : 28)}%;
   width: 8rem;
   background-color: white;
   border-color: rgba(0, 0, 0, 0.4);
@@ -147,6 +145,7 @@ const NickNameEditBtn = styled.button`
     border-color: rgba(0, 0, 0, 0.9);
   }
 `;
+
 const PasswordBtn = styled.button`
   width: 5rem;
   height: 2.5rem;
@@ -220,7 +219,7 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const Mypage = ({ userData, deleteUserInfo }) => {
+const Mypage = ({ userData, deleteUserInfo, token }) => {
   const [userInfo, setUserInfo] = useState(userData);
   const [passwordEditClick, setPasswordEditClick] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -234,14 +233,14 @@ const Mypage = ({ userData, deleteUserInfo }) => {
     newPasswordMatch: "",
     nick_name: userInfo.user_nickname,
   });
+
   useEffect(() => {
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
-      data: { user_id: userData.user_id },
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
     })
-      .then((res) => {
-        if (res.data.message) {
+      .then(res => {
+        if (res.data.message === "ok") {
           if (res.data.user_photo === null) {
             setUserPhoto(NoImage);
           } else {
@@ -249,20 +248,30 @@ const Mypage = ({ userData, deleteUserInfo }) => {
           }
         }
       })
-      .catch((err) => console.log("Photo Error", err));
+      .catch(err => console.log("Photo Error", err));
 
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge",
-      data: { user_id: userData.user_id },
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge?user_id=${userData.user_id}`,
     })
-      .then((res) => {
-        if (res.data.message) {
-          setChallengeList(res.data.challenges);
+      .then(res => {
+        if (res.data.message === "ok") {
+          let ongoingChallData = [];
+          let completedChallData = [];
+          res.data.data.challenges.map(el => {
+            if (el.progress_rate >= 100) {
+              completedChallData.push(el);
+            } else {
+              ongoingChallData.push(el);
+            }
+          });
+
+          setChallengeList(ongoingChallData);
         }
       })
-      .catch((err) => console.log("challenges Error", err));
+      .catch(err => console.log("challenges Error", err));
   }, []);
+
   const deleteModalHandler = () => {
     setDeleteOpen(!deleteOpen);
   };
@@ -273,12 +282,13 @@ const Mypage = ({ userData, deleteUserInfo }) => {
       method: "PUT",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user",
       data: {
-        user_id: userData.user_id,
+        user_id: userInfo.user_id,
         user_nickname: newUserInfo.nick_name,
         user_password: newUserInfo.newPassword,
       },
+      headers: { authorization: token },
     })
-      .then((res) => {
+      .then(res => {
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
@@ -286,25 +296,26 @@ const Mypage = ({ userData, deleteUserInfo }) => {
           console.log("userInfoUpdate Error", res.data.message);
         }
       })
-      .catch((err) => console.log("userInfoUpdate Error", err));
+      .catch(err => console.log("userInfoUpdate Error", err));
     if (userPhoto !== null) {
       axios({
         method: "PUT",
-        url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/user/photo",
-        data: { user_photo: userPhoto.slice(5) },
+        url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
+        data: { user_photo: userPhoto?.slice(5) },
+        headers: { authorization: token },
       })
-        .then((res) => {
+        .then(res => {
           if (res.data.message === "ok") {
             setUserPhoto(res.data.user_photo); //blob제거
           } else {
             console.log("User Photo Error", res.data.message);
           }
         })
-        .catch((err) => console.log("User Photo Error", err));
+        .catch(err => console.log("User Photo Error", err));
     }
   };
 
-  const handleInputValue = (key) => (e) => {
+  const handleInputValue = key => e => {
     if (key === "nick_name") {
       setNewUserInfo({ nick_name: e.target.value });
     } else if (key === "curPassword") {
@@ -320,6 +331,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
       setErrorMessage("");
     }
   };
+
   const passwordEditClickHandler = () => {
     setPasswordEditClick(!passwordEditClick);
     setNewUserInfo({
@@ -330,7 +342,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
     setErrorMessage("");
   };
 
-  const handlePhoto = (e) => {
+  const handlePhoto = e => {
     const temp = [];
     const photoToAdd = e.target.files;
     if (photoToAdd.length === 0) {
@@ -355,7 +367,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
   };
   const changeNickBtn = () => {
     if (newUserInfo.nick_name !== userInfo.user_nickname) {
-      setUserInfo({ ...userInfo, nick_name: newUserInfo.nick_name });
+      setUserInfo({ ...userInfo, user_nickname: newUserInfo.nick_name });
     }
     setNickName(!nickNameEditClick);
   };
@@ -389,7 +401,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
                 type="file"
                 accpet="image/*"
                 name="profile"
-                onChange={(e) => handlePhoto(e)}
+                onChange={e => handlePhoto(e)}
               />
             </ProfilePhoto>
             <button className="PhotoEdit" onClick={onImgInputBtn}>
@@ -468,22 +480,21 @@ const Mypage = ({ userData, deleteUserInfo }) => {
             <SubmitBtn onClick={userInfoUpdate}>제출</SubmitBtn>
             <DeleteBtn onClick={() => deleteModalHandler()}>회원탈퇴</DeleteBtn>
             <Delete
+              token={token}
               visible={deleteOpen}
               setVisible={deleteModalHandler}
               deleteUserInfo={deleteUserInfo}
             />
           </ProfileAndContent2>
         </MypageProfile>
-        <OngoingChallContent challengeList={challengeList}>
+        <ChallengeTitle>
           현재 진행중인 챌린지
-        </OngoingChallContent>
-        <MypageOngoinChall>
-          <OngoingChallenge />
-        </MypageOngoinChall>
-        <OngoingChallContent>완료된 챌린지</OngoingChallContent>
-        <MypageCompletedChall>
+          <OngoingChallenge challengeList={challengeList} />
+        </ChallengeTitle>
+        <ChallengeTitle>
+          완료된 챌린지
           <CompletedChallenge />
-        </MypageCompletedChall>
+        </ChallengeTitle>
       </MypageContainer>
     </>
   );
