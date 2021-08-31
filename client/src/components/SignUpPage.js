@@ -166,6 +166,12 @@ const SignUpPage = () => {
       .catch(err => console.log("signup err", err));
   };
 
+  const handleSocialLogin = () => {
+    window.location.assign(
+      "https://kauth.kakao.com/oauth/authorize?client_id=ce4c941a6f16b0b73737edf331c2adaf&redirect_uri=http://localhost:3000&response_type=code "
+    );
+  };
+
   return (
     <>
       <Main>
@@ -173,7 +179,7 @@ const SignUpPage = () => {
           <Slogan>건강하고 즐거운 일상 속 운동 라이프 디자이너</Slogan>
           <Section>
             <LabelText>소셜 로그인</LabelText>
-            <SocialLoginButton>
+            <SocialLoginButton onClick={handleSocialLogin}>
               카카오로 3초만에 시작하기
               <KakaoIcon />
             </SocialLoginButton>

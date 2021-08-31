@@ -120,6 +120,7 @@ const Header = () => {
         setVisible={setLoginModalVisible}
         loginModal={loginModal}
         handleLoginTrue={handleLoginTrue}
+        isLogin={isLogin}
       />
     </>
   );

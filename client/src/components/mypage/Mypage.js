@@ -6,11 +6,7 @@ import Delete from "./Delete";
 import OngoingChallenge from "./OngoingChallenge";
 import CompletedChallenge from "./CompletedChallenge";
 //백엔드의 S3에 이미지를 업로드
-const MypageTitle = styled.div`
-  position: absolute;
-  font-size: 2rem;
-  margin: 2% 0% 0% 4%;
-`;
+
 const OngoingChallContent = styled.div`
   border-top: 3px solid;
   border-color: #003150;
@@ -55,7 +51,6 @@ const MypageContainer = styled.div`
 
 const MypageProfile = styled.div`
   > .firstContent {
-    // ? firstContent
     display: flex;
   }
   > .password {
@@ -199,6 +194,7 @@ const BorderBottom = styled.div`
   margin-left: 3%;
   margin-right: 10%;
 `;
+
 const DeleteBtn = styled.button`
   margin: 2% 0% 0% 9%;
   width: 5vw;
@@ -241,18 +237,20 @@ const Mypage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [nickNameEditClick, setNickName] = useState(false);
-  const [curErrorMessage, setCurErrorMessage] = useState("");
-
-  const deleteModalHandler = () => {
-    setDeleteOpen(!deleteOpen);
-  };
-  const [passwordEdit, setPasswordEdit] = useState({
+  const [newUserInfo, setNewUserInfo] = useState({
     curPassword: "",
     newPassword: "",
     newPasswordMatch: "",
     nick_name: userInfo.nick_name,
   });
+  const deleteModalHandler = () => {
+    setDeleteOpen(!deleteOpen);
+  };
+  //이름바꾸기, 완료버튼누를때 미ㅣ리뜨기 제출전에..
 
+  const userInfoUpdate = () => {
+    return;
+  };
   // const passwordHandler = () => {
   //   if (userInfo.password !== passwordEdit.curPassword) {
   //     setCurErrorMessage("현재 비밀번호가 일치하지 않습니다");
@@ -263,23 +261,23 @@ const Mypage = () => {
 
   const handleInputValue = (key) => (e) => {
     if (key === "nick_name") {
-      setPasswordEdit({ nick_name: e.target.value });
-    } else if (key === "curPassword" && userInfo.password !== e.target.value) {
-      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
+      setNewUserInfo({ nick_name: e.target.value });
+    } else if (key === "curPassword") {
+      setNewUserInfo({ ...newUserInfo, [key]: e.target.value });
     } else if (
       key === "newPasswordMatch" &&
-      passwordEdit.newPassword !== e.target.value
+      newUserInfo.newPassword !== e.target.value
     ) {
-      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
+      setNewUserInfo({ ...newUserInfo, [key]: e.target.value });
       setErrorMessage("신규 비밀번호가 일치하지 않습니다");
     } else {
-      setPasswordEdit({ ...passwordEdit, [key]: e.target.value });
+      setNewUserInfo({ ...newUserInfo, [key]: e.target.value });
       setErrorMessage("");
     }
   };
   const passwordEditClickHandler = () => {
     setPasswordEditClick(!passwordEditClick);
-    setPasswordEdit({
+    setNewUserInfo({
       curPassword: "",
       newPassword: "",
       newPasswordMatch: "",
@@ -311,14 +309,14 @@ const Mypage = () => {
     imageRef.current.click();
   };
   const changeNickBtn = () => {
-    if (passwordEdit.nick_name !== userInfo.nick_name) {
-      setUserInfo({ ...userInfo, nick_name: passwordEdit.nick_name });
+    if (newUserInfo.nick_name !== userInfo.nick_name) {
+      setUserInfo({ ...userInfo, nick_name: newUserInfo.nick_name });
     }
     setNickName(!nickNameEditClick);
   };
   const onNickNameBtn = () => {
-    if (passwordEdit.nick_name !== userInfo.nick_name) {
-      setPasswordEdit({ nick_name: userInfo.nick_name });
+    if (newUserInfo.nick_name !== userInfo.nick_name) {
+      setNewUserInfo({ nick_name: userInfo.nick_name });
     }
     setNickName(!nickNameEditClick);
     if (nickNameEditClick === false) {
@@ -327,7 +325,7 @@ const Mypage = () => {
       nickNameRef.current.blur();
     }
   };
-  console.log("------>", passwordEdit);
+  console.log("------>", newUserInfo);
   return (
     <>
       <MypageContainer>
@@ -374,17 +372,16 @@ const Mypage = () => {
                       placeholder="현재 비밀번호를 입력하세요"
                       onChange={handleInputValue("curPassword")}
                     /> */}
-                    <ErrMessage>{curErrorMessage}</ErrMessage>
                     신규 비밀번호
                     <InputBox
                       type="password"
-                      value={passwordEdit.newPassword}
+                      value={newUserInfo.newPassword}
                       onChange={handleInputValue("newPassword")}
                     />
                     신규 비밀번호 확인
                     <InputBox
                       type="password"
-                      value={passwordEdit.newPasswordMatch}
+                      value={newUserInfo.newPasswordMatch}
                       onChange={handleInputValue("newPasswordMatch")}
                     />
                     <ErrMessage>{errorMessage}</ErrMessage>
@@ -401,7 +398,7 @@ const Mypage = () => {
                 <InputBoxNickName
                   type="text"
                   ref={nickNameRef}
-                  value={passwordEdit.nick_name}
+                  value={newUserInfo.nick_name}
                   onChange={handleInputValue("nick_name")}
                   visibleNick={nickNameEditClick}
                   name="nick_name"
@@ -427,7 +424,7 @@ const Mypage = () => {
               </ProfileContent>
               <BorderBottom />
               <ProfileContent>
-                <ProfileTitle>레벨</ProfileTitle>
+                <ProfileTitle>경험치</ProfileTitle>
                 <div className="userContent">{userInfo.level}</div>
               </ProfileContent>
               <BorderBottom />
@@ -438,7 +435,7 @@ const Mypage = () => {
                 </div>
               </ProfileContent>
               <BorderBottom />
-              <SubmitBtn>제출</SubmitBtn>
+              <SubmitBtn onClick={userInfoUpdate}>제출</SubmitBtn>
               <DeleteBtn onClick={() => deleteModalHandler()}>
                 회원탈퇴
               </DeleteBtn>

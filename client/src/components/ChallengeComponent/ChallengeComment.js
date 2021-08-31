@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { ReactComponent as Thumb } from "../../svgs/thumbs-up-regular.svg";
 import axios from "axios";
 
 const CommentsContainer = styled.article`
@@ -40,25 +39,6 @@ const Comment = styled.div`
   font-weight: bold;
 `;
 
-const LikeButton = styled.button`
-  margin-left: auto;
-`;
-
-const ThumbIcon = styled(Thumb)`
-  border: 0;
-  outline: 0;
-  color: blue;
-  :hover {
-    color: darkblue;
-    cursor: pointer;
-  }
-  width: 25px;
-`;
-
-const LikeCount = styled.div`
-  font-weight: bold;
-`;
-
 // 댓글 쓰기
 const UserCommentContainer = styled.div`
   border: 1px solid;
@@ -84,7 +64,6 @@ const CommentSubmit = styled.button`
 `;
 
 const ChallengeComment = () => {
-  const [likeCount, setLikeCount] = useState("0");
   const [myComment, setMyComment] = useState("");
 
   let comments;
@@ -115,10 +94,6 @@ const ChallengeComment = () => {
         console.log("comments err", err);
       });
   }, [handleSubmitMyComment]);
-
-  const clickLikeButton = () => {
-    setLikeCount(Number(likeCount) + 1);
-  };
 
   //여기만 지우면 됨
   comments = [
@@ -155,10 +130,6 @@ const ChallengeComment = () => {
                 <sup>경험치: {data.user_exp}</sup>
               </CommentNickName>
               <Comment>{data.comment_content}</Comment>
-              <LikeButton>
-                <ThumbIcon onClick={clickLikeButton} />
-              </LikeButton>
-              <LikeCount>좋아요:{data.likes}개</LikeCount>
             </SingleCommentContainer>
           );
         })}
