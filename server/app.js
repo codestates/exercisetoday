@@ -24,7 +24,7 @@ app.use(express.json());
 // CORS 설정
 app.use(
   cors({
-    origin : true
+    origin : false
   })
 );
 
