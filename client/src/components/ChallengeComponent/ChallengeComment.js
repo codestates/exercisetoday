@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { ReactComponent as Thumb } from "../../svgs/thumbs-up-regular.svg";
+import axios from "axios";
 
 const CommentsContainer = styled.article`
   border: 1px solid;
@@ -39,25 +39,6 @@ const Comment = styled.div`
   font-weight: bold;
 `;
 
-const LikeButton = styled.button`
-  margin-left: auto;
-`;
-
-const ThumbIcon = styled(Thumb)`
-  border: 0;
-  outline: 0;
-  color: blue;
-  :hover {
-    color: darkblue;
-    cursor: pointer;
-  }
-  width: 25px;
-`;
-
-const LikeCount = styled.div`
-  font-weight: bold;
-`;
-
 // 댓글 쓰기
 const UserCommentContainer = styled.div`
   border: 1px solid;
@@ -83,34 +64,86 @@ const CommentSubmit = styled.button`
 `;
 
 const ChallengeComment = () => {
-  const [likeCount, setLikeCount] = useState("0");
+  const [myComment, setMyComment] = useState("");
 
-  const clickLikeButton = () => {
-    setLikeCount(Number(likeCount) + 1);
+  let comments;
+
+  const handleMyComment = e => {
+    setMyComment(e.target.value);
   };
+
+  const handleSubmitMyComment = () => {
+    axios({
+      method: "POST",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment",
+      // user_id, challenge_id, comment_content 를 body에 보내야됨
+    }).catch(err => console.log("comment submit err", err));
+  };
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment",
+    })
+      .then(res => {
+        if (res.message) {
+          comments = res.data;
+        }
+      })
+      .catch(err => {
+        console.log("comments err", err);
+      });
+  }, [handleSubmitMyComment]);
+
+  //여기만 지우면 됨
+  comments = [
+    {
+      user_nickname: "sim",
+      user_exp: 110,
+      likes: 6,
+      was_liked: true,
+      progress_rate: 10,
+      comment_content: " 생각보다 힘드네 ",
+      created_at: "created_at",
+    },
+    {
+      user_nickname: "kang",
+      user_exp: 560,
+      likes: 3,
+      was_liked: false,
+      progress_rate: 70,
+      comment_content: " 열심히 합시 ",
+      created_at: "created_at",
+    },
+  ];
+  // 여기만 지우면 됨
 
   return (
     <>
       <CommentsContainer>
-        <SingleCommentContainer>
-          <ChallengeOnGoing>진행도: 50%</ChallengeOnGoing>
-          <CommentNickName>
-            김코딩<sup>LV. 5</sup>
-          </CommentNickName>
-          <Comment>안녕</Comment>
-          <LikeButton>
-            <ThumbIcon onClick={clickLikeButton} />
-          </LikeButton>
-          <LikeCount>좋아요:{likeCount}개</LikeCount>
-        </SingleCommentContainer>
+        {comments.map(data => {
+          return (
+            <SingleCommentContainer>
+              <ChallengeOnGoing>진행도: {data.progress_rate}%</ChallengeOnGoing>
+              <CommentNickName>
+                {data.user_nickname}
+                <sup>경험치: {data.user_exp}</sup>
+              </CommentNickName>
+              <Comment>{data.comment_content}</Comment>
+            </SingleCommentContainer>
+          );
+        })}
         <form onSubmit={e => e.preventDefault()}>
           <UserCommentContainer>
             <UserComment
               minLength="1"
               maxLength="80"
               placeholder="최대 80글자 까지 입력가능 / 공백 포함"
+              onChange={e => handleMyComment(e)}
             ></UserComment>
-            <CommentSubmit type="submit">등록</CommentSubmit>
+            <CommentSubmit type="submit" onClick={handleSubmitMyComment}>
+              등록
+            </CommentSubmit>
           </UserCommentContainer>
         </form>
       </CommentsContainer>

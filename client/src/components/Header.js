@@ -40,7 +40,7 @@ const UserIcon = styled(UserSvg)`
   width: 40px;
 `;
 
-const Header = ({ isLogin, handleLogout }) => {
+const Header = ({ isLogin, handleLogout, handleLoginTrue }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginOpen, setLogin] = useState(false);
@@ -74,6 +74,8 @@ const Header = ({ isLogin, handleLogout }) => {
         visible={loginModalVisible}
         setVisible={setLoginModalVisible}
         loginModal={loginModal}
+        handleLoginTrue={handleLoginTrue}
+        isLogin={isLogin}
       />
     </>
   );
