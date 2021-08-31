@@ -179,16 +179,16 @@ module.exports = {
     let data = {};
 
     if(challengeId === 1) {
-      let data = dummy.progressU2C1;
+      data = dummy.progressU2C1;
 
     } else if(challengeId === 2) {
-      let data = dummy.progressU1C2;
+      data = dummy.progressU1C2;
 
     } else if(challengeId === 3) {
-      let data = dummy.progressU3C3;
+      data = dummy.progressU3C3;
       
     } else if(challengeId === 4) {
-      let data = dummy.progressU6C4;
+      data = dummy.progressU6C4;
       
     }
 

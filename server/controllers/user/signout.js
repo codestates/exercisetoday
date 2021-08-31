@@ -1,20 +1,21 @@
 module.exports = {
   post: (req, res) => { 
 
-    const kakao = req.cookies.kakao;
-    const jwt = req.cookies.jwt;
-
-    if(kakao) {
-      res.clearCookie('jwt');
+    const token = req.headers.authorization;
+    
+    if(token.split(" ")[0] === "jwt") {
+      res.status(200).json({
+        data : null,
+        message : 'jwt signed out successfully'
+      })
     }
-    if(jwt) {
-      res.clearCookie('jwt');
+    
+    if(token.split(" ")[0] === "kakao") {
+      res.status(200).json({
+        data : null,
+        message : 'kakao signed out successfully'
+      })
     }
-
-    res.json({
-      data : null,
-      message : 'Signed out successfully'
-    })
 
 
   }
