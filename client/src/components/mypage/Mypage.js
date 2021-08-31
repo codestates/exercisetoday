@@ -237,7 +237,8 @@ const Mypage = ({ userData, deleteUserInfo }) => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
+      data: { user_id: userData.user_id },
     })
       .then((res) => {
         if (res.data.message === "ok") {
@@ -252,7 +253,8 @@ const Mypage = ({ userData, deleteUserInfo }) => {
 
     axios({
       method: "GET",
-      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge?user_id=${userData.user_id}`,
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge",
+      data: { user_id: userData.user_id },
     })
       .then((res) => {
         if (res.data.message === "ok") {

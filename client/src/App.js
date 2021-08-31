@@ -11,6 +11,7 @@ import ChallengePage from "./components/ChallengePage";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
+  const [token, setToken] = useState(null);
   const [userData, setUserData] = useState({
     user_id: null,
     user_kakaoId: null,

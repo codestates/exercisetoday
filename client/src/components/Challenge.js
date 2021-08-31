@@ -107,6 +107,10 @@ const Challenge = ({ isLogin, handleChallengeInfo, userData }) => {
         if (res.data.message === "ok") {
           handleChallengeInfo(res.data.data);
           history.push("/challenge");
+        } else if (res.data.message === "challenge not in progress") {
+          console.log(res.data);
+          handleChallengeInfo(res.data.data);
+          history.push("/challenge");
         } else {
           console.log("Challenge Progress Error", res.data.message);
         }
