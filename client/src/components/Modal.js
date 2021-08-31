@@ -52,12 +52,15 @@ const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
   //   const loginOpenHandler = () => {
   //     setIsOpen(!isOpen);
   //   };
-
+  const logoutHandler = () => {
+    handleLogout();
+    setVisible(!visible);
+  };
   return (
     <Container visible={visible}>
       <ModalContainer>
         {isLogin ? (
-          <ModalLog onClick={handleLogout}>
+          <ModalLog onClick={logoutHandler}>
             <ModalText>Log Out</ModalText>
           </ModalLog>
         ) : (
@@ -66,12 +69,22 @@ const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
           </ModalLog>
         )}
         <ModalSign>
-          <Link
-            to="signup"
-            style={{ color: "inherit", textDecoration: "none" }}
-          >
-            <ModalText onClick={() => setVisible(false)}>Sign Up</ModalText>
-          </Link>
+          {isLogin ? (
+            <Link
+              to="/mypage"
+              onClick={() => setVisible(false)}
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <ModalText>Mypage</ModalText>
+            </Link>
+          ) : (
+            <Link
+              to="signup"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <ModalText onClick={() => setVisible(false)}>Sign Up</ModalText>
+            </Link>
+          )}
         </ModalSign>
       </ModalContainer>
     </Container>

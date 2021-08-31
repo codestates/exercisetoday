@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import { ReactComponent as kakaotalk } from "../svgs/kakaotalk.svg";
+import { useHistory } from "react-router-dom";
 
 const Main = styled.main`
   box-sizing: border-box;
@@ -95,6 +97,8 @@ const KakaoIcon = styled(kakaotalk)`
 `;
 
 const SignUpPage = () => {
+  const history = useHistory();
+
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -147,6 +151,25 @@ const SignUpPage = () => {
 
     setErrMessage("");
     // 이메일 닉네임 중복확인
+
+    axios({
+      method: "post",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signup",
+      data: { data: { email, password, full_name, nick_name, gender, mobile } },
+    })
+      .then(res => {
+        if (res.message) {
+          setUserInfo(null);
+          history.push("/");
+        }
+      })
+      .catch(err => console.log("signup err", err));
+  };
+
+  const handleSocialLogin = () => {
+    window.location.assign(
+      "https://kauth.kakao.com/oauth/authorize?client_id=ce4c941a6f16b0b73737edf331c2adaf&redirect_uri=http://localhost:3000&response_type=code "
+    );
   };
 
   return (
@@ -156,8 +179,8 @@ const SignUpPage = () => {
           <Slogan>건강하고 즐거운 일상 속 운동 라이프 디자이너</Slogan>
           <Section>
             <LabelText>소셜 로그인</LabelText>
-            <SocialLoginButton>
-              카카오로 회원가입
+            <SocialLoginButton onClick={handleSocialLogin}>
+              카카오로 3초만에 시작하기
               <KakaoIcon />
             </SocialLoginButton>
           </Section>

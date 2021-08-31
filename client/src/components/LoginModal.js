@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import kakao from "./image/kakao.png";
+
 const Container = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.45);
@@ -114,13 +116,34 @@ const SocialLogin = styled.div`
   }
 `;
 
-const LoginModal = ({ visible, setVisible }) => {
+const LoginModal = ({ visible, setVisible, handleLoginTrue, isLogin }) => {
   //const [isOpen, setIsOpen] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
 
+  const handleLogin = () => {
+    const { email, password } = loginInfo;
+    axios({
+      method: "post",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signin",
+      data: { data: { email, password } },
+    })
+      .then((res) => {
+        if (res.message) {
+          handleLoginTrue();
+        }
+      })
+      .catch((err) => {
+        console.log("login err", err);
+      });
+  };
+  const handleSocialLogin = () => {
+    window.location.assign(
+      "https://kauth.kakao.com/oauth/authorize?client_id=ce4c941a6f16b0b73737edf331c2adaf&redirect_uri=http://localhost:3000&response_type=code"
+    );
+  };
   const loginInfoHandler = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
@@ -146,10 +169,10 @@ const LoginModal = ({ visible, setVisible }) => {
           placeholder="Password"
           onChange={loginInfoHandler("password")}
         />
-        <ModalBtn>로그인</ModalBtn>
+        <ModalBtn onClick={handleLogin}>로그인</ModalBtn>
         <BorderBottom />
         <SocialLogin>
-          <button className="socialBtn">
+          <button className="socialBtn" onClick={handleSocialLogin}>
             <img className="kakaoImg" src={kakao} alt="카카오 로고" />
             카카오로 로그인하기
           </button>
