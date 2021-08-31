@@ -5,6 +5,7 @@ const axios = require("axios");
 const clientID = process.env.KAKAO_CLIENT_ID;
 const clientSecret = process.env.KAKAO_CLIENT_SECRET;
 
+
 // 카카오로 시작하기 버튼 눌렀을때
 module.exports = {
   post: (req, res) => { // authorizationCode 받아옴

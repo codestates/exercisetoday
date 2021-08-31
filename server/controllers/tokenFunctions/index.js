@@ -24,7 +24,7 @@ module.exports = {
     }
   },
   // jwt 토큰 쿠키 담아보내기
-  sendJwtToken: (res, token) =>{
+  sendJwtToken: (res, token, data) =>{
     res.cookie("jwt", token/*,{
       domain: "localhost",
       path: "/",
@@ -33,7 +33,7 @@ module.exports = {
       sameSite: "none",
     }*/);
     res.status(200).json({
-      data: null,
+      data: data,
       message: "ok, jwt token is created in your cookie"
     });
   }
