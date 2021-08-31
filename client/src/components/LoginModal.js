@@ -70,11 +70,6 @@ const ModalBtn = styled.button`
   }
 `;
 
-// const ModalText = styled.div`
-//   text-align: center;
-//   font-size: 1.2rem;
-//   line-height: 3rem;
-// `;
 // const ModalLogin = styled.div`
 //   width: 100%;
 //   border-radius: 0.8rem;
