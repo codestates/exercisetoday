@@ -31,10 +31,19 @@ const dummyUserInfoKakao = {
 module.exports = {
   get : (req, res) =>{
     //console.log(req.cookies);
-    const {jwt, kakao} = req.cookies;
 
-    if(jwt === undefined){
-      if(kakao === undefined){
+    const token = req.headers.authorization;
+    let jwt = false;
+    let kakao = false;
+    
+    if(token.split(" ")[0] === "kakao") {
+      kakao = token.split(" ")[1];
+    } else if (token.split(" ")[0] === "jwt") {
+      jwt = token.split(" ")[1];
+    }
+
+    if(jwt){
+      if(kakao){
         // 쿠키에 jwt, kakao 토큰이 없는 경우
         res.status(401).json({
           data : null,
