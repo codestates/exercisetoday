@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import NoImage from "../image/NoImage.jpeg";
 import { datas } from "./dummyData";
 import Delete from "./Delete";
 import OngoingChallenge from "./OngoingChallenge";
 import CompletedChallenge from "./CompletedChallenge";
+import axios from "axios";
 //백엔드의 S3에 이미지를 업로드
 
 const OngoingChallContent = styled.div`
@@ -230,34 +231,89 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const Mypage = () => {
-  const [selectedFile, setFile] = useState(null);
-  const [userInfo, setUserInfo] = useState(...datas);
+const Mypage = ({ userData, deleteUserInfo }) => {
+  const [userInfo, setUserInfo] = useState(userData);
   const [passwordEditClick, setPasswordEditClick] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [nickNameEditClick, setNickName] = useState(false);
+  const [userPhoto, setUserPhoto] = useState(null);
+  const [challengeList, setChallengeList] = useState(null);
   const [newUserInfo, setNewUserInfo] = useState({
     curPassword: "",
     newPassword: "",
     newPasswordMatch: "",
-    nick_name: userInfo.nick_name,
+    nick_name: userInfo.user_nickname,
   });
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
+      data: { user_id: userData.user_id },
+    })
+      .then((res) => {
+        if (res.data.message) {
+          if (res.data.user_photo === null) {
+            setUserPhoto(NoImage);
+          } else {
+            setUserPhoto(res.data.user_photo); //blob제거 split(" ")[1]
+          }
+        }
+      })
+      .catch((err) => console.log("Photo Error", err));
+
+    axios({
+      method: "GET",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge",
+      data: { user_id: userData.user_id },
+    })
+      .then((res) => {
+        if (res.data.message) {
+          setChallengeList(res.data.challenges);
+        }
+      })
+      .catch((err) => console.log("challenges Error", err));
+  }, []);
   const deleteModalHandler = () => {
     setDeleteOpen(!deleteOpen);
   };
   //이름바꾸기, 완료버튼누를때 미ㅣ리뜨기 제출전에..
 
   const userInfoUpdate = () => {
-    return;
+    axios({
+      method: "PUT",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user",
+      data: {
+        user_id: userData.user_id,
+        user_nickname: newUserInfo.nick_name,
+        user_password: newUserInfo.newPassword,
+      },
+    })
+      .then((res) => {
+        if (res.data.data) {
+          const { user_nickname } = res.data.data;
+          setUserInfo({ ...userInfo, user_nickname });
+        } else {
+          console.log("userInfoUpdate Error", res.data.message);
+        }
+      })
+      .catch((err) => console.log("userInfoUpdate Error", err));
+    if (userPhoto !== NoImage) {
+      axios({
+        method: "PUT",
+        url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/user/photo",
+        data: { user_photo: userPhoto.slice(5) },
+      })
+        .then((res) => {
+          if (res.data.message === "ok") {
+            setUserPhoto(res.data.user_photo); //blob제거
+          } else {
+            console.log("User Photo Error", res.data.message);
+          }
+        })
+        .catch((err) => console.log("User Photo Error", err));
+    }
   };
-  // const passwordHandler = () => {
-  //   if (userInfo.password !== passwordEdit.curPassword) {
-  //     setCurErrorMessage("현재 비밀번호가 일치하지 않습니다");
-  //   } else {
-  //     setCurErrorMessage("");
-  //   }
-  // };
 
   const handleInputValue = (key) => (e) => {
     if (key === "nick_name") {
@@ -298,10 +354,10 @@ const Mypage = () => {
         url: URL.createObjectURL(photoToAdd[i]),
       });
     }
-    setFile(temp);
+    setUserPhoto(temp[0].url);
   };
 
-  console.log("프로필사진 id, url", selectedFile);
+  console.log("프로필사진 id, url", userPhoto);
   const imageRef = useRef();
   const nickNameRef = useRef();
 
@@ -309,14 +365,14 @@ const Mypage = () => {
     imageRef.current.click();
   };
   const changeNickBtn = () => {
-    if (newUserInfo.nick_name !== userInfo.nick_name) {
+    if (newUserInfo.nick_name !== userInfo.user_nickname) {
       setUserInfo({ ...userInfo, nick_name: newUserInfo.nick_name });
     }
     setNickName(!nickNameEditClick);
   };
   const onNickNameBtn = () => {
-    if (newUserInfo.nick_name !== userInfo.nick_name) {
-      setNewUserInfo({ nick_name: userInfo.nick_name });
+    if (newUserInfo.nick_name !== userInfo.user_nickname) {
+      setNewUserInfo({ nick_name: userInfo.user_nickname });
     }
     setNickName(!nickNameEditClick);
     if (nickNameEditClick === false) {
@@ -325,7 +381,7 @@ const Mypage = () => {
       nickNameRef.current.blur();
     }
   };
-  console.log("------>", newUserInfo);
+
   return (
     <>
       <MypageContainer>
@@ -337,7 +393,7 @@ const Mypage = () => {
                 <img
                   className="photoPreview"
                   alt="프로필 사진"
-                  src={!selectedFile ? NoImage : selectedFile[0].url}
+                  src={!userPhoto ? NoImage : userPhoto}
                 />
                 <input
                   className="photo"
@@ -355,7 +411,7 @@ const Mypage = () => {
             <ProfileAndContent2>
               <ProfileContent>
                 <ProfileTitle>이메일</ProfileTitle>
-                <div className="userContent">{userInfo.email}</div>
+                <div className="userContent">{userInfo.user_email}</div>
               </ProfileContent>
               <BorderBottom />
               <ProfileContent>
@@ -365,13 +421,6 @@ const Mypage = () => {
                     <div className="userContent">*****</div>
                   )}
                   <EditPasswordContainer visible={passwordEditClick}>
-                    {/*현재 비밀번호
-                     <InputBox
-                      type="password"
-                      value={passwordEdit.curPassword}
-                      placeholder="현재 비밀번호를 입력하세요"
-                      onChange={handleInputValue("curPassword")}
-                    /> */}
                     신규 비밀번호
                     <InputBox
                       type="password"
@@ -406,7 +455,7 @@ const Mypage = () => {
                 <TextNickName
                   type="text"
                   visibleNickText={nickNameEditClick}
-                  value={userInfo.nick_name}
+                  value={userInfo.user_nickname}
                   readOnly
                 />
                 <NickNameHandleBtn
@@ -425,25 +474,24 @@ const Mypage = () => {
               <BorderBottom />
               <ProfileContent>
                 <ProfileTitle>경험치</ProfileTitle>
-                <div className="userContent">{userInfo.level}</div>
-              </ProfileContent>
-              <BorderBottom />
-              <ProfileContent>
-                <ProfileTitle>휴대전화</ProfileTitle>
-                <div className="userContent">
-                  010-****-{userInfo.mobile.slice(7)}
-                </div>
+                <div className="userContent">{userInfo.user_exp}</div>
               </ProfileContent>
               <BorderBottom />
               <SubmitBtn onClick={userInfoUpdate}>제출</SubmitBtn>
               <DeleteBtn onClick={() => deleteModalHandler()}>
                 회원탈퇴
               </DeleteBtn>
-              <Delete visible={deleteOpen} setVisible={deleteModalHandler} />
+              <Delete
+                visible={deleteOpen}
+                setVisible={deleteModalHandler}
+                deleteUserInfo={deleteUserInfo}
+              />
             </ProfileAndContent2>
           </div>
         </MypageProfile>
-        <OngoingChallContent>현재 진행중인 챌린지</OngoingChallContent>
+        <OngoingChallContent challengeList={challengeList}>
+          현재 진행중인 챌린지
+        </OngoingChallContent>
         <MypageOngoinChall>
           <OngoingChallenge />
         </MypageOngoinChall>
