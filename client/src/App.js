@@ -22,6 +22,18 @@ function App() {
     created_at: null,
     updated_at: null,
   });
+  const [challengeInfo, setChallengeInfo] = useState({
+    progress_id: null,
+    user_id: null,
+    challenge_id: null,
+    challenge_name: null,
+    challenge_desc: null,
+    progress_rate: null,
+    progress_buttons: null,
+    progress_likes: null,
+    created_at: null,
+    updated_at: null,
+  });
   const history = useHistory();
   const handleLogout = () => {
     axios({
@@ -37,7 +49,7 @@ function App() {
       .catch(err => console.log("logout err", err));
   };
 
-  const handleUserInfo = (data) => {
+  const handleUserInfo = data => {
     setUserData({ ...userData, ...data });
   };
 
@@ -57,6 +69,10 @@ function App() {
 
   const handleLoginTrue = () => {
     setIsLogin(true);
+  };
+
+  const handleChallengeInfo = data => {
+    setChallengeInfo({ ...challengeInfo, ...data });
   };
 
   useEffect(() => {
@@ -99,7 +115,11 @@ function App() {
       />
       <Switch>
         <Route exact path="/">
-          <MainPage isLogin={isLogin} />
+          <MainPage
+            isLogin={isLogin}
+            userData={userData}
+            handleChallengeInfo={handleChallengeInfo}
+          />
         </Route>
         <Route path="/signup">
           <SignUpPage handleLoginTrue={handleLoginTrue} />
@@ -107,7 +127,7 @@ function App() {
         {isLogin ? (
           <>
             <Route path="/challenge">
-              <ChallengePage />
+              <ChallengePage challengeInfo={challengeInfo} />
             </Route>
             <Route path="/mypage">
               <Mypage userData={userData} deleteUserInfo={deleteUserInfo} />

@@ -1,11 +1,15 @@
 import MainIntro from "./MainIntro";
 import Challenge from "./Challenge";
 
-const MainPage = ({ isLogin }) => {
+const MainPage = ({ isLogin, handleChallengeInfo, userData }) => {
   return (
     <>
       <MainIntro />
-      <Challenge isLogin={isLogin} />
+      <Challenge
+        isLogin={isLogin}
+        handleChallengeInfo={handleChallengeInfo}
+        userData={userData}
+      />
     </>
   );
 };
