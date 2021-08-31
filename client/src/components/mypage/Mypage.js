@@ -237,8 +237,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
-      data: { user_id: userData.user_id },
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
     })
       .then((res) => {
         if (res.data.message === "ok") {
@@ -253,17 +252,22 @@ const Mypage = ({ userData, deleteUserInfo }) => {
 
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge",
-      data: { user_id: userData.user_id },
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge?user_id=${userData.user_id}`,
     })
       .then((res) => {
+        console.log("완료챌린지 5개", res.data.message);
         if (res.data.message === "ok") {
-          console.log("완료챌린지 5개", res.data.data.challenges);
-          // let on
-          // res.data.data.challenges.map((el) => {
-          //   el
-          // })
-          setChallengeList(res.data.data.challenges);
+          let ongoingChallData = [];
+          let completedChallData = [];
+          res.data.data.challenges.map((el) => {
+            if (el.progress_rate >= 100) {
+              completedChallData.push(el);
+            } else {
+              ongoingChallData.push(el);
+            }
+          });
+          // setChallengeList(res.data.data.challenges);
+          setChallengeList(ongoingChallData);
         }
       })
       .catch((err) => console.log("challenges Error", err));

@@ -49,14 +49,14 @@ const OngoingChallenge = ({ challengeList }) => {
     imgHomeWorkout,
     imgByc,
   ]);
-  let dummy = ["라라라", "김말덕", "황항목", "최팔진"];
+
   return (
     <>
-      {photoList.map((e, i) => {
+      {challengeList?.map((e, i) => {
         return (
           <>
             <OngoingContainer>
-              <OngoingText>{dummy[i]}</OngoingText>
+              <OngoingText key={i}>{e.challenge_name}</OngoingText>
               <PhotoContainer>
                 <OngoingChallPhoto photo={photoList[i]}></OngoingChallPhoto>
               </PhotoContainer>
