@@ -27,7 +27,7 @@ router.post('/kakao', kakaoController.post);
 // router.post('/signout', signOutController.post);
 
 // 가입 post /user/signup
-// router.post('/signup', signUpController.post);
+router.post('/signup', signUpController.post);
 
 // 프사 get /user/photo
 // router.get('/photo', photoController.get);
