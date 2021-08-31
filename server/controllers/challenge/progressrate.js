@@ -140,10 +140,60 @@ module.exports = {
         data: dummy.progressU2C1,
         message: "ok"
       })
-    } else {
+    } else if(challengeId === 3) {
       res.status(200).json({
-        data : null,
-        message : "challenge not in progress"
+        data: {
+          "challenge_name" : "하드코어 홈트레이닝 챌린지",
+          "challenge_desc" : "집 또는 안전한 실내 및 실외에서 자신만의 운동으로 트레이닝하는 챌린지입니다.\n스쿼트, 플랭크 등 어떠한 운동이든 상관없으며, 트레이닝 후에 해당 일에 맞는 버튼 클릭과 함께 댓글로 본인만의 운동 방법을 공유해주세요.",
+          "progress_buttons" : [
+            { buttonId: 0, isFinished: false },
+            { buttonId: 1, isFinished: false },
+            { buttonId: 2, isFinished: false },
+            { buttonId: 3, isFinished: false },
+            { buttonId: 4, isFinished: false },
+            { buttonId: 5, isFinished: false },
+            { buttonId: 6, isFinished: false },
+            { buttonId: 7, isFinished: false },
+            { buttonId: 8, isFinished: false },
+            { buttonId: 9, isFinished: false },
+            { buttonId: 10, isFinished: false },
+            { buttonId: 11, isFinished: false },
+            { buttonId: 12, isFinished: false },
+            { buttonId: 13, isFinished: false },
+            { buttonId: 14, isFinished: false },
+          ],
+        },
+        message: "ok"
+      })
+    } else if(challengeId === 4) {
+      res.status(200).json({
+        data: {
+          "challenge_name" : "자전거 출퇴근 챌린지",
+          "challenge_desc" : "온실가스와 미세먼지 감축은 물론 참여자의 건강을 동시에 지킬 수 있는 개별 미션 챌린지입니다.\n매일 자전거로 출퇴근 후에 해당 일에 맞는 버튼을 클릭하고 댓글로 공유해주세요.",
+          "progress_buttons" : [
+            { buttonId: 0, isFinished: false },
+            { buttonId: 1, isFinished: false },
+            { buttonId: 2, isFinished: false },
+            { buttonId: 3, isFinished: false },
+            { buttonId: 4, isFinished: false },
+            { buttonId: 5, isFinished: false },
+            { buttonId: 6, isFinished: false },
+            { buttonId: 7, isFinished: false },
+            { buttonId: 8, isFinished: false },
+            { buttonId: 9, isFinished: false },
+            { buttonId: 10, isFinished: false },
+            { buttonId: 11, isFinished: false },
+            { buttonId: 12, isFinished: false },
+            { buttonId: 13, isFinished: false },
+            { buttonId: 14, isFinished: false },
+            { buttonId: 15, isFinished: false },
+            { buttonId: 16, isFinished: false },
+            { buttonId: 17, isFinished: false },
+            { buttonId: 18, isFinished: false },
+            { buttonId: 19, isFinished: false }
+          ],
+        },
+        message: "ok"
       })
     }
 
