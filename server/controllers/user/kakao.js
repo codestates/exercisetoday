@@ -2,9 +2,8 @@ require('dotenv').config();
 const qs = require('qs');
 const axios = require("axios");
 
-const clientID = KAKAO_CLIENT_ID;
-const clientSecret = KAKAO_CLIENT_SECRET;
-
+const clientID = process.env.KAKAO_CLIENT_ID;
+const clientSecret = process.env.KAKAO_CLIENT_SECRET;
 
 // 카카오로 시작하기 버튼 눌렀을때
 module.exports = {
