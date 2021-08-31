@@ -234,6 +234,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
     newPasswordMatch: "",
     nick_name: userInfo.user_nickname,
   });
+
   useEffect(() => {
     axios({
       method: "GET",
@@ -263,6 +264,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
       })
       .catch((err) => console.log("challenges Error", err));
   }, []);
+
   const deleteModalHandler = () => {
     setDeleteOpen(!deleteOpen);
   };
@@ -287,7 +289,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
         }
       })
       .catch((err) => console.log("userInfoUpdate Error", err));
-    if (userPhoto !== NoImage) {
+    if (userPhoto !== null) {
       axios({
         method: "PUT",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/user/photo",

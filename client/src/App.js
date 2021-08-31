@@ -10,7 +10,7 @@ import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
+  const [isLogin, setIsLogin] = useState(true); // URI로 페이지를 움직일수있다.
   const [userData, setUserData] = useState({
     user_id: null,
     user_kakaoId: null,
@@ -19,6 +19,18 @@ function App() {
     user_nickname: null,
     user_exp: null,
     user_photo: null,
+    created_at: null,
+    updated_at: null,
+  });
+  const [challengeInfo, setChallengeInfo] = useState({
+    progress_id: null,
+    user_id: null,
+    challenge_id: null,
+    challenge_name: null,
+    challenge_desc: null,
+    progress_rate: null,
+    progress_buttons: null,
+    progress_likes: null,
     created_at: null,
     updated_at: null,
   });
@@ -57,6 +69,10 @@ function App() {
 
   const handleLoginTrue = () => {
     setIsLogin(true);
+  };
+
+  const handleChallengeInfo = (data) => {
+    setChallengeInfo({ ...challengeInfo, ...data });
   };
 
   useEffect(() => {
@@ -99,7 +115,11 @@ function App() {
       />
       <Switch>
         <Route exact path="/">
-          <MainPage isLogin={isLogin} />
+          <MainPage
+            isLogin={isLogin}
+            userData={userData}
+            handleChallengeInfo={handleChallengeInfo}
+          />
         </Route>
         <Route path="/signup">
           <SignUpPage handleLoginTrue={handleLoginTrue} />
@@ -107,7 +127,7 @@ function App() {
         {isLogin ? (
           <>
             <Route path="/challenge">
-              <ChallengePage />
+              <ChallengePage challengeInfo={challengeInfo} />
             </Route>
             <Route path="/mypage">
               <Mypage userData={userData} deleteUserInfo={deleteUserInfo} />
