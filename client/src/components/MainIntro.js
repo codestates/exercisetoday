@@ -35,7 +35,10 @@ const MainIntroBack = styled.div`
     transition: all 0.1s ease-in-out;
   }
 `;
+
+
 const MainIntro = () => {
+
   return (
     <MainIntroContainer>
       <MainIntroBack>
