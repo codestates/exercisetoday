@@ -63,7 +63,7 @@ const CommentSubmit = styled.button`
   font-size: 15px;
 `;
 
-const ChallengeComment = () => {
+const ChallengeComment = ({ challengeInfo }) => {
   const [myComment, setMyComment] = useState("");
 
   let comments;
@@ -73,21 +73,22 @@ const ChallengeComment = () => {
   };
 
   const handleSubmitMyComment = () => {
+    const { user_id, challenge_id } = challengeInfo;
     axios({
       method: "POST",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment",
-      // user_id, challenge_id, comment_content 를 body에 보내야됨
+      data: { user_id, challenge_id, comment_content: myComment },
     }).catch(err => console.log("comment submit err", err));
   };
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment",
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment?challenge_id=${challengeInfo.challenge_id}`,
     })
       .then(res => {
-        if (res.message) {
-          comments = res.data;
+        if (res.data.message) {
+          comments = res.data.data;
         }
       })
       .catch(err => {
@@ -140,7 +141,9 @@ const ChallengeComment = () => {
               maxLength="80"
               placeholder="최대 80글자 까지 입력가능 / 공백 포함"
               onChange={e => handleMyComment(e)}
-            ></UserComment>
+            >
+              {myComment}
+            </UserComment>
             <CommentSubmit type="submit" onClick={handleSubmitMyComment}>
               등록
             </CommentSubmit>

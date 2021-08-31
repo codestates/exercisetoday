@@ -39,7 +39,7 @@ const ChallengePercent = styled.span`
 const ChallengeButtonContainer = styled.article`
   margin: 7% 15%;
   border: none;
-  background: ${props => (props.join ? "white" : "rgba(75, 151, 251, 0.3)")};
+  background: ${props => (props.join ? "rgba(75, 151, 251, 0.3)" : "white")};
   text-align: center;
   border-radius: 1rem;
 `;
@@ -102,6 +102,10 @@ const LikeButtonContainer = styled.section`
   padding: 1%;
 `;
 
+const ChallengeDesc = styled.div`
+  font-size: 20px;
+`;
+
 const arr = [
   { buttonId: 0, isFinished: true },
   { buttonId: 1, isFinished: false },
@@ -111,19 +115,22 @@ const arr = [
   { buttonId: 5, isFinished: true },
 ];
 
-const ChallengeButtons = ({ join, handleJoin }) => {
-  const [likeCount, setLikeCount] = useState("0");
-  const [buttonList, setButtonList] = useState(arr);
-  const [percent, setPercent] = useState(
-    (arr.reduce((acc, cur) => acc + cur.isFinished, 0) / arr.length) * 100
-  );
+const ChallengeButtons = ({ challengeInfo }) => {
+  const [likeCount, setLikeCount] = useState(challengeInfo.challenge_likes);
+  const [buttonList, setButtonList] = useState(challengeInfo.progress_buttons);
+  const [percent, setPercent] = useState(challengeInfo.progress_rate);
+  const [join, setJoin] = useState(false);
 
-  // useEffect(() => {
-  //   axios({
-  //     method: "GET",
-  //     url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate",
-  //   });
-  // }, []);
+  const handleJoin = () => {
+    setJoin(!join);
+    const { challenge_id, user_id } = challengeInfo;
+
+    axios({
+      method: "POST",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate",
+      data: { challenge_id, user_id },
+    }).catch(err => console.log("Post progressrate err", err));
+  };
 
   const buttonClick = key => () => {
     handlePercent(key);
@@ -134,6 +141,14 @@ const ChallengeButtons = ({ join, handleJoin }) => {
         }
         return button;
       });
+    });
+    const { user_id, challenge_id } = challengeInfo;
+    axios({
+      method: "PUT",
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate`,
+      data: { user_id, challenge_id, progress_buttons: buttonList },
+    }).catch(err => {
+      console.log("Put Progressrate err", err);
     });
   };
 
@@ -148,28 +163,27 @@ const ChallengeButtons = ({ join, handleJoin }) => {
   };
 
   const clickLikeButton = () => {
-    setLikeCount(Number(likeCount) + 1);
+    setLikeCount(likeCount + 1);
   };
 
   return (
     <>
-      <ChallengeName>/챌린지 이름/ 챌린지에 오신것을 환영합니다</ChallengeName>
+      <ChallengeName>
+        {challengeInfo.challenge_name} 챌린지에 오신것을 환영합니다
+      </ChallengeName>
+      <ChallengeDesc>challengeInfo.challenge_desc</ChallengeDesc>
       {join ? null : (
         <PercentContainer>
           <ChallengePercent>진행도: {Math.round(percent)}%</ChallengePercent>
         </PercentContainer>
       )}
-      {Math.round(percent) === 100 ? (
+      {percent === 100 ? (
         <CongratsContainer>
           <Message src={"/pngwing.com.png"} />
         </CongratsContainer>
       ) : (
         <ChallengeButtonContainer join={join}>
           {join ? (
-            <ChallengeJoinButton onClick={handleJoin}>
-              챌린지 도전
-            </ChallengeJoinButton>
-          ) : (
             buttonList.map(button => {
               return (
                 <ChallengeButton
@@ -181,6 +195,10 @@ const ChallengeButtons = ({ join, handleJoin }) => {
                 </ChallengeButton>
               );
             })
+          ) : (
+            <ChallengeJoinButton onClick={handleJoin}>
+              챌린지 도전
+            </ChallengeJoinButton>
           )}
         </ChallengeButtonContainer>
       )}

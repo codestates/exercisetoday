@@ -10,7 +10,7 @@ import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true); // URI로 페이지를 움직일수있다.
+  const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
   const [userData, setUserData] = useState({
     user_id: null,
     user_kakaoId: null,
@@ -22,23 +22,57 @@ function App() {
     created_at: null,
     updated_at: null,
   });
+  const [challengeInfo, setChallengeInfo] = useState({
+    progress_id: null,
+    user_id: null,
+    challenge_id: null,
+    challenge_name: null,
+    challenge_desc: null,
+    progress_rate: null,
+    progress_buttons: null,
+    progress_likes: null,
+    created_at: null,
+    updated_at: null,
+  });
   const history = useHistory();
   const handleLogout = () => {
     axios({
       method: "post",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
     })
-      .then((res) => {
+      .then(res => {
         if (res.message) {
           setIsLogin(false);
           history.push("/");
         }
       })
-      .catch((err) => console.log("logout err", err));
+      .catch(err => console.log("logout err", err));
+  };
+
+  const handleUserInfo = data => {
+    setUserData({ ...userData, ...data });
+  };
+
+  const deleteUserInfo = () => {
+    setUserData({
+      user_id: null,
+      user_kakaoId: null,
+      user_email: null,
+      user_name: null,
+      user_nickname: null,
+      user_exp: null,
+      user_photo: null,
+      created_at: null,
+      updated_at: null,
+    });
   };
 
   const handleLoginTrue = () => {
     setIsLogin(true);
+  };
+
+  const handleChallengeInfo = data => {
+    setChallengeInfo({ ...challengeInfo, ...data });
   };
 
   useEffect(() => {
@@ -54,7 +88,7 @@ function App() {
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
         data: { authorizationCode },
       })
-        .then((resp) => {
+        .then(resp => {
           const { user_email, user_exp, user_id, user_kakaoId, user_nickname } =
             resp.data.data;
           setUserData({
@@ -66,7 +100,7 @@ function App() {
             user_nickname,
           });
         })
-        .catch((err) => console.log("social login err", err));
+        .catch(err => console.log("social login err", err));
       handleLoginTrue();
     }
   };
@@ -77,10 +111,15 @@ function App() {
         isLogin={isLogin}
         handleLogout={handleLogout}
         handleLoginTrue={handleLoginTrue}
+        handleUserInfo={handleUserInfo}
       />
       <Switch>
         <Route exact path="/">
-          <MainPage isLogin={isLogin} />
+          <MainPage
+            isLogin={isLogin}
+            userData={userData}
+            handleChallengeInfo={handleChallengeInfo}
+          />
         </Route>
         <Route path="/signup">
           <SignUpPage handleLoginTrue={handleLoginTrue} />
@@ -88,10 +127,10 @@ function App() {
         {isLogin ? (
           <>
             <Route path="/challenge">
-              <ChallengePage />
+              <ChallengePage challengeInfo={challengeInfo} />
             </Route>
             <Route path="/mypage">
-              <Mypage />
+              <Mypage userData={userData} deleteUserInfo={deleteUserInfo} />
             </Route>
           </>
         ) : null}

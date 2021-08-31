@@ -100,13 +100,13 @@ const SignUpPage = () => {
   const history = useHistory();
 
   const [userInfo, setUserInfo] = useState({
-    email: "",
-    password: "",
-    passwordCheck: "",
-    full_name: "",
+    user_email: "",
+    user_password: "",
+    user_passwordCheck: "",
+    user_name: "",
     nick_name: "",
-    gender: "성별",
-    mobile: "",
+    user_gender: "성별",
+    user_mobile: "",
   });
 
   const [errMessage, setErrMessage] = useState("");
@@ -117,50 +117,60 @@ const SignUpPage = () => {
 
   const handleSignUp = () => {
     const {
-      email,
-      password,
-      passwordCheck,
-      full_name,
-      nick_name,
-      gender,
-      mobile,
+      user_email,
+      user_password,
+      user_passwordCheck,
+      user_name,
+      user_nickname,
+      user_gender,
+      user_mobile,
     } = userInfo;
 
-    if (password !== passwordCheck) {
+    if (user_password !== user_passwordCheck) {
       setErrMessage("비밀번호가 일치하지 않습니다");
       return;
     }
 
-    if (gender === "성별") {
+    if (user_gender === "성별") {
       setErrMessage("성별을 선택해 주세요");
       return;
     }
 
     if (
-      !email ||
-      !password ||
-      !passwordCheck ||
-      !full_name ||
-      !nick_name ||
-      !gender ||
-      !mobile
+      !user_email ||
+      !user_password ||
+      !user_passwordCheck ||
+      !user_name ||
+      !user_nickname ||
+      !user_gender ||
+      !user_mobile
     ) {
       setErrMessage("모든 항목을 기입해 주세요");
       return;
     }
 
     setErrMessage("");
-    // 이메일 닉네임 중복확인
 
     axios({
       method: "post",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signup",
-      data: { data: { email, password, full_name, nick_name, gender, mobile } },
+      data: {
+        user_id: null,
+        user_email,
+        user_password,
+        user_name,
+        user_nickname,
+        user_gender,
+        user_mobile,
+      },
     })
       .then(res => {
-        if (res.message) {
+        if (res.data.message === "ok") {
           setUserInfo(null);
           history.push("/");
+          return;
+        } else if (res.data.message) {
+          setErrMessage(res.data.message);
         }
       })
       .catch(err => console.log("signup err", err));
@@ -191,7 +201,7 @@ const SignUpPage = () => {
               <InputBox
                 type="email"
                 placeholder="email을 입력하세요"
-                onChange={handleInputValue("email")}
+                onChange={handleInputValue("user_email")}
               />
             </Section>
             <Section>
@@ -199,45 +209,45 @@ const SignUpPage = () => {
               <InputBox
                 placeholder="비밀번호"
                 type="password"
-                onChange={handleInputValue("password")}
+                onChange={handleInputValue("user_password")}
               />
               <LabelText>비밀번호 확인</LabelText>
               <InputBox
                 placeholder="비밀번호 확인"
                 type="password"
-                onChange={handleInputValue("passwordCheck")}
+                onChange={handleInputValue("user_passwordCheck")}
               />
             </Section>
             <Section>
               <LabelText>이름</LabelText>
               <InputBox
                 placeholder="이름을 입력하세요"
-                onChange={handleInputValue("full_name")}
+                onChange={handleInputValue("user_name")}
               />
             </Section>
             <Section>
               <LabelText>닉네임</LabelText>
               <InputBox
                 placeholder="닉네임을 입력하세요"
-                onChange={handleInputValue("nick_name")}
+                onChange={handleInputValue("user_nickname")}
               />
             </Section>
             <Section>
               <LabelText>성별 선택</LabelText>
-              <GenderSelect onChange={handleInputValue("gender")}>
+              <GenderSelect onChange={handleInputValue("user_gender")}>
                 <option>성별</option>
                 <option>남</option>
                 <option>여</option>
               </GenderSelect>
             </Section>
             <Section>
-              <LabelText onChange={handleInputValue("mobile")}>
+              <LabelText onChange={handleInputValue("user_mobile")}>
                 휴대폰 번호 (숫자만 입력하세오)
               </LabelText>
               <InputBox
                 placeholder="' - ' 제외 숫자만 입력하세요"
                 type="number"
-                onChange={handleInputValue("mobile")}
+                onChange={handleInputValue("user_mobile")}
               />
             </Section>
             {errMessage ? <ErrMessage>{errMessage}</ErrMessage> : null}

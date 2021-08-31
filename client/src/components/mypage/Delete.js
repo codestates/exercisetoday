@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 const DeleteContainer = styled.div`
   display: felx;
   justify-content: center;
@@ -62,18 +64,31 @@ const ErrMessage = styled.div`
   font-size: 15px;
   color: red;
 `;
-const Delete = ({ visible, setVisible }) => {
+const Delete = ({ visible, setVisible, deleteUserInfo }) => {
   const [delInputCheck, setDelInputCheck] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const history = useHistory();
   const handleDelInputValue = (e) => {
     setDelInputCheck(e.target.value);
   };
   const checkDeleteValue = () => {
     if (delInputCheck === "회원탈퇴") {
-      setVisible(false);
-      alert("회원탈퇴가 완료되었습니다");
-      setDelInputCheck("");
-      //
+      axios({
+        method: "DELETE",
+        url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user",
+      })
+        .then((res) => {
+          if (res.data.message === "ok") {
+            deleteUserInfo();
+            setVisible(false);
+            setDelInputCheck("");
+            alert("회원탈퇴가 완료되었습니다");
+            history.push("/");
+          } else {
+            console.log("User Delete Error", res.data.message);
+          }
+        })
+        .catch((err) => console.log("User Delete Error", err));
     } else {
       setErrorMessage("회원탈퇴 입력을 다시 확인해주세요");
     }

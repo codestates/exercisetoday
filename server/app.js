@@ -48,9 +48,9 @@ app.use('/challenge', challengeRouter);
 
 
 
-// app.get('/', (req, res) => {
-//   res.send('HI EXERCISE TODAY SERVER!')
-// })
+app.get('/', (req, res) => {
+  res.send('HI EXERCISE TODAY SERVER!')
+})
 
 
 
