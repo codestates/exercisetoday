@@ -13,9 +13,9 @@ module.exports = {
     const kakao = false;
     
     if(token.split(" ")[0] === "kakao") {
-      kakao = true;
+      kakao = token.split(" ")[1];
     } else if (token.split(" ")[0] === "jwt") {
-      jwt = true;
+      jwt = token.split(" ")[1];
     }
     
 
