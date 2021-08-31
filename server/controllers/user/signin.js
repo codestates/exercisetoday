@@ -12,8 +12,8 @@ module.exports = {
           "user_name": "오하운",
           "user_nickname": "오계란",
           "user_exp": 42,
-          "createdAt": new Date(),
-          "updatedAt": new Date()
+          "created_at": new Date(),
+          "updated_at": new Date()
         };
         // TODO: sequelize로 유저 정보 확인
         //! 응답에 따라 if 문으로 가입한 유저인지 확인후 res
