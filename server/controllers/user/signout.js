@@ -11,7 +11,7 @@ module.exports = {
       res.clearCookie('jwt');
     }
 
-    res.json({
+    res.status(200).json({
       data : null,
       message : 'Signed out successfully'
     })
