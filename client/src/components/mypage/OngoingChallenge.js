@@ -6,7 +6,7 @@ import imgHomeWorkout from "../image/homeworkout.jpeg";
 import imgByc from "../image/bicycle.jpeg";
 
 const OngoingChallPhoto = styled.div`
-  background-image: url(${(props) => (props.photo ? props.photo : null)});
+  background-image: url(${props => (props.photo ? props.photo : null)});
   background-repeat: no-repeat;
   background-size: cover;
   border: 2px solid black;

@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 const Container = styled.div`
   position: relative;
-  opacity: ${props => (props.visible ? 1 : 0)};
-  pointer-events: ${props => (props.visible ? "initial" : "none")};
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  pointer-events: ${(props) => (props.visible ? "initial" : "none")};
 `;
 
 const ModalContainer = styled.div`
@@ -46,25 +46,24 @@ const ModalSign = styled.div`
   }
 `;
 
-const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
+const Modal = ({
+  visible,
+  setVisible,
+  loginFunc,
+  isLogin,
+  handleLogout,
+  token,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   //   const loginOpenHandler = () => {
   //     setIsOpen(!isOpen);
   //   };
   const logoutHandler = () => {
-    axios({
-      method: "POST",
-      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
-    })
-      .then(res => {
-        if (res.data.message) {
-          handleLogout();
-          setVisible(!visible);
-        }
-      })
-      .catch(err => console.log("로그아웃 Error", err));
+    handleLogout();
+    setVisible(!visible);
   };
+
   return (
     <Container visible={visible}>
       <ModalContainer>

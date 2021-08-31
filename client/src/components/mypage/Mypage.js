@@ -219,7 +219,7 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const Mypage = ({ userData, deleteUserInfo }) => {
+const Mypage = ({ userData, deleteUserInfo, token }) => {
   const [userInfo, setUserInfo] = useState(userData);
   const [passwordEditClick, setPasswordEditClick] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -255,7 +255,6 @@ const Mypage = ({ userData, deleteUserInfo }) => {
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge?user_id=${userData.user_id}`,
     })
       .then((res) => {
-        console.log("완료챌린지 5개", res.data.message);
         if (res.data.message === "ok") {
           let ongoingChallData = [];
           let completedChallData = [];
@@ -266,7 +265,6 @@ const Mypage = ({ userData, deleteUserInfo }) => {
               ongoingChallData.push(el);
             }
           });
-          // setChallengeList(res.data.data.challenges);
           setChallengeList(ongoingChallData);
         }
       })
@@ -287,9 +285,9 @@ const Mypage = ({ userData, deleteUserInfo }) => {
         user_nickname: newUserInfo.nick_name,
         user_password: newUserInfo.newPassword,
       },
+      headers: { authorization: token },
     })
       .then((res) => {
-        console.log("123123123 ---->", res);
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
@@ -301,8 +299,9 @@ const Mypage = ({ userData, deleteUserInfo }) => {
     if (userPhoto !== null) {
       axios({
         method: "PUT",
-        url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/user/photo",
+        url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
         data: { user_photo: userPhoto?.slice(5) },
+        headers: { authorization: token },
       })
         .then((res) => {
           if (res.data.message === "ok") {
@@ -480,6 +479,7 @@ const Mypage = ({ userData, deleteUserInfo }) => {
             <SubmitBtn onClick={userInfoUpdate}>제출</SubmitBtn>
             <DeleteBtn onClick={() => deleteModalHandler()}>회원탈퇴</DeleteBtn>
             <Delete
+              token={token}
               visible={deleteOpen}
               setVisible={deleteModalHandler}
               deleteUserInfo={deleteUserInfo}

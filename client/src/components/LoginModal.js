@@ -117,6 +117,8 @@ const LoginModal = ({
   handleLoginTrue,
   isLogin,
   handleUserInfo,
+  handleJwtToken,
+  handleKakaoToken,
 }) => {
   //const [isOpen, setIsOpen] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
@@ -131,12 +133,22 @@ const LoginModal = ({
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signin",
       data: { email, password },
     })
+<<<<<<< HEAD
       .then((res) => {
         console.log(res);
         if (res.message) {
           handleLoginTrue();
           setLoginInfo({ ...loginInfo, password: "" });
           handleUserInfo(res.data);
+=======
+      .then(res => {
+        if (res.data.message) {
+          handleLoginTrue();
+          setLoginInfo({ ...loginInfo, password: "" });
+          handleUserInfo(res.data.data);
+          handleJwtToken(res.data.token);
+          setVisible(false);
+>>>>>>> 0a40e1ee4316bca77841acc5862573b4fafbae01
         }
       })
       .catch((err) => {
