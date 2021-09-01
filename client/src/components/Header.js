@@ -66,10 +66,6 @@ const Header = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [loginOpen, setLogin] = useState(false);
-  const loginModal = () => {
-    setLogin(!loginOpen);
-  };
 
   const loginClicked = () => {
     setModalOpen(false);
