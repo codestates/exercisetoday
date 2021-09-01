@@ -1,7 +1,6 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import axios from "axios";
+
 const Container = styled.div`
   position: relative;
   opacity: ${(props) => (props.visible ? 1 : 0)};
@@ -46,19 +45,7 @@ const ModalSign = styled.div`
   }
 `;
 
-const Modal = ({
-  visible,
-  setVisible,
-  loginFunc,
-  isLogin,
-  handleLogout,
-  token,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  //   const loginOpenHandler = () => {
-  //     setIsOpen(!isOpen);
-  //   };
+const Modal = ({ visible, setVisible, loginFunc, isLogin, handleLogout }) => {
   const logoutHandler = () => {
     handleLogout();
     setVisible(!visible);

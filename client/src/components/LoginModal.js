@@ -3,11 +3,11 @@ import styled from "styled-components";
 import axios from "axios";
 import kakao from "./image/kakao.png";
 
-const Container = styled.div`
+const ModalContainer = styled.div`
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
-  opacity: ${(props) => (props.visible ? 1 : 0)};
+  display: ${(props) => (props.visible ? "auto" : "none")};
   pointer-events: ${(props) => (props.visible ? "initial" : "none")};
   top: 0;
   left: 0;
@@ -16,7 +16,7 @@ const Container = styled.div`
   z-index: 9999;
 `;
 
-const ModalContainer = styled.div`
+const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,39 +24,42 @@ const ModalContainer = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 40rem;
-  height: 22rem;
-  padding-top: 60px;
+  width: 35rem;
+  height: 18rem;
+  padding-top: 70px;
   background-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.25);
   border-radius: 0.8rem;
   transition: all 0.2s ease;
-  > .input {
-    margin-top: 18px;
-    width: 355px;
-    height: 32px;
-  }
-  > .exit {
-    font-size: 25px;
-    color: rgba(0, 0, 0, 0.6);
-    margin-top: 10px;
-    position: absolute;
-    border-radius: 50%;
-    top: 0;
-    cursor: grab;
-    :hover {
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-  }
-  > span {
-    position: absolute;
-    top: 10%;
-    color: #003150;
-    margin-bottom: 50px;
+`;
+
+const CloseModal = styled.div`
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 9px 0 0 31rem;
+  position: absolute;
+  border-radius: 50%;
+  top: 0;
+  cursor: pointer;
+  :hover {
+    opacity: 0.7;
   }
 `;
 
-const ModalBtn = styled.button`
+const InputBox = styled.input`
+  margin-top: 18px;
+  width: 355px;
+  height: 32px;
+`;
+
+const LoginTitle = styled.div`
+  position: absolute;
+  top: 7%;
+  color: #003150;
+  margin: 10px 0px 50px 0px;
+`;
+
+const LoginBtn = styled.button`
   margin-top: 20px;
   background-color: #003150;
   text-decoration: none;
@@ -64,47 +67,50 @@ const ModalBtn = styled.button`
   width: 360px;
   height: 40px;
   color: white;
-  cursor: grab;
+  cursor: pointer;
   :hover {
     opacity: 0.9;
   }
 `;
 
-// const ModalLogin = styled.div`
-//   width: 100%;
-//   border-radius: 0.8rem;
-//   cursor: grab;
-//   :hover {
-//     background-color: rgba(0, 0, 0, 0.1);
-//   }
-// `;
 const BorderBottom = styled.div`
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 12px;
   position: absolute;
-  margin-top: 30%;
-  width: 56%;
-  border-bottom: 1px solid;
-  border-color: rgba(0, 0, 0, 0.2);
+  margin-top: 32.5%;
+  width: 69.5%;
+  ::before,
+  ::after {
+    content: "";
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.35);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 16px;
+  }
 `;
-const SocialLogin = styled.div`
+
+const SocialLoginBtn = styled.div`
   display: flex;
   flex-direction: column;
   > .socialBtn {
-    /* background-image: url(${kakao});
-    background-repeat: no-repeat;
-    background-size: contain; */
     background-color: rgb(255, 232, 18);
     border: none;
-    margin-top: 40px;
+    margin-top: 43px;
     width: 360px;
     height: 40px;
-    cursor: grab;
+    cursor: pointer;
     :hover {
       opacity: 0.9;
     }
     > .kakaoImg {
       position: absolute;
-      top: 67.1%;
-      left: 38.8%;
+      top: 81%;
+      left: 37.3%;
       width: 14px;
       height: 20px;
     }
@@ -115,12 +121,9 @@ const LoginModal = ({
   visible,
   setVisible,
   handleLoginTrue,
-  isLogin,
   handleUserInfo,
   handleJwtToken,
-  handleKakaoToken,
 }) => {
-  //const [isOpen, setIsOpen] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
@@ -131,24 +134,15 @@ const LoginModal = ({
     axios({
       method: "POST",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signin",
-      data: { email, password },
+      data: { user_email: email, user_password: password },
     })
-<<<<<<< HEAD
       .then((res) => {
-        console.log(res);
-        if (res.message) {
-          handleLoginTrue();
-          setLoginInfo({ ...loginInfo, password: "" });
-          handleUserInfo(res.data);
-=======
-      .then(res => {
         if (res.data.message) {
           handleLoginTrue();
           setLoginInfo({ ...loginInfo, password: "" });
           handleUserInfo(res.data.data);
           handleJwtToken(res.data.token);
           setVisible(false);
->>>>>>> 0a40e1ee4316bca77841acc5862573b4fafbae01
         }
       })
       .catch((err) => {
@@ -164,37 +158,34 @@ const LoginModal = ({
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
   return (
-    <Container visible={visible}>
-      <ModalContainer>
-        <div className="exit" onClick={() => setVisible(false)}>
-          X
-        </div>
-        <span>오하운에 오신 것을 환영합니다.</span>
-        <input
+    <ModalContainer visible={visible}>
+      <ModalContent>
+        <CloseModal onClick={() => setVisible(false)}>&times;</CloseModal>
+        <LoginTitle>오하운에 오신 것을 환영합니다.</LoginTitle>
+        <InputBox
           className="input"
           type="email"
           value={loginInfo.email}
           onChange={loginInfoHandler("email")}
           placeholder="Email"
         />
-
-        <input
+        <InputBox
           className="input"
           type="password"
           value={loginInfo.password}
           placeholder="Password"
           onChange={loginInfoHandler("password")}
         />
-        <ModalBtn onClick={handleLogin}>로그인</ModalBtn>
-        <BorderBottom />
-        <SocialLogin>
+        <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
+        <BorderBottom> 또는</BorderBottom>
+        <SocialLoginBtn>
           <button className="socialBtn" onClick={handleSocialLogin}>
             <img className="kakaoImg" src={kakao} alt="카카오 로고" />
             카카오로 로그인하기
           </button>
-        </SocialLogin>
-      </ModalContainer>
-    </Container>
+        </SocialLoginBtn>
+      </ModalContent>
+    </ModalContainer>
   );
 };
 

@@ -81,9 +81,7 @@ const Header = ({
       <LoginModal
         visible={loginModalVisible}
         setVisible={setLoginModalVisible}
-        loginModal={loginModal}
         handleLoginTrue={handleLoginTrue}
-        isLogin={isLogin}
         handleUserInfo={handleUserInfo}
         handleJwtToken={handleJwtToken}
       />
