@@ -67,10 +67,10 @@ module.exports = {
 
 
     // 에러난경우
-    // res.status(401).json({
-    //   data : null,
-    //   message : "token이나 code 오류. 다시 로그인하세요"
-    // });
+    res.status(401).json({
+      data : null,
+      message : "token이나 code 오류. 다시 로그인하세요"
+    });
     
   }
 }

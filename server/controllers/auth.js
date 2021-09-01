@@ -89,12 +89,14 @@ module.exports = {
         }
         */
 
+        
+
         // TODO Sequelize 로 정보지우기
         
         // ! 카카오 토큰있고 유효한경우
         db.user.findAll({
           where: {
-            user_kakaoId: data.id
+            user_kakaoId: data.data.id
           }
         }).then(data => {
           
@@ -105,7 +107,7 @@ module.exports = {
               "user_kakaoId": value.user_kakaoId,
               "user_email": value.user_email,
               "user_name": value.user_name,
-              "user_nickname": value.user_nickname,
+              "user_nickname": value.user_nickname || `임시닉네임${value.id}`,
               "user_exp": value.user_exp,
               "user_gender": value.user_gender,
               "user_mobile": value.user_mobile,
@@ -118,17 +120,17 @@ module.exports = {
 
       })
       .catch(e => {
-        console.log(`Kakao token validation err ${e}`)}
-      )
-
-
-    } else {
-      // 토큰 아예 없는경우
-      res.status(200).json({
-        data : null,
-        message : 'not authorized'
+        console.log(`Kakao token validation err ${e}`)
+        return e
       })
+
     }
+      // 토큰 아예 없는경우
+    res.status(200).json({
+      data : null,
+      message : 'not authorized'
+    })
+    
 
   }
 }
