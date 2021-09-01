@@ -11,10 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+
+      models.user.hasMany(models.progress);
+      models.user.hasMany(models.comment);
     }
   };
   user.init({
-    user_id: DataTypes.INTEGER,
     user_kakaoId: DataTypes.INTEGER,
     user_email: DataTypes.STRING,
     user_password: DataTypes.STRING,

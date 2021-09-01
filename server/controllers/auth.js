@@ -12,11 +12,18 @@ try {
 
 
 
+db.user.findAll().then(data => console.log(data[0].dataValues))
 
+db.comment.findAll().then(data => console.log(data[0].dataValues))
 
-
-
-
+db.user.findAll({
+  where: {id : 1},
+  include: [
+      {model : db.comment}
+  ]
+}).then(data =>{
+  console.log(data[0].dataValues)
+});
 
 
 
