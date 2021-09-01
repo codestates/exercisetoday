@@ -119,11 +119,11 @@ const ChallengeButtons = ({ challengeInfo }) => {
     challenge_desc,
     progress_rate,
     progress_buttons,
-    liked,
+    progress_liked,
     challenge_likes,
   } = challengeInfo;
   const [likeCount, setLikeCount] = useState(challenge_likes);
-  const [progressLike, setProgressLike] = useState(liked);
+  const [progressLike, setProgressLike] = useState(progress_liked);
   const [buttonList, setButtonList] = useState(progress_buttons);
   const [percent, setPercent] = useState(progress_rate);
   const [join, setJoin] = useState(false);

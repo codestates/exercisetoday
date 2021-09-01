@@ -33,6 +33,7 @@ function App() {
     challenge_desc: null,
     progress_rate: null,
     progress_buttons: null,
+    progress_liked: null,
     progress_likes: null,
     created_at: null,
     updated_at: null,
