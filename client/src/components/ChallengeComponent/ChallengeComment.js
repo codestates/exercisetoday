@@ -5,19 +5,23 @@ import axios from "axios";
 const CommentsContainer = styled.article`
   border: 1px solid;
   padding: 3px;
-  background: rgba(120, 178, 209, 0.4);
+  background: white;
 `;
 
 const SingleCommentContainer = styled.section`
+  margin: 1px 0;
   font-family: system-ui;
   display: flex;
   border: 1px solid;
   padding: 3px;
   cursor: default;
   font-size: 15px;
+  background: rgba(120, 158, 255, 0.3);
 `;
 
 const ChallengeOnGoing = styled.div`
+  min-width: 100px;
+  max-width: 150px;
   display: inline-block;
   margin-left: 0.5%;
   padding: 3px;
@@ -27,6 +31,8 @@ const ChallengeOnGoing = styled.div`
 `;
 
 const CommentNickName = styled.div`
+  min-width: 150px;
+  max-width: 200px;
   margin: 0 3px;
   padding: 3px;
   font-weight: bold;
@@ -39,7 +45,6 @@ const Comment = styled.div`
   font-weight: bold;
 `;
 
-// 댓글 쓰기
 const UserCommentContainer = styled.div`
   border: 1px solid;
   height: 4rem;
@@ -95,20 +100,22 @@ const ChallengeComment = ({ challengeInfo, token }) => {
       .catch(err => {
         console.log("comment err", err);
       });
-  }, [myComment]);
+  });
 
   return (
     <>
       <CommentsContainer>
-        {comments.map(data => {
+        {comments.map(comment => {
           return (
             <SingleCommentContainer>
-              <ChallengeOnGoing>진행도: {data.progress_rate}%</ChallengeOnGoing>
+              <ChallengeOnGoing>
+                진행도: {comment.progress_rate}%
+              </ChallengeOnGoing>
               <CommentNickName>
-                {data.user_nickname}
-                <sup>경험치: {Math.round(data.user_exp)}</sup>
+                {comment.user_nickname}
+                <sup> 경험치: {Math.round(comment.user_exp)}</sup>
               </CommentNickName>
-              <Comment>{data.comment_content}</Comment>
+              <Comment>{comment.comment_content}</Comment>
             </SingleCommentContainer>
           );
         })}
