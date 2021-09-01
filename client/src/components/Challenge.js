@@ -24,7 +24,6 @@ const ChallengeContent = styled.div`
   background-image: url(${img});
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #003150;
   width: 60%;
   height: 100%;
 `;
@@ -37,7 +36,6 @@ const ChallengeContentSec = styled.div`
   background-image: url(${imgSec});
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #003150;
   width: 40%;
   height: 100%;
 `;

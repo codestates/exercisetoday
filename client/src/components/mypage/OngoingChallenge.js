@@ -11,7 +11,6 @@ const OngoingPhoto = styled.div`
   background-size: cover;
   width: inherit;
   height: inherit;
-  //max-width: 100%;
 `;
 const ChallContent = styled.div`
   display: flex;
@@ -47,7 +46,6 @@ const OngoingContainer = styled.div`
 `;
 
 const OngoingTitle = styled.div`
-  /* background-color: blue; */
   margin-left: 50px;
   width: 100%;
   color: rgba(0, 49, 80, 0.3);
@@ -62,21 +60,7 @@ const NoDataText = styled.div`
 `;
 
 const OngoingChallenge = ({ challengeList }) => {
-  console.log("challengeList ——— >>", challengeList);
-  console.log("챌린지 리스트 들어왔다.", challengeList);
-
-  const [photoList, setPhotoList] = useState([
-    imgRun,
-    imgClim,
-    imgHomeWorkout,
-    imgByc,
-  ]);
-  // const list = [
-  //   "30일 바른 자세를 위한 플랭크 챌린지",
-  //   "한강크로스스위밍챌린지",
-  //   "헌드레드 스쿼트 챌린지",
-  //   "북한산뛰엉",
-  // ];
+  const [photoList] = useState([imgRun, imgClim, imgHomeWorkout, imgByc]);
   return (
     <OngoingContainer>
       <OngoingTitle>현재 진행중인 챌린지</OngoingTitle>
@@ -84,12 +68,13 @@ const OngoingChallenge = ({ challengeList }) => {
       {challengeList !== null ? (
         challengeList?.map((el) => {
           return (
-            <PhotoContainer>
-              <ChallContent>
+            <PhotoContainer key={el.challenge_name}>
+              <ChallContent key={el.progress_rate.toString()}>
                 <OngoingPhoto
+                  key={el.challenge_desc}
                   photo={photoList[el.challenge_id - 1]}
                 ></OngoingPhoto>
-                <OngoingText key={el.challenge_id}>
+                <OngoingText key={el.challenge_id.toString()}>
                   {el.challenge_name}
                 </OngoingText>
               </ChallContent>

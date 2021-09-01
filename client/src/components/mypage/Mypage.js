@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import NoImage from "../image/NoImage.jpeg";
-import { datas } from "./dummyData";
 import Delete from "./Delete";
 import OngoingChallenge from "./OngoingChallenge";
 import CompletedChallenge from "./CompletedChallenge";
@@ -46,8 +45,6 @@ const MypageContainer = styled.div`
   flex-direction: column;
   border: 1.1rem solid;
   border-color: #003150;
-
-  // * 제일 최상단 그린 */
 `;
 
 const PhotoContainer = styled.div`
@@ -55,7 +52,6 @@ const PhotoContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-right: 10px;
-  // * 프로필 레드
 `;
 
 const ProfilePhoto = styled.div`
@@ -149,7 +145,6 @@ const NickNameEditOpenBtn = styled.button`
 `;
 
 const PasswordBtn = styled.button`
-  // * 비밀번호 변경 완료 버튼
   margin-top: 22%;
   width: 4.5rem;
   height: 2rem;
@@ -277,6 +272,7 @@ const Mypage = ({ userData, deleteUserInfo, token }) => {
     })
       .then((res) => {
         if (res.data.message === "ok") {
+          console.log("포토 - - > ", res.data.data); // * res.data.data.data로 바뀔수도있음(포토만)
           if (res.data.data === null) {
             setUserPhoto(NoImage);
           } else {
@@ -292,10 +288,9 @@ const Mypage = ({ userData, deleteUserInfo, token }) => {
     })
       .then((res) => {
         if (res.data.message === "ok") {
-          console.log("유저포토 유즈이펙트 2", res.data);
           let ongoingChallData = [];
           let completedChallData = [];
-          res.data.data.challenges.map((el) => {
+          res.data.data.challenges.forEach((el) => {
             if (el.progress_rate === 100) {
               completedChallData.push(el);
               setCompletedList(completedChallData);
