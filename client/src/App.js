@@ -104,7 +104,7 @@ function App() {
             user_kakaoId,
             user_nickname,
           });
-          handleLoginTrue();
+          setIsLogin(true);
         })
         .catch(err => console.log("social login err", err));
     }
@@ -117,12 +117,10 @@ function App() {
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/auth",
       headers: { authorization: token },
     }).then(res => {
-      console.log(res.data);
       if (res.data.message === "ok") {
         setUserData({ ...userData, ...res.data.data });
         handleLoginTrue();
       }
-      console.log(token);
     });
   }, []);
 
