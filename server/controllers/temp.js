@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-const db = require("../models/")
-
-=======
 const db = require("../models");
 const axios = require("axios");
->>>>>>> b2d16f4e27ba3048004997ba6b78df8c82d0b39d
 //! sequelize connection test
 // try {
 //   db.sequelize.authenticate();
@@ -15,17 +10,11 @@ const axios = require("axios");
 
 
 
-<<<<<<< HEAD
-
-
-
-=======
 // db.user.findAll({where:{id:1}}).then(data => {
 //   console.log(data[0].dataValues)
 // })
 
 // db.comment.findAll().then(data => console.log(data[0].dataValues))
->>>>>>> b2d16f4e27ba3048004997ba6b78df8c82d0b39d
 
 // db.user.findAll({
 //   where: {id : 1},
@@ -93,10 +82,5 @@ db.comment.create({
   userId: 1,
   challengeId: 1
 }).then(data =>{
-<<<<<<< HEAD
-  console.log(data[0].dataValues.comments)
-});
-=======
   console.log(data.dataValues)
 })
->>>>>>> b2d16f4e27ba3048004997ba6b78df8c82d0b39d
