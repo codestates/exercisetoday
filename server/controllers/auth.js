@@ -124,12 +124,13 @@ module.exports = {
         return e
       })
 
-    }
+    } else {
       // 토큰 아예 없는경우
     res.status(200).json({
       data : null,
       message : 'not authorized'
     })
+  }
     
 
   }

@@ -18,6 +18,8 @@ module.exports = {
     }).then(data => {
           
       const value = data[0].dataValues
+
+      console.log(value)
       res.status(200).json({
         data : value.user_photo,
         message : 'ok'
@@ -27,8 +29,7 @@ module.exports = {
   },
   put: async (req, res) => {
 
-    const photo = req.body.user_photo
-
+    const photo = req.body.user_photo;
     const token = req.headers.authorization;
     let jwt = false;
     let kakao = false;
@@ -101,6 +102,7 @@ module.exports = {
         
         // ! 카카오 토큰있고 유효한경우
 
+    
         db.user.update({user_photo: photo}, {
           where: {
             user_kakaoId: data.data.id
