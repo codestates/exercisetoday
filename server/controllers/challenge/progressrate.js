@@ -171,7 +171,7 @@ module.exports = {
 
     const progressVal = progress[0].dataValues
 
-    console.log(progressVal.progress_buttons)
+    // console.log(progressVal.progress_buttons)
 
     const dataToSend = {
       progress_id: progressVal.id,
