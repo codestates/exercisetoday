@@ -1,3 +1,5 @@
+const db = require("../models/")
+
 //! sequelize connection test
 try {
   db.sequelize.authenticate();
@@ -8,9 +10,9 @@ try {
 
 
 
-db.user.findAll().then(data => console.log(data[0].dataValues))
 
-db.comment.findAll().then(data => console.log(data[0].dataValues))
+
+
 
 db.user.findAll({
   where: {id : 1},
@@ -18,5 +20,5 @@ db.user.findAll({
       {model : db.comment}
   ]
 }).then(data =>{
-  console.log(data[0].dataValues)
+  console.log(data[0].dataValues.comments)
 });
