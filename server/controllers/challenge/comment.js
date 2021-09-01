@@ -1,77 +1,58 @@
 const { isJwtAuthorized } = require('../tokenFunctions');
-
+const db = require("../../models");
 const axios = require("axios");
 
 
 module.exports = {
   get: (req, res) => {
     const challengeId = Number(req.query.challenge_id);
+    
 
     // TODO 챌린지아이디로 댓글찾아와서 리스트 뿌려주기
-
-    res.status(200).json({
-      data: {
-        "comments": [
-          {  
-            "comment_id": 1,
-            "user_nickname": "힘든사람123",
-            "user_exp": 12,
-            "progress_rate": 10,
-            "comment_content": " 생각보다 힘드네 ",
-            "created_at": "created_at",
-          },
-          {
-            "comment_id": 2,
-            "user_nickname": "정열맨",
-            "user_exp": 55,
-            "progress_rate": 70,
-            "comment_content": " 열심히 합시da " ,
-            "created_at": "created_at",
-          },
-          {
-            "comment_id": 3,
-            "user_nickname": "육회비빔밥",
-            "user_exp": 10,
-            "progress_rate": 10,
-            "comment_content": " 운동 시작합니다 " ,
-            "created_at": "created_at",
-          },
-          {
-            "comment_id": 4,
-            "user_nickname": "미미",
-            "user_exp": 62,
-            "progress_rate": 100,
-            "comment_content": " 쉽네 ㅋ " ,
-            "created_at": "created_at",
-          },
-          {
-            "comment_id": 5,
-            "user_nickname": "육회비빔밥",
-            "user_exp": 13,
-            "progress_rate": 50,
-            "comment_content": " 엄청 많이한거같은데 이제 반했네 " ,
-            "created_at": "created_at",
-          },
-          {
-            "comment_id": 6,
-            "user_nickname": "오계란",
-            "user_exp": 112,
-            "progress_rate": 90,
-            "comment_content": " 안녕친구들 " ,
-            "created_at": "created_at",
-          },
-          {
-            "comment_id": 7,
-            "user_nickname": "물어보는사람",
-            "user_exp": 21,
-            "progress_rate": 0,
-            "comment_content": " 님들 이거 어렵나요 " ,
-            "created_at": "created_at",
-          }
-        ]
+    db.progress.findAll({
+      include: [
+        {
+          model: db.user
+        }
+      ],
+      where: {
+        challengeId : challengeId
       },
-      message: "ok"
     })
+    .then(data =>{
+      db.comment.findAll({
+        where: {
+          challengeId: challengeId
+        }
+      })
+      .then(data2 =>{
+        let result = [];
+        for(let i = 0; i < data2.length; i++){
+          let obj = {};
+          let id = data2[i].dataValues.userId;
+          for(let j = 0; j < data.length; j++){
+            if(data[j].dataValues.userId === id){
+              obj.user_nickname = data[j].dataValues.user.dataValues.user_nickname;
+              obj.user_exp = data[j].dataValues.user.dataValues.user_exp;
+              obj.progress_rate = data[j].dataValues.progress_rate;
+              break;
+            }
+          }
+          obj.comment_id = data2[i].dataValues.id; 
+          obj.comment_content = data2[i].dataValues.comment_content;
+          obj.created_at = data2[i].dataValues.createdAt;
+          result.push(obj);
+        }
+        // console.log(result)
+        res.status(200).json({
+          data: {
+            comments: result
+          },
+          message: "ok"
+        })
+      })
+    });
+
   },
   post: (req, res) => { // 댓글 쓰기
 
@@ -106,19 +87,24 @@ module.exports = {
         // ! jwt 토큰 유효한경우
 
         // TODO Sequelize 로 정보가져오기
-
-        res.status(200).json({
-          data : {
-            "comment_id": 8,
-            "user_id": userId,
-            "challenge_id" : challengeId,
-            "comment_content" : commentContent,
-            "created_at" : new Date(),
-            "updated_at" : new Date()            
-          },
-          message : 'ok'
+        db.comment.create({
+          comment_content: commentContent,
+          userId: userId,
+          challengeId: challengeId
         })
-
+        .then(data =>{
+          res.status(200).json({
+            data: {
+              comment_id: data.dataValues.id,
+              user_id: data.dataValues.userId,
+              challenge_id: data.dataValues.challengeId,
+              comment_content: data.dataValues.comment_content,
+              created_at: data.dataValues.createdAt,
+              updated_at: data.dataValues.updatedAt
+            },
+            message: "ok"
+          })
+        })
       }
 
     } else if(kakao) {
@@ -134,6 +120,26 @@ module.exports = {
         }
       })
       .then(data => {
+        if(!!data.data.id){
+          db.comment.create({
+            comment_content: commentContent,
+            userId: userId,
+            challengeId: challengeId
+          })
+          .then(data2 =>{
+            res.status(200).json({
+              data: {
+                comment_id: data2.dataValues.id,
+                user_id: data2.dataValues.userId,
+                challenge_id: data2.dataValues.challengeId,
+                comment_content: data2.dataValues.comment_content,
+                created_at: data2.dataValues.createdAt,
+                updated_at: data2.dataValues.updatedAt
+              },
+              message: "ok"
+            })
+          })
+        }
         // console.log(data.data) 하면,
         /* 
         이렇게 옴.
@@ -148,19 +154,7 @@ module.exports = {
 
         // TODO Sequelize 로 정보지우기
         
-        // ! 카카오 토큰있고 유효한경우
-        res.status(200).json({
-          data : {
-            "comment_id": 8,
-            "user_id": userId,
-            "challenge_id" : challengeId,
-            "comment_content" : commentContent,
-            "created_at" : new Date(),
-            "updated_at" : new Date()            
-          },
-          message : 'ok'
-        })
-
+        // ! 카카오 토큰있고 유효한경우       
       })
       .catch(e => {
         console.log(`Kakao token validation err ${e}`)}

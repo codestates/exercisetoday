@@ -24,7 +24,6 @@ const ChallengeContent = styled.div`
   background-image: url(${img});
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #003150;
   width: 60%;
   height: 100%;
 `;
@@ -37,7 +36,6 @@ const ChallengeContentSec = styled.div`
   background-image: url(${imgSec});
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #003150;
   width: 40%;
   height: 100%;
 `;
@@ -64,7 +62,7 @@ const SeeMoreBtn = styled.button`
   color: rgb(255, 255, 255);
   cursor: grab;
   :hover {
-    background-color: #${props => props.color};
+    background-color: #${(props) => props.color};
     -webkit-transition: all 0.1s ease-in-out;
     -moz-transition: all 0.1s ease-in-out;
     -ms-transition: all 0.1s ease-in-out;
@@ -93,7 +91,7 @@ const ChallengeText = styled.div`
 const Challenge = ({ isLogin, handleChallengeInfo, userData }) => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const history = useHistory();
-  const handleToChallenge = id => {
+  const handleToChallenge = (id) => {
     if (!isLogin) {
       setLoginModalVisible(true);
       return;
@@ -103,7 +101,7 @@ const Challenge = ({ isLogin, handleChallengeInfo, userData }) => {
       mehtod: "GET",
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate?challenge_id=${id}&user_id=${userData.user_id}`,
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.message === "ok") {
           handleChallengeInfo(res.data.data);
           history.push("/challenge");
@@ -112,10 +110,10 @@ const Challenge = ({ isLogin, handleChallengeInfo, userData }) => {
           handleChallengeInfo(res.data.data);
           history.push("/challenge");
         } else {
-          console.log("Challenge Progress err", res.data.message);
+          console.log("Challenge Progress Error", res.data.message);
         }
       })
-      .catch(err => console.log("Challenge Progress err", err));
+      .catch((err) => console.log("Challenge Progress Error", err));
   };
 
   return (

@@ -8,9 +8,10 @@ import Footer from "./components/Footer";
 import Mypage from "./components/mypage/Mypage";
 import SignUpPage from "./components/SignUpPage";
 import ChallengePage from "./components/ChallengePage";
+import useLocalStorage from "./UseLocalStorage";
 
 function App() {
-  const userDelete = {
+  const userInfoReset = {
     user_id: null,
     user_kakaoId: null,
     user_email: null,
@@ -21,9 +22,9 @@ function App() {
     created_at: null,
     updated_at: null,
   };
-  const [isLogin, setIsLogin] = useState(false); // URI로 페이지를 움직일수있다.
-  const [token, setToken] = useState(null);
-  const [userData, setUserData] = useState(userDelete);
+  const [isLogin, setIsLogin] = useLocalStorage("isLogin", false);
+  const [token, setToken] = useLocalStorage("token", null);
+  const [userData, setUserData] = useLocalStorage("userData", userInfoReset);
   const [challengeInfo, setChallengeInfo] = useState({
     progress_id: null,
     user_id: null,
@@ -32,6 +33,7 @@ function App() {
     challenge_desc: null,
     progress_rate: null,
     progress_buttons: null,
+    progress_liked: null,
     progress_likes: null,
     created_at: null,
     updated_at: null,
@@ -39,7 +41,7 @@ function App() {
   const history = useHistory();
   const handleLogout = () => {
     axios({
-      method: "post",
+      method: "POST",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
       headers: { authorization: token },
     })
@@ -47,8 +49,9 @@ function App() {
         if (res.data.message) {
           setIsLogin(false);
           history.push("/");
-          setUserData(userDelete);
+          setUserData(userInfoReset);
           setToken(null);
+          localStorage.clear();
         }
       })
       .catch(err => console.log("logout err", err));
@@ -67,7 +70,7 @@ function App() {
   };
 
   const deleteUserInfo = () => {
-    setUserData(userDelete);
+    setUserData(userInfoReset);
     setIsLogin(false);
     setToken(null);
   };
@@ -85,7 +88,7 @@ function App() {
     const authorizationCode = url.searchParams.get("code");
     if (authorizationCode) {
       await axios({
-        method: "post",
+        method: "POST",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
         data: { authorizationCode },
       })
@@ -101,29 +104,24 @@ function App() {
             user_kakaoId,
             user_nickname,
           });
+          setIsLogin(true);
         })
         .catch(err => console.log("social login err", err));
-      handleLoginTrue();
     }
   };
 
   useEffect(() => {
     componentDidMount();
-    // advanced challenge;
-
-    // axios({
-    //   method: "GET",
-    //   url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/auth",
-    //   headers: { authorization: token },
-    // }).then(res => {
-    //   console.log(res.data);
-    //   if (res.data.message === "ok") {
-    //     setUserData({ ...userData, ...res.data.data });
-    //     handleLoginTrue();
-    //   }
-    //   console.log(userData);
-    //   console.log(token);
-    // });
+    axios({
+      method: "GET",
+      url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/auth",
+      headers: { authorization: token },
+    }).then(res => {
+      if (res.data.message === "ok") {
+        setUserData({ ...userData, ...res.data.data });
+        setIsLogin(true);
+      }
+    });
   }, []);
 
   return (
@@ -135,6 +133,7 @@ function App() {
         handleUserInfo={handleUserInfo}
         handleJwtToken={handleJwtToken}
         token={token}
+        userData={userData}
       />
       <Switch>
         <Route exact path="/">

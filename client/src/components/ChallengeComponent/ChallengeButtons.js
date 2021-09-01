@@ -8,8 +8,9 @@ const ChallengeButton = styled.button`
   width: 80px;
   height: 80px;
   color: ${props =>
-    props.isClick ? "rgb(172, 176, 200)" : "rgb(122, 126, 170)"};
-  background: ${props => (props.isClick ? "rgba(21, 0, 130, 1)" : "white")};
+    props.isFinished === 1 ? "rgb(172, 176, 200)" : "rgb(122, 126, 170)"};
+  background: ${props =>
+    props.isFinished === 1 ? "rgba(21, 0, 130, 1)" : "white"};
   font-size: 16px;
   font-family: Georgia;
   font-weight: bold;
@@ -21,7 +22,7 @@ const ChallengeButton = styled.button`
   }
 `;
 
-const PercentContainer = styled.div`
+const PercentContainer = styled.section`
   text-align: right;
 `;
 
@@ -37,14 +38,15 @@ const ChallengePercent = styled.span`
 `;
 
 const ChallengeButtonContainer = styled.article`
-  margin: 7% 15%;
+  margin: 4% 19%;
   border: none;
-  background: ${props => (props.join ? "rgba(75, 151, 251, 0.3)" : "white")};
+  background: ${props =>
+    props.join === 1 ? "rgba(75, 151, 251, 0.3)" : "white"};
   text-align: center;
   border-radius: 1rem;
 `;
 
-const ChallengeName = styled.div`
+const ChallengeName = styled.h1`
   text-align: center;
   margin: 1%;
   padding: 0.3%;
@@ -79,6 +81,8 @@ const Message = styled.img`
 
 const LikeButton = styled.button`
   margin-left: auto;
+  background: white;
+  border: none;
 `;
 
 const LikeCount = styled.div`
@@ -89,9 +93,9 @@ const LikeCount = styled.div`
 const ThumbIcon = styled(Thumb)`
   border: 0;
   outline: 0;
-  color: blue;
+  color: ${props =>
+    props.progresslike === 1 ? "rgba(75, 81, 251, 1)" : "black"};
   :hover {
-    color: darkblue;
     cursor: pointer;
   }
   width: 60px;
@@ -102,20 +106,33 @@ const LikeButtonContainer = styled.section`
   padding: 1%;
 `;
 
-const ChallengeDesc = styled.div`
-  font-size: 25px;
+const ChallengeDesc = styled.h3`
+  font-family: serif cursive;
+  margin: 2% 10%;
+  font-size: 20px;
   text-align: center;
 `;
 
 const ChallengeButtons = ({ challengeInfo }) => {
-  const [likeCount, setLikeCount] = useState(challengeInfo.challenge_likes);
-  const [buttonList, setButtonList] = useState(challengeInfo.progress_buttons);
-  const [percent, setPercent] = useState(challengeInfo.progress_rate);
+  const {
+    progress_id,
+    user_id,
+    challenge_id,
+    challenge_name,
+    challenge_desc,
+    progress_rate,
+    progress_buttons,
+    progress_liked,
+    challenge_likes,
+  } = challengeInfo;
+  const [likeCount, setLikeCount] = useState(challenge_likes);
+  const [progresslike, setProgressLike] = useState(progress_liked);
+  const [buttonList, setButtonList] = useState(progress_buttons);
+  const [percent, setPercent] = useState(progress_rate);
   const [join, setJoin] = useState(false);
 
   const handleJoin = () => {
     setJoin(!join);
-    const { challenge_id, user_id } = challengeInfo;
 
     axios({
       method: "POST",
@@ -134,19 +151,6 @@ const ChallengeButtons = ({ challengeInfo }) => {
         return button;
       });
     });
-    const { user_id, challenge_id } = challengeInfo;
-    axios({
-      method: "PUT",
-      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate`,
-      data: {
-        user_id,
-        challenge_id,
-        progress_buttons: buttonList,
-        process_rate: percent,
-      },
-    }).catch(err => {
-      console.log("Put Progressrate err", err);
-    });
   };
 
   const handlePercent = button => {
@@ -160,16 +164,35 @@ const ChallengeButtons = ({ challengeInfo }) => {
   };
 
   const clickLikeButton = () => {
-    setLikeCount(likeCount + 1);
+    if (progresslike) {
+      setLikeCount(likeCount - 1);
+    } else {
+      setLikeCount(likeCount + 1);
+    }
+    setProgressLike(!progresslike);
   };
+
+  useEffect(() => {
+    axios({
+      method: "PUT",
+      url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate`,
+      data: {
+        user_id,
+        challenge_id,
+        progress_buttons: buttonList,
+        process_rate: percent,
+        progress_liked: progresslike,
+      },
+    }).catch(err => {
+      console.log("Put Progressrate err", err);
+    });
+  }, [buttonList, likeCount, challenge_id, percent, progresslike, user_id]);
 
   return (
     <>
-      <ChallengeName>
-        {challengeInfo.challenge_name} 챌린지에 오신것을 환영합니다
-      </ChallengeName>
-      <ChallengeDesc>{challengeInfo.challenge_desc}</ChallengeDesc>
-      {join || percent !== 0 ? (
+      <ChallengeName>{challenge_name}에 오신것을 환영합니다</ChallengeName>
+      <ChallengeDesc>{challenge_desc}</ChallengeDesc>
+      {join && progress_id ? (
         <PercentContainer>
           <ChallengePercent>진행도: {Math.round(percent)}%</ChallengePercent>
         </PercentContainer>
@@ -179,14 +202,14 @@ const ChallengeButtons = ({ challengeInfo }) => {
           <Message src={"/pngwing.com.png"} />
         </CongratsContainer>
       ) : (
-        <ChallengeButtonContainer join={join}>
-          {join || percent !== 0 ? (
+        <ChallengeButtonContainer join={join ? 1 : 0}>
+          {join && progress_id ? (
             buttonList.map(button => {
               return (
                 <ChallengeButton
                   key={button.buttonId}
                   onClick={buttonClick(button)}
-                  isClick={button.isFinished}
+                  isFinished={button.isFinished ? 1 : 0}
                 >
                   {button.buttonId + 1} 일차
                 </ChallengeButton>
@@ -201,7 +224,10 @@ const ChallengeButtons = ({ challengeInfo }) => {
       )}
       <LikeButtonContainer>
         <LikeButton>
-          <ThumbIcon onClick={clickLikeButton} />
+          <ThumbIcon
+            onClick={clickLikeButton}
+            progresslike={progresslike ? 1 : 0}
+          />
         </LikeButton>
         <LikeCount>좋아요: {likeCount}개</LikeCount>
       </LikeButtonContainer>
