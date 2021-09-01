@@ -1,5 +1,5 @@
 const { isJwtAuthorized } = require('../tokenFunctions');
-
+const db = require("../../models");
 const axios = require("axios");
 
 
@@ -7,6 +7,15 @@ module.exports = {
   put: (req, res) => { 
 
     const userDataToChange = req.body;
+    // console.log(userDataToChange)
+    let updateData = {};
+    if(!!userDataToChange.user_nickname){
+      updateData.user_nickname = userDataToChange.user_nickname;
+    }
+    if(!!userDataToChange.user_password){
+      updateData.user_password = userDataToChange.user_password;
+    }
+    // console.log(updateData)
     
     const token = req.headers.authorization;
     let jwt = false;
@@ -20,9 +29,9 @@ module.exports = {
       
     if(jwt) {
       // jwt 토큰 있는경우
-      console.log(jwt)
+      // console.log(jwt)
       const userData = isJwtAuthorized(jwt);
-      console.log(userData)
+      // console.log(userData)
 
       if(!userData) {
         // jwt 토큰 만료된경우
@@ -36,21 +45,43 @@ module.exports = {
         // ! jwt 토큰 유효한경우
 
         // TODO Sequelize 로 정보수정해서 바뀐거 보내기
-
-        res.status(200).json({
-          data : {
-            ...userData,
-            user_nickname: userDataToChange.user_nickname,
-            updatedAt: new Date()
-          },
-          message : 'ok'
+        db.user.update(updateData,{
+          where: {
+            id: userDataToChange.user_id
+          }
         })
-
+        .then(data =>{
+          // console.log(data);
+          db.user.findAll({
+            where:{
+              id: userDataToChange.user_id
+            }
+          })
+          .then(data2 =>{
+            // console.log(data2[0].dataValues);
+            res.status(200).json({
+              data: {
+                user_id: data2[0].dataValues.id,
+                user_kakaoId: data2[0].dataValues.user_kakaoId,
+                user_email: data2[0].dataValues.user_email,
+                user_password: data2[0].dataValues.user_password,
+                user_name: data2[0].dataValues.user_name,
+                user_nickname: data2[0].dataValues.user_nickname,
+                user_exp: data2[0].dataValues.user_exp,
+                user_gender: data2[0].dataValues.user_gender,
+                user_mobile: data2[0].dataValues.user_mobile,
+                created_at: data2[0].dataValues.createdAt,
+                updated_at: data2[0].dataValues.updatedAt
+              },
+              message: "ok"
+            })          
+          })
+        })
       }
     } else if(kakao) {
       // 카카오 토큰 있는경우
 
-      console.log(kakao)
+      // console.log(kakao)
       // 카카오 유효성 검증
       axios({
         method: 'get',
@@ -72,17 +103,40 @@ module.exports = {
           appId: 630711
         }
         */
-        // TODO Sequelize 로 정보수정해서 바뀐거 보내기
-        
+        // TODO Sequelize 로 정보수정해서 바뀐거 보내기 
         // ! 카카오 토큰있고 유효한경우
-        res.status(200).json({
-          data : {
-            user_nickname: userDataToChange.user_nickname,
-            updatedAt: new Date()
-          },
-          message : 'ok'
+        db.user.update(updateData,{
+          where: {
+            id: userDataToChange.user_id
+          }
         })
-
+        .then(data =>{
+          // console.log(data);
+          db.user.findAll({
+            where:{
+              id: userDataToChange.user_id
+            }
+          })
+          .then(data2 =>{
+            // console.log(data2[0].dataValues);
+            res.status(200).json({
+              data: {
+                user_id: data2[0].dataValues.id,
+                user_kakaoId: data2[0].dataValues.user_kakaoId,
+                user_email: data2[0].dataValues.user_email,
+                user_password: data2[0].dataValues.user_password,
+                user_name: data2[0].dataValues.user_name,
+                user_nickname: data2[0].dataValues.user_nickname,
+                user_exp: data2[0].dataValues.user_exp,
+                user_gender: data2[0].dataValues.user_gender,
+                user_mobile: data2[0].dataValues.user_mobile,
+                created_at: data2[0].dataValues.createdAt,
+                updated_at: data2[0].dataValues.updatedAt
+              },
+              message: "ok"
+            })          
+          })
+        })
       })
       .catch(e => {
         console.log(`Kakao token validation err ${e}`)}
@@ -96,8 +150,6 @@ module.exports = {
         message : 'not authorized'
       })
     }
-
-
   },
   delete: (req, res) => {
 
@@ -128,17 +180,23 @@ module.exports = {
         // jwt 토큰 유효한경우
 
         // TODO Sequelize 로 정보지우기
-
-        res.status(200).json({
-          data : null,
-          message : 'ok'
+        //userData.user_id로 찾아 지우기
+        db.user.destroy({
+          where:{
+            id: userData.user_id
+          }
         })
-
+        .then(data =>{
+          res.status(200).json({
+            data : null,
+            message : 'ok'
+          })
+        })
       }
     } else if(kakao) {
       // 카카오 토큰 있는경우
 
-      console.log(kakao)
+      // console.log(kakao)
       // 카카오 유효성 검증
       axios({
         method: 'get',
@@ -161,14 +219,19 @@ module.exports = {
         }
         */
 
-        // TODO Sequelize 로 정보지우기
-        
+        // TODO Sequelize 로 정보지우기      
         // 카카오 토큰있고 유효한경우
-        res.status(200).json({
-          data : null,
-          message : 'ok'
+        db.user.destroy({
+          where:{
+            user_kakaoId: data.data.id
+          }
         })
-
+        .then(data2 =>{
+          res.status(200).json({
+            data : null,
+            message : 'ok'
+          })
+        })
       })
       .catch(e => {
         console.log(`Kakao token validation err ${e}`)}
