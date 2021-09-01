@@ -18,6 +18,7 @@ module.exports = {
       data : {
         ...userData, 
         user_id: 24,
+        user_kakaoId: null,
         user_exp: 0,
         created_at: new Date(),
         updated_at: new Date()

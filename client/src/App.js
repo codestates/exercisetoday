@@ -119,7 +119,7 @@ function App() {
     }).then(res => {
       if (res.data.message === "ok") {
         setUserData({ ...userData, ...res.data.data });
-        handleLoginTrue();
+        setIsLogin(true);
       }
     });
   }, []);

@@ -111,7 +111,7 @@ const SignUpPage = () => {
 
   const [errMessage, setErrMessage] = useState("");
 
-  const handleInputValue = key => e => {
+  const handleInputValue = (key) => (e) => {
     setUserInfo({ ...userInfo, [key]: e.target.value });
   };
 
@@ -164,7 +164,7 @@ const SignUpPage = () => {
         user_mobile,
       },
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.message === "ok") {
           setUserInfo(null);
           history.push("/");
@@ -173,7 +173,7 @@ const SignUpPage = () => {
           setErrMessage(res.data.message);
         }
       })
-      .catch(err => console.log("signup err", err));
+      .catch((err) => console.log("signup err", err));
   };
 
   const handleSocialLogin = () => {
@@ -195,7 +195,7 @@ const SignUpPage = () => {
             </SocialLoginButton>
           </Section>
           <Slogan>모든 항목은 필수 입니다.</Slogan>
-          <form onSubmit={e => e.preventDefault()}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <Section>
               <LabelText>이메일</LabelText>
               <InputBox

@@ -52,7 +52,8 @@ module.exports = {
             user_nickname : response2.data.kakao_account.profile.nickname,
             user_exp : 52,
           },
-          message : "ok, kakao token is created in your cookie"
+          message : "ok, kakao token is created in your cookie",
+          token : token
         })
       })
       .catch(e => {
@@ -66,10 +67,10 @@ module.exports = {
 
 
     // 에러난경우
-    // res.status(401).json({
-    //   data : null,
-    //   message : "token이나 code 오류. 다시 로그인하세요"
-    // });
+    res.status(401).json({
+      data : null,
+      message : "token이나 code 오류. 다시 로그인하세요"
+    });
     
   }
 }
