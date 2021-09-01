@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import LoginModal from "./LoginModal";
 
 const HeaderContainer = styled.div`
+  display: flex;
   width: 100%;
   text-align: center;
   margin: 0px auto;
@@ -20,16 +21,19 @@ const HeaderContainer = styled.div`
 
 const Logo = styled.img`
   width: 10em;
-  padding-left: 40px;
+  padding-right: 10px;
 `;
 
 const NavigationContainer = styled.nav`
+  flex: 1;
+  text-align: right;
   float: right;
   position: relative;
   top: 10px;
 `;
 
 const UserIcon = styled(UserSvg)`
+  flex: 1;
   padding: 2px 10px;
   border: 0;
   outline: 0;
@@ -40,6 +44,17 @@ const UserIcon = styled(UserSvg)`
   width: 40px;
 `;
 
+const WelcomeUser = styled.div`
+  align-items: center;
+  vertical-align: middle;
+  padding-left: 10px;
+  margin-top: 1.75rem;
+  text-align: left;
+  font-family: system-ui;
+  flex: 1;
+  font-size: 15px;
+`;
+
 const Header = ({
   isLogin,
   handleLogout,
@@ -47,6 +62,7 @@ const Header = ({
   handleUserInfo,
   handleJwtToken,
   token,
+  userData,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -63,6 +79,11 @@ const Header = ({
   return (
     <>
       <HeaderContainer>
+        {userData.user_nickname ? (
+          <WelcomeUser>어서오세요 {userData.user_nickname}님</WelcomeUser>
+        ) : (
+          <WelcomeUser>오늘 하루 운동 어떠세요?</WelcomeUser>
+        )}
         <Link to="/">
           <Logo src={"/logo.png"} onClick={() => setModalOpen(false)} />
         </Link>
@@ -81,9 +102,7 @@ const Header = ({
       <LoginModal
         visible={loginModalVisible}
         setVisible={setLoginModalVisible}
-        loginModal={loginModal}
         handleLoginTrue={handleLoginTrue}
-        isLogin={isLogin}
         handleUserInfo={handleUserInfo}
         handleJwtToken={handleJwtToken}
       />
