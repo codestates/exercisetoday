@@ -7,8 +7,8 @@ const ModalContainer = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
-  display: ${(props) => (props.visible ? "auto" : "none")};
-  pointer-events: ${(props) => (props.visible ? "initial" : "none")};
+  display: ${props => (props.visible ? "auto" : "none")};
+  pointer-events: ${props => (props.visible ? "initial" : "none")};
   top: 0;
   left: 0;
   bottom: 0;
@@ -136,8 +136,8 @@ const LoginModal = ({
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signin",
       data: { user_email: email, user_password: password },
     })
-      .then((res) => {
-        if (res.data.message) {
+      .then(res => {
+        if (res.data.data) {
           handleLoginTrue();
           setLoginInfo({ ...loginInfo, password: "" });
           handleUserInfo(res.data.data);
@@ -145,7 +145,7 @@ const LoginModal = ({
           setVisible(false);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("login err", err);
       });
   };
@@ -154,7 +154,7 @@ const LoginModal = ({
       "https://kauth.kakao.com/oauth/authorize?client_id=ce4c941a6f16b0b73737edf331c2adaf&redirect_uri=http://localhost:3000&response_type=code"
     );
   };
-  const loginInfoHandler = (key) => (e) => {
+  const loginInfoHandler = key => e => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
   return (

@@ -113,7 +113,7 @@ const ChallengeDesc = styled.h3`
   text-align: center;
 `;
 
-const ChallengeButtons = ({ challengeInfo }) => {
+const ChallengeButtons = ({ challengeInfo, handleChallengeInfo }) => {
   const {
     progress_id,
     user_id,
@@ -133,12 +133,18 @@ const ChallengeButtons = ({ challengeInfo }) => {
 
   const handleJoin = () => {
     setJoin(!join);
-
     axios({
       method: "POST",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate",
       data: { challenge_id, user_id },
-    }).catch(err => console.log("Post progressrate err", err));
+    })
+      .then(res => {
+        console.log(res.data);
+        if (res.data.message === "ok") {
+          handleChallengeInfo(res.data.data);
+        }
+      })
+      .catch(err => console.log("Post progressrate err", err));
   };
 
   const buttonClick = key => () => {
@@ -192,7 +198,7 @@ const ChallengeButtons = ({ challengeInfo }) => {
     <>
       <ChallengeName>{challenge_name}에 오신것을 환영합니다</ChallengeName>
       <ChallengeDesc>{challenge_desc}</ChallengeDesc>
-      {join && progress_id ? (
+      {join || progress_id ? (
         <PercentContainer>
           <ChallengePercent>진행도: {Math.round(percent)}%</ChallengePercent>
         </PercentContainer>
@@ -203,7 +209,7 @@ const ChallengeButtons = ({ challengeInfo }) => {
         </CongratsContainer>
       ) : (
         <ChallengeButtonContainer join={join ? 1 : 0}>
-          {join && progress_id ? (
+          {join || progress_id ? (
             buttonList.map(button => {
               return (
                 <ChallengeButton
