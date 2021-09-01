@@ -1,5 +1,5 @@
 const { isJwtAuthorized } = require('../tokenFunctions');
-
+const db = require("../../models/")
 const axios = require("axios");
 
 
@@ -9,17 +9,27 @@ module.exports = {
     const userId = req.query.user_id;
     
     // TODO Sequelize 로 userId이용해서 사진가져오기
+    console.log(userId)
 
-    res.status(200).json({
-      data : "여기 사진이 Blob 형식으로 들어올 거에요 만약 이 값이 null 이라면 디폴트 사진을 넣어주세요.",
-      message : 'ok'
+    db.user.findAll({
+      where: {
+        id: userId
+      }
+    }).then(data => {
+          
+      const value = data[0].dataValues
+
+      console.log(value)
+      res.status(200).json({
+        data : value.user_photo,
+        message : 'ok'
+      })
     })
 
   },
-  put: (req, res) => {
+  put: async (req, res) => {
 
-    const photo = req.body.user_photo
-
+    const photo = req.body.user_photo;
     const token = req.headers.authorization;
     let jwt = false;
     let kakao = false;
@@ -47,19 +57,25 @@ module.exports = {
       } else {
         // ! jwt 토큰 유효한경우
 
-        // TODO Sequelize 로 정보지우기
+        // TODO Sequelize 로 정보 넣기
+        db.user.update({user_photo: photo}, {
+          where: {
+            id: userData.user_id
+          }
+        }).then(data => {
 
-        res.status(200).json({
-          data : photo,
-          message : 'ok'
+          res.status(200).json({
+            data :photo,
+            message : 'ok'
+          })
         })
+
 
       }
 
     } else if(kakao) {
       // 카카오 토큰 있는경우
 
-      console.log(kakao)
       // 카카오 유효성 검증
       axios({
         method: 'get',
@@ -82,13 +98,23 @@ module.exports = {
         }
         */
 
-        // TODO Sequelize 로 정보지우기
+        // TODO Sequelize 로 사진 업뎃
         
         // ! 카카오 토큰있고 유효한경우
-        res.status(200).json({
-          data : photo,
-          message : 'ok'
+
+    
+        db.user.update({user_photo: photo}, {
+          where: {
+            user_kakaoId: data.data.id
+          }
+        }).then(data => {
+
+          res.status(200).json({
+            data :photo,
+            message : 'ok'
+          })
         })
+
 
       })
       .catch(e => {

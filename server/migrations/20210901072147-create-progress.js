@@ -14,7 +14,7 @@ module.exports = {
       },
       progress_buttons: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       userId: {
         type: Sequelize.INTEGER
