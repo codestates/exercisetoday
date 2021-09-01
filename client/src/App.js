@@ -45,7 +45,7 @@ function App() {
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signout",
       headers: { authorization: token },
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.message) {
           setIsLogin(false);
           history.push("/");
@@ -54,18 +54,18 @@ function App() {
           localStorage.clear();
         }
       })
-      .catch(err => console.log("logout err", err));
+      .catch((err) => console.log("logout err", err));
   };
 
-  const handleJwtToken = token => {
+  const handleJwtToken = (token) => {
     setToken(`jwt ${token}`);
   };
 
-  const handleKakaoToken = token => {
+  const handleKakaoToken = (token) => {
     setToken(`kakao ${token}`);
   };
 
-  const handleUserInfo = data => {
+  const handleUserInfo = (data) => {
     setUserData({ ...userData, ...data });
   };
 
@@ -79,7 +79,7 @@ function App() {
     setIsLogin(true);
   };
 
-  const handleChallengeInfo = data => {
+  const handleChallengeInfo = (data) => {
     setChallengeInfo({ ...challengeInfo, ...data });
   };
 
@@ -92,7 +92,7 @@ function App() {
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
         data: { authorizationCode },
       })
-        .then(res => {
+        .then((res) => {
           handleKakaoToken(res.data.token);
           const { user_email, user_exp, user_id, user_kakaoId, user_nickname } =
             res.data.data;
@@ -106,7 +106,12 @@ function App() {
           });
           handleLoginTrue();
         })
+<<<<<<< HEAD
+        .catch((err) => console.log("social login err", err));
+      handleLoginTrue();
+=======
         .catch(err => console.log("social login err", err));
+>>>>>>> 9ef48e9e875076693d0a33967b9cde501c5e2fa4
     }
   };
 

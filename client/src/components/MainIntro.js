@@ -22,7 +22,6 @@ const MainIntroBack = styled.div`
   margin-top: 5rem;
   width: 100%;
   height: 40vh;
-  background-color: rgb(255, 0, 0);
   background-image: url(${img});
   background-repeat: no-repeat;
   background-size: cover;
