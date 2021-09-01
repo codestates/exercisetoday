@@ -34,7 +34,8 @@ module.exports = {
     }*/);
     res.status(200).json({
       data: data,
-      message: "ok, jwt token is created in your cookie"
+      message: "ok, jwt token is created in your cookie",
+      token: token
     });
   }
 }

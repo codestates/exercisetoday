@@ -79,8 +79,15 @@ module.exports = {
     const challengeId = req.body.challenge_id;
     const commentContent = req.body.comment_content;
 
-    const kakao = req.cookies.kakao;
-    const jwt = req.cookies.jwt;
+    const token = req.headers.authorization;
+    let jwt = false;
+    let kakao = false;
+    
+    if(token.split(" ")[0] === "kakao") {
+      kakao = token.split(" ")[1];
+    } else if (token.split(" ")[0] === "jwt") {
+      jwt = token.split(" ")[1];
+    }
 
     if(jwt) {
       // jwt 토큰 있는경우
@@ -90,7 +97,7 @@ module.exports = {
       if(!userData) {
         // jwt 토큰 만료된경우
 
-        res.status(400).json({
+        res.status(200).json({
           data : null,
           message : 'invalid access token'
         })
@@ -162,7 +169,7 @@ module.exports = {
 
     } else {
       // 토큰 아예 없는경우 (없을듯)
-      res.status(401).json({
+      res.status(200).json({
         data : null,
         message : 'not authorized'
       })

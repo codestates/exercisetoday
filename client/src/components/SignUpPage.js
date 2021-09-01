@@ -152,7 +152,7 @@ const SignUpPage = () => {
     setErrMessage("");
 
     axios({
-      method: "post",
+      method: "POST",
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signup",
       data: {
         user_id: null,
