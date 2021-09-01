@@ -149,7 +149,7 @@ module.exports = {
     const progress_rate = req.body.progress_rate;
     const progress_buttons = req.body.progress_buttons;
 
-    const updated = await db.progress.update(
+    await db.progress.update(
       {
         liked: liked,
         progress_rate: progress_rate,
@@ -167,16 +167,22 @@ module.exports = {
 
     const likes = await getLikesInfo(challengeId)
 
+    const progress = await getProgressInfo(userId, challengeId)
+
+    const progressVal = progress[0].dataValues
+
+    console.log(progressVal.progress_buttons)
+
     const dataToSend = {
-      progress_id: updated.id,
+      progress_id: progressVal.id,
       user_id: userId,
       challenge_id: challenge.id,
       challenge_name: challenge.challenge_name,
       challenge_desc: challenge.challenge_desc, 
       challenge_btn_cnt: challenge.challenge_btn_cnt,
-      progress_rate: updated.progress_rate,
-      progress_buttons: updated.progress_buttons,
-      progress_liked: updated.liked,
+      progress_rate: progressVal.progress_rate,
+      progress_buttons: progressVal.progress_buttons,
+      progress_liked: progressVal.liked,
       challenge_likes: likes,
     }
 
