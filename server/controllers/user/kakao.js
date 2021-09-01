@@ -52,7 +52,8 @@ module.exports = {
             user_nickname : response2.data.kakao_account.profile.nickname,
             user_exp : 52,
           },
-          message : "ok, kakao token is created in your cookie"
+          message : "ok, kakao token is created in your cookie",
+          token : token
         })
       })
       .catch(e => {
