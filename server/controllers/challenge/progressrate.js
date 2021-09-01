@@ -112,7 +112,7 @@ module.exports = {
       }
 
       const created = await db.progress.create({
-        progress_rate: 30,
+        progress_rate: 0, // 첫시작은 0
         progress_buttons: JSON.stringify(newButtons),
         liked: false,
         userId: userId,
@@ -142,6 +142,8 @@ module.exports = {
   },
   put: async (req, res) => {
 
+    // TODO userexp!!!!!!!
+    
     const userId = req.body.user_id;
     const challengeId = req.body.challenge_id;
 
