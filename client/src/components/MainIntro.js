@@ -3,7 +3,7 @@ import img from "./image/main.jpeg";
 
 const MainIntroContainer = styled.div`
   position: relative;
-  height: 50vh;
+  height: 40vh;
 `;
 
 const IntroText = styled.div`
