@@ -7,8 +7,8 @@ const ModalContainer = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
-  display: ${props => (props.visible ? "auto" : "none")};
-  pointer-events: ${props => (props.visible ? "initial" : "none")};
+  display: ${(props) => (props.visible ? "auto" : "none")};
+  pointer-events: ${(props) => (props.visible ? "initial" : "none")};
   top: 0;
   left: 0;
   bottom: 0;
@@ -60,7 +60,7 @@ const LoginTitle = styled.div`
 `;
 
 const LoginBtn = styled.button`
-  margin-top: 20px;
+  margin-top: 28px;
   background-color: #003150;
   text-decoration: none;
   border: none;
@@ -73,6 +73,15 @@ const LoginBtn = styled.button`
   }
 `;
 
+const ErrMessage = styled.div`
+  width: 20rem;
+  font-size: 13px;
+  position: absolute;
+  left: 100px;
+  bottom: 158px;
+  color: red;
+`;
+
 const BorderBottom = styled.div`
   display: flex;
   flex-basis: 100%;
@@ -80,7 +89,7 @@ const BorderBottom = styled.div`
   color: rgba(0, 0, 0, 0.35);
   font-size: 12px;
   position: absolute;
-  margin-top: 32.5%;
+  margin-top: 34%;
   width: 69.5%;
   ::before,
   ::after {
@@ -109,7 +118,7 @@ const SocialLoginBtn = styled.div`
     }
     > .kakaoImg {
       position: absolute;
-      top: 81%;
+      top: 83.5%;
       left: 37.3%;
       width: 14px;
       height: 20px;
@@ -124,6 +133,7 @@ const LoginModal = ({
   handleUserInfo,
   handleJwtToken,
 }) => {
+  const [errorMessage, setErrorMessage] = useState("");
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
@@ -136,16 +146,19 @@ const LoginModal = ({
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/signin",
       data: { user_email: email, user_password: password },
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.data) {
+          setErrorMessage("");
           handleLoginTrue();
           setLoginInfo({ ...loginInfo, password: "" });
           handleUserInfo(res.data.data);
           handleJwtToken(res.data.token);
           setVisible(false);
+        } else {
+          setErrorMessage("이메일 또는 비밀번호가 잘못 입력 되었습니다.");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("login err", err);
       });
   };
@@ -154,13 +167,18 @@ const LoginModal = ({
       "https://kauth.kakao.com/oauth/authorize?client_id=ce4c941a6f16b0b73737edf331c2adaf&redirect_uri=http://localhost:3000&response_type=code"
     );
   };
-  const loginInfoHandler = key => e => {
+  const handleCloseMoal = () => {
+    setErrorMessage("");
+    setVisible(false);
+  };
+
+  const loginInfoHandler = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
   return (
     <ModalContainer visible={visible}>
       <ModalContent>
-        <CloseModal onClick={() => setVisible(false)}>&times;</CloseModal>
+        <CloseModal onClick={handleCloseMoal}>&times;</CloseModal>
         <LoginTitle>오하운에 오신 것을 환영합니다.</LoginTitle>
         <InputBox
           className="input"
@@ -176,6 +194,7 @@ const LoginModal = ({
           placeholder="Password"
           onChange={loginInfoHandler("password")}
         />
+        <ErrMessage>{errorMessage}</ErrMessage>
         <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
         <BorderBottom> 또는</BorderBottom>
         <SocialLoginBtn>

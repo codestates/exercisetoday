@@ -39,12 +39,6 @@ const NoDataText = styled.div`
 
 const CompletedChall = ({ completedList }) => {
   const [challList, setChallList] = useState(completedList);
-  //key는 challenge_id로
-  const list = [
-    "30일 바른 자세를 위한 플랭크 챌린지",
-    "한강크로스스위밍챌린지",
-    "헌드레드 스쿼트 챌린지",
-  ];
   return (
     <>
       <ListContainer>
