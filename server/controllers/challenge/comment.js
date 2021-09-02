@@ -3,55 +3,117 @@ const db = require("../../models");
 const axios = require("axios");
 
 
+// 유저 정보
+const getUserInfo = async function (userId) {
+  const userData = await db.user.findAll({
+    where: {id : userId},
+  })
+  return userData[0].dataValues
+}
+
+// progress 정보
+const getProgressInfo = async function(userId, challengeId) {
+  const progressData = await db.progress.findAll({
+    where: {
+      userId : userId,
+      challengeId : challengeId
+    }
+  })
+
+  return progressData[0].dataValues
+}
+
 module.exports = {
-  get: (req, res) => {
+  get: async (req, res) => {
+
     const challengeId = Number(req.query.challenge_id);
     
 
-    // TODO 챌린지아이디로 댓글찾아와서 리스트 뿌려주기
-    db.progress.findAll({
-      include: [
-        {
-          model: db.user
-        }
-      ],
+    // TODO 챌린지아이디로 댓글찾아와서 리스트 뿌려주기 (조인 사용)
+    // db.progress.findAll({
+    //   include: [
+    //     {
+    //       model: db.user
+    //     }
+    //   ],
+    //   where: {
+    //     challengeId : challengeId
+    //   },
+    // })
+    // .then(data =>{
+    //   db.comment.findAll({
+    //     where: {
+    //       challengeId: challengeId
+    //     }
+    //   })
+    //   .then(data2 =>{
+
+    //     let result = [];
+    //     for(let i = 0; i < data2.length; i++){
+    //       let obj = {};
+    //       let id = data2[i].dataValues.userId;
+    //       for(let j = 0; j < data.length; j++){
+  
+    //         if(data[j].dataValues.userId === id){
+    //           obj.user_nickname = data[j].dataValues.user.dataValues.user_nickname;
+    //           obj.user_exp = data[j].dataValues.user.dataValues.user_exp;
+    //           obj.progress_rate = data[j].dataValues.progress_rate;
+    //           break;
+    //         }
+    //       }
+    //       obj.comment_id = data2[i].dataValues.id; 
+    //       obj.comment_content = data2[i].dataValues.comment_content;
+    //       obj.created_at = data2[i].dataValues.createdAt;
+    //       result.push(obj);
+    //     }
+    //     // console.log(result)
+    //     res.status(200).json({
+    //       data: {
+    //         comments: result
+    //       },
+    //       message: "ok"
+    //     })
+    //   })
+    // });
+
+
+    const commentsList = await db.comment.findAll({
       where: {
         challengeId : challengeId
       },
     })
-    .then(data =>{
-      db.comment.findAll({
-        where: {
-          challengeId: challengeId
-        }
-      })
-      .then(data2 =>{
-        let result = [];
-        for(let i = 0; i < data2.length; i++){
-          let obj = {};
-          let id = data2[i].dataValues.userId;
-          for(let j = 0; j < data.length; j++){
-            if(data[j].dataValues.userId === id){
-              obj.user_nickname = data[j].dataValues.user.dataValues.user_nickname;
-              obj.user_exp = data[j].dataValues.user.dataValues.user_exp;
-              obj.progress_rate = data[j].dataValues.progress_rate;
-              break;
-            }
-          }
-          obj.comment_id = data2[i].dataValues.id; 
-          obj.comment_content = data2[i].dataValues.comment_content;
-          obj.created_at = data2[i].dataValues.createdAt;
-          result.push(obj);
-        }
-        // console.log(result)
-        res.status(200).json({
-          data: {
-            comments: result
-          },
-          message: "ok"
-        })
-      })
-    });
+
+
+    let result = [];
+
+    for (let i = 0; i < commentsList.length; i++) {
+      let obj = {};
+
+      let userId = commentsList[i].dataValues.userId
+      let challengeId = commentsList[i].dataValues.challengeId
+
+      const userInfo = getUserInfo(userId);
+      const progressInfo = getProgressInfo(userId, challengeId)
+
+
+      obj.user_nickname = userInfo.user_nickname;
+      obj.user_exp = userInfo.user_exp;
+      obj.progress_rate = progressInfo.progress_rate;
+      obj.comment_id = commentsList[i].dataValues.id;
+      obj.comment_content = commentsList[i].dataValues.comment_content;
+      obj.created_at = commentsList[i].dataValues.createdAt;
+
+      result.push(obj);
+    }
+
+
+    res.status(200).json({
+      data: {
+        comments: result
+      },
+      message: "ok"
+    })
+
 
   },
   post: (req, res) => { // 댓글 쓰기
