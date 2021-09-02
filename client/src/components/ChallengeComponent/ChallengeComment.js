@@ -31,8 +31,8 @@ const ChallengeOnGoing = styled.div`
 `;
 
 const CommentNickName = styled.div`
-  min-width: 150px;
-  max-width: 200px;
+  min-width: 210px;
+  max-width: 250px;
   margin: 0 3px;
   padding: 3px;
   font-weight: bold;
@@ -68,11 +68,12 @@ const CommentSubmit = styled.button`
   font-size: 15px;
 `;
 
-const ChallengeComment = ({ challengeInfo, token }) => {
+const ChallengeComment = ({ challengeInfo, token, userData }) => {
   const [myComment, setMyComment] = useState("");
   const [userComments, setUserComments] = useState([]);
 
-  const { user_id, challenge_id } = challengeInfo;
+  const { challenge_id } = challengeInfo;
+  const { user_id } = userData;
 
   const handleMyComment = e => {
     setMyComment(e.target.value);
@@ -84,7 +85,21 @@ const ChallengeComment = ({ challengeInfo, token }) => {
       url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment",
       data: { user_id, challenge_id, comment_content: myComment },
       headers: { authorization: token },
-    }).catch(err => console.log("comment submit err", err));
+    })
+      .then(() => {
+        setMyComment("");
+        axios({
+          method: "GET",
+          url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/comment?challenge_id=${challenge_id}`,
+        })
+          .then(res => {
+            setUserComments(res.data.data.comments);
+          })
+          .catch(err => {
+            console.log("comment err", err);
+          });
+      })
+      .catch(err => console.log("comment submit err", err));
   };
 
   useEffect(() => {
@@ -100,7 +115,7 @@ const ChallengeComment = ({ challengeInfo, token }) => {
       .catch(err => {
         console.log("comment err", err);
       });
-  });
+  }, []);
 
   return (
     <>
@@ -126,6 +141,7 @@ const ChallengeComment = ({ challengeInfo, token }) => {
             <UserComment
               minLength="1"
               maxLength="80"
+              value={myComment}
               placeholder="최대 80글자 까지 입력가능 / 공백 포함"
               onChange={e => handleMyComment(e)}
             ></UserComment>
