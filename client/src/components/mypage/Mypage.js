@@ -273,6 +273,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
     })
       .then(res => {
+        console.log(res.data.data);
         if (res.data.message === "ok") {
           if (res.data.data === null) {
             setUserPhoto(null);
