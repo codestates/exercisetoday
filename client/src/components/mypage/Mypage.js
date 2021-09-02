@@ -320,6 +320,7 @@ const Mypage = ({ userData, deleteUserInfo, token }) => {
       headers: { authorization: token },
     })
       .then((res) => {
+        console.log("마이페이지 -->", res);
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
