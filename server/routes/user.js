@@ -8,6 +8,10 @@ const challengeController = require('../controllers/user/challenge');
 
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const upload = multer({
+    dest: 'uploads/'
+});
 
 // TODO 주석 해제하고 해당 루트 들어가서 작업
 
@@ -33,7 +37,7 @@ router.post('/signup', signUpController.post);
 router.get('/photo', photoController.get);
 
 // 프사 put /user/photo
-router.put('/photo', photoController.put);
+router.put('/photo', upload.single('user_photo'), photoController.put);
 
 // 진행, 완료 챌린지 get /user/challenge
 router.get('/challenge', challengeController.get);

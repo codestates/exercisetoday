@@ -28,6 +28,23 @@ module.exports = {
 
   },
   put: async (req, res) => {
+    //! put photo local test code
+    // const image = req.file
+    // // console.log(image)
+    // db.user.update({
+    //   user_photo: image
+    // },{
+    //   where: {
+    //     id: 1
+    //   }
+    // })
+    // .then(data =>{
+    //   // console.log(data)
+    //   db.user.findAll({where:{id:1}}).then(data2 =>{
+    //     console.log(data2[0].dataValues)
+    //   })
+    // })
+    //!------------------------------
 
     const photo = req.body.user_photo;
     const token = req.headers.authorization;
@@ -97,25 +114,32 @@ module.exports = {
           appId: 630711
         }
         */
-
         // TODO Sequelize 로 사진 업뎃
         
         // ! 카카오 토큰있고 유효한경우
-
-    
-        db.user.update({user_photo: photo}, {
-          where: {
-            user_kakaoId: data.data.id
-          }
-        }).then(data => {
-
-          res.status(200).json({
-            data :photo,
-            message : 'ok'
+        if(!!data.data.id){
+          const image = req.file
+          // console.log(image)
+          db.user.update({
+            user_photo: image
+          },{
+            where: {
+              user_kakaoId: data.data.id
+            }
           })
-        })
-
-
+          .then(data2 =>{
+            // console.log(data)
+            db.user.findAll({
+              where:{
+                user_kakaoId: data.data.id
+              }
+            })
+            .then(data3 =>{
+              // console.log(data3[0].dataValues)
+              res.send(data3[0].dataValues.user_photo);
+            })
+          })
+        }
       })
       .catch(e => {
         console.log(`Kakao token validation err ${e}`)}
