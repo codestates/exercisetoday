@@ -16,9 +16,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      challenge_btn_cnt: {
+      progress_buttons: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.JSON
       },
       createdAt: {
         type: 'TIMESTAMP',

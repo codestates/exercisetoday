@@ -14,6 +14,9 @@ const getLikesInfo = async function(challengeId) {
   const likedProgress = await db.progress.findAll({
     where: {liked : true},
   })
+
+  console.log(likedProgress.length)
+
   return likedProgress.filter(el => el.dataValues.challengeId === challengeId).length
 }
 
@@ -44,6 +47,8 @@ module.exports = {
 
     const progress = await getProgressInfo(userId, challengeId)
 
+    console.log("progress",progress)
+
     if(progress.length > 0) {
       
       let progressData = progress[0].dataValues
@@ -53,8 +58,7 @@ module.exports = {
         user_id: userId,
         challenge_id: challenge.id,
         challenge_name: challenge.challenge_name,
-        challenge_desc: challenge.challenge_desc, 
-        challenge_btn_cnt: challenge.challenge_btn_cnt,
+        challenge_desc: challenge.challenge_desc,
         progress_rate: progressData.progress_rate,
         progress_buttons: progressData.progress_buttons,
         progress_liked: progressData.liked,
@@ -72,7 +76,7 @@ module.exports = {
         challenge_id: challenge.id,
         challenge_name: challenge.challenge_name,
         challenge_desc: challenge.challenge_desc, 
-        challenge_btn_cnt: challenge.challenge_btn_cnt,
+        progress_buttons: challenge.progress_buttons,
         progress_liked: false,
         challenge_likes: likes,
       }
@@ -95,6 +99,8 @@ module.exports = {
 
     const progress = await getProgressInfo(userId, challengeId)
     
+    console.log(likes)
+
     if(progress.length > 0) {
       //진행중이었음
       res.status(200).json({
