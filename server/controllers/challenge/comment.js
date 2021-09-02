@@ -3,6 +3,14 @@ const db = require("../../models");
 const axios = require("axios");
 
 
+// // 챌린지 정보
+// const getChallengeInfo = async function (challengeId) {
+//   const challengeData = await db.challenge.findAll({
+//     where: {id : challengeId},
+//   })
+//   return challengeData[0].dataValues
+// }
+
 // 유저 정보
 const getUserInfo = async function (userId) {
   const userData = await db.user.findAll({
@@ -20,7 +28,7 @@ const getProgressInfo = async function(userId, challengeId) {
     }
   })
 
-  return progressData[0].dataValues
+  return progressData
 }
 
 module.exports = {
@@ -92,15 +100,22 @@ module.exports = {
       let userId = commentsList[i].dataValues.userId
       let challengeId = commentsList[i].dataValues.challengeId
 
-      
+      console.log("a")
+
 
       const userInfo = await getUserInfo(userId);
-      const progressInfo = await getProgressInfo(userId, challengeId)
+      let progressInfo = await getProgressInfo(userId, challengeId)
+      // const challengeInfo = await getChallengeInfo(challengeId)
 
+      if (progressInfo.length === 0) {
+        progressInfo = 0;
+      } else {
+        progressInfo = progressInfo[0].dataValues.progress_rate;
+      }
 
       obj.user_nickname = userInfo.user_nickname;
       obj.user_exp = userInfo.user_exp;
-      obj.progress_rate = progressInfo.progress_rate;
+      obj.progress_rate = progressInfo;
       obj.comment_id = commentsList[i].dataValues.id;
       obj.comment_content = commentsList[i].dataValues.comment_content;
       obj.created_at = commentsList[i].dataValues.createdAt;
