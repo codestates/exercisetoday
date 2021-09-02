@@ -14,6 +14,8 @@ const getLikesInfo = async function(challengeId) {
   const likedProgress = await db.progress.findAll({
     where: {liked : true},
   })
+
+
   return likedProgress.filter(el => el.dataValues.challengeId === challengeId).length
 }
 
@@ -44,6 +46,8 @@ module.exports = {
 
     const progress = await getProgressInfo(userId, challengeId)
 
+
+
     if(progress.length > 0) {
       
       let progressData = progress[0].dataValues
@@ -53,8 +57,7 @@ module.exports = {
         user_id: userId,
         challenge_id: challenge.id,
         challenge_name: challenge.challenge_name,
-        challenge_desc: challenge.challenge_desc, 
-        challenge_btn_cnt: challenge.challenge_btn_cnt,
+        challenge_desc: challenge.challenge_desc,
         progress_rate: progressData.progress_rate,
         progress_buttons: progressData.progress_buttons,
         progress_liked: progressData.liked,
@@ -69,10 +72,12 @@ module.exports = {
     } else {
 
       const dataToSend = {
+        progress_id: null,
         challenge_id: challenge.id,
         challenge_name: challenge.challenge_name,
         challenge_desc: challenge.challenge_desc, 
-        challenge_btn_cnt: challenge.challenge_btn_cnt,
+        progress_buttons: challenge.progress_buttons,         
+        progress_rate: challenge.progress_rate,
         progress_liked: false,
         challenge_likes: likes,
       }
@@ -95,6 +100,7 @@ module.exports = {
 
     const progress = await getProgressInfo(userId, challengeId)
     
+
     if(progress.length > 0) {
       //진행중이었음
       res.status(200).json({
@@ -104,15 +110,16 @@ module.exports = {
 
     } else {
 
-      const buttonCount = challenge.challenge_btn_cnt
+      const buttonCount = challenge.progress_buttons.length
       let newButtons = [];
       for(let i = 0; i < buttonCount; i++) {
         let newobj = { buttonId: i, isFinished: false }
         newButtons.push(newobj)
       }
 
+
       const created = await db.progress.create({
-        progress_rate: 30,
+        progress_rate: 0, // 첫시작은 0
         progress_buttons: JSON.stringify(newButtons),
         liked: false,
         userId: userId,
@@ -125,7 +132,6 @@ module.exports = {
         challenge_id: challenge.id,
         challenge_name: challenge.challenge_name,
         challenge_desc: challenge.challenge_desc, 
-        challenge_btn_cnt: challenge.challenge_btn_cnt,
         progress_rate: created.progress_rate,
         progress_buttons: created.progress_buttons,
         progress_liked: created.liked,
@@ -141,13 +147,64 @@ module.exports = {
 
   },
   put: async (req, res) => {
-
+    
     const userId = req.body.user_id;
     const challengeId = req.body.challenge_id;
 
-    const liked = req.body.liked;
+    const liked = req.body.progress_liked;
     const progress_rate = req.body.progress_rate;
+
+// ------------------ user exp -------------------
+    const userInfo = await db.user.findOne({
+      where: { id : userId },
+      attributes: ['user_exp']
+    });
+
+    let userExp = userInfo.dataValues.user_exp;
+    
+    // 기존 유저 경험치 가져옴
+
+    const progressInfo = await db.progress.findOne({
+      where: {
+        userId: userId,
+        challengeId: challengeId
+      },
+      attributes: ['progress_buttons']
+    })
+
+
+    const procBtn = progressInfo.dataValues.progress_buttons;
+    
+
+    const prevBtnCount = procBtn.filter(el => el.isFinished).length;
+    // 기존 버튼에서 누른 개수 가져옴
+
+
     const progress_buttons = req.body.progress_buttons;
+    
+    const newBtnCount = progress_buttons.filter(el => el.isFinished).length;
+    // 새로 누른 버튼 갯수
+
+
+    userExp = userExp - prevBtnCount + newBtnCount;
+    // 원래 있던 경험치에 현재 눌렸던 버튼 갯수 빼고 새로 누른 버튼 갯수 더해줌.
+
+
+    await db.user.update(
+      {
+        user_exp: userExp
+      },
+      {
+        where: {
+          id: userId
+        }
+      }
+    )
+
+
+
+// -----------------------------------------------
+
 
     await db.progress.update(
       {
@@ -159,7 +216,7 @@ module.exports = {
         where: {
           userId: userId,
           challengeId: challengeId
-      }
+        }
     })
     
 
@@ -171,19 +228,17 @@ module.exports = {
 
     const progressVal = progress[0].dataValues
 
-    // console.log(progressVal.progress_buttons)
 
     const dataToSend = {
       progress_id: progressVal.id,
       user_id: userId,
       challenge_id: challenge.id,
       challenge_name: challenge.challenge_name,
-      challenge_desc: challenge.challenge_desc, 
-      challenge_btn_cnt: challenge.challenge_btn_cnt,
+      challenge_desc: challenge.challenge_desc,
       progress_rate: progressVal.progress_rate,
       progress_buttons: progressVal.progress_buttons,
       progress_liked: progressVal.liked,
-      challenge_likes: likes,
+      challenge_likes: likes
     }
 
     res.status(201).json({

@@ -17,15 +17,28 @@ const Article = styled.article`
   margin: 2% 0;
 `;
 
-const ChallengePage = ({ challengeInfo, token }) => {
+const ChallengePage = ({
+  challengeInfo,
+  token,
+  handleChallengeInfo,
+  userData,
+}) => {
   return (
     <>
       <Main>
         <Article>
-          <ChallengeButtons challengeInfo={challengeInfo} />
+          <ChallengeButtons
+            challengeInfo={challengeInfo}
+            handleChallengeInfo={handleChallengeInfo}
+            userData={userData}
+          />
         </Article>
         <Article>
-          <ChallengeComment challengeInfo={challengeInfo} token={token} />
+          <ChallengeComment
+            challengeInfo={challengeInfo}
+            token={token}
+            userData={userData}
+          />
         </Article>
       </Main>
     </>

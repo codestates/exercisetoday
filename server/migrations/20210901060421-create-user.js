@@ -34,7 +34,7 @@ module.exports = {
       },
       user_photo: {
         defaultValue: null,
-        type: Sequelize.STRING(3000)
+        type: Sequelize.BLOB
       },
       user_gender: {
         defaultValue: null,
