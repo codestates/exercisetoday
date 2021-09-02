@@ -12,6 +12,7 @@ const OngoingPhoto = styled.div`
   width: inherit;
   height: inherit;
 `;
+
 const ChallContent = styled.div`
   display: flex;
   flex-direction: row;
@@ -51,6 +52,7 @@ const OngoingTitle = styled.div`
   color: rgba(0, 49, 80, 0.3);
   font-size: 4.3rem;
 `;
+
 const NoDataText = styled.div`
   margin-top: 1rem;
   height: 15rem;
@@ -61,12 +63,12 @@ const NoDataText = styled.div`
 
 const OngoingChallenge = ({ challengeList }) => {
   const [photoList] = useState([imgRun, imgClim, imgHomeWorkout, imgByc]);
+
   return (
     <OngoingContainer>
       <OngoingTitle>현재 진행중인 챌린지</OngoingTitle>
-
-      {challengeList !== null ? (
-        challengeList?.map((el) => {
+      {challengeList?.length >= 1 ? (
+        challengeList.map((el) => {
           return (
             <PhotoContainer key={el.challenge_name}>
               <ChallContent key={el.progress_rate.toString()}>

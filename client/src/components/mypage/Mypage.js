@@ -7,8 +7,6 @@ import CompletedChallenge from "./CompletedChallenge";
 import axios from "axios";
 
 const ChallengeContainer = styled.div`
-  /* border-top: 3px solid;
-  border-color: #003150; */
   margin-top: 20px;
   flex: 1;
   font-size: 2rem;
@@ -16,7 +14,6 @@ const ChallengeContainer = styled.div`
   justify-content: center;
   flex-direction: row;
   align-items: center;
-  //background-color: green;
 `;
 
 const PhotoBtn = styled.button`
@@ -34,7 +31,6 @@ const PhotoBtn = styled.button`
 `;
 
 const ProfileContentContainer = styled.div`
-  // * 그레이
   display: flex;
   flex-direction: column;
   height: 50%;
@@ -71,7 +67,7 @@ const ProfilePhoto = styled.div`
 `;
 
 const NickNameEditBtn = styled.button`
-  display: ${props => (props.visible ? "auto" : "none")};
+  display: ${(props) => (props.visible ? "auto" : "none")};
   position: relative;
   margin-top: 3px;
   left: 4%;
@@ -87,7 +83,7 @@ const NickNameEditBtn = styled.button`
 `;
 
 const EditPasswordContainer = styled.div`
-  display: ${props => (props.visible ? "auto" : "none")};
+  display: ${(props) => (props.visible ? "auto" : "none")};
 `;
 
 const InputBox = styled.input`
@@ -97,7 +93,7 @@ const InputBox = styled.input`
 `;
 
 const InputBoxNickName = styled.input`
-  display: ${props => (props.visibleNick ? "auto" : "none")};
+  display: ${(props) => (props.visibleNick ? "auto" : "none")};
   font-size: 1.2rem;
   margin: 0.85% 0% 0% 2.9%;
   width: 20%;
@@ -107,7 +103,7 @@ const InputBoxNickName = styled.input`
 `;
 
 const TextNickName = styled.input`
-  display: ${props => (props.visibleNickText ? "none" : "auto")};
+  display: ${(props) => (props.visibleNickText ? "none" : "auto")};
   font-size: 1.2rem;
   margin: 1% 0% 0% 3%;
   width: 15%;
@@ -122,18 +118,19 @@ const PasswordEditBtn = styled.button`
   left: 35%;
   width: 8rem;
   background-color: white;
-  border-color: rgba(0, 0, 0, 0.4); // * 비번변경 버튼
+  border-color: rgba(0, 0, 0, 0.4);
   color: rgb(0, 0, 0);
   cursor: pointer;
   :hover {
     border-color: rgba(0, 0, 0, 0.9);
   }
+  display: ${(props) => (props.visible ? "auto" : "none")};
 `;
 
 const NickNameEditOpenBtn = styled.button`
   position: relative;
   height: 2rem;
-  left: ${props => (props.visible ? 17.9 : 30)}%; // * 닉네임 버튼
+  left: ${(props) => (props.visible ? 17.9 : 30)}%;
   width: 8rem;
   background-color: white;
   border-color: rgba(0, 0, 0, 0.4);
@@ -162,12 +159,14 @@ const ProfileTitle = styled.div`
   color: rgba(0, 0, 0, 0.7);
   width: 28%;
 `;
+
 const PasswordEditText = styled.div`
   font-size: 1.2rem;
   margin-top: 3%;
   color: rgba(30, 20, 20, 0.5);
-  width: 10vw; // ? 신규비밀번호 글자
+  width: 10vw;
 `;
+
 const ProfileContent = styled.div`
   padding: 1.5%;
   width: 100%;
@@ -185,7 +184,7 @@ const ProfileData = styled.div`
 const BorderBottom = styled.div`
   width: 60rem;
   border-bottom: 2px solid;
-  border-color: rgba(0, 49, 80, 0.3); // * 콘텐트 밑줄
+  border-color: rgba(0, 49, 80, 0.3);
   margin-left: 3%;
   margin-right: 10%;
 `;
@@ -235,6 +234,7 @@ const DelAndSubBtnContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
 `;
+
 const MypageTopContainer = styled.div`
   display: flex;
   width: 100%;
@@ -251,12 +251,14 @@ const ProfileBack = styled.div`
 `;
 
 const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
+  const [passBtnIsOpen, setPassBtnIsOpen] = useState(true);
   const [userInfo, setUserInfo] = useState(userData);
   const [passwordEditClick, setPasswordEditClick] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [nickNameEditClick, setNickName] = useState(false);
   const [userPhoto, setUserPhoto] = useState(null);
+  const [newPhoto, setNewPhoto] = useState(null);
   const [challengeList, setChallengeList] = useState(null);
   const [completedList, setCompletedList] = useState(null);
   const [newUserInfo, setNewUserInfo] = useState({
@@ -270,44 +272,45 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
       method: "GET",
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.message === "ok") {
-          console.log("포토 - - > ", res.data.data); // * res.data.data.data로 바뀔수도있음(포토만)
           if (res.data.data === null) {
-            setUserPhoto(NoImage);
+            setUserPhoto(null);
           } else {
-            setUserPhoto(res.data.data); //blob제거 split(" ")[1]
+            setUserPhoto(res.data.data);
           }
         }
       })
-      .catch(err => console.log("Photo Error", err));
+      .catch((err) => console.log("Photo Error", err));
 
     axios({
       method: "GET",
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge?user_id=${userData.user_id}`,
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.message === "ok") {
           let ongoingChallData = [];
           let completedChallData = [];
-          res.data.data.challenges.forEach(el => {
+          res.data.data.challenges.forEach((el) => {
             if (el.progress_rate === 100) {
               completedChallData.push(el);
-              setCompletedList(completedChallData);
             } else {
               ongoingChallData.push(el);
-              setChallengeList(ongoingChallData);
             }
           });
+          setCompletedList(completedChallData);
+          setChallengeList(ongoingChallData);
         }
       })
-      .catch(err => console.log("challenges Error", err));
+      .catch((err) => console.log("challenges Error", err));
+    if (token.slice(0, 5) === "kakao") {
+      setPassBtnIsOpen(false);
+    }
   }, []);
 
   const deleteModalHandler = () => {
     setDeleteOpen(!deleteOpen);
   };
-
   const userInfoUpdate = () => {
     axios({
       method: "PUT",
@@ -319,7 +322,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
       },
       headers: { authorization: token },
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
@@ -328,28 +331,30 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
           console.log("userInfoUpdate Error", res.data.message);
         }
       })
-      .catch(err => console.log("userInfoUpdate Error", err));
-    if (userPhoto !== null) {
+      .catch((err) => console.log("userInfoUpdate Error", err));
+
+    if (userPhoto !== null && newPhoto !== userPhoto) {
       axios({
         method: "PUT",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo",
-        data: { user_photo: userPhoto?.slice(5) },
-        headers: { authorization: token },
+        data: { user_photo: userPhoto },
+        headers: {
+          authorization: token,
+        },
       })
-        .then(res => {
-          console.log(userPhoto?.slice(5));
-          console.log(res.data.data);
+        .then((res) => {
           if (res.data.message === "ok") {
-            setUserPhoto(res.data.data); //blob제거
+            setNewPhoto(res.data.data);
+            setUserPhoto(res.data.data);
           } else {
             console.log("User Photo Error", res.data.message);
           }
         })
-        .catch(err => console.log("User Photo Error", err));
+        .catch((err) => console.log("User Photo Error", err));
     }
   };
 
-  const handleInputValue = key => e => {
+  const handleInputValue = (key) => (e) => {
     if (key === "nick_name") {
       setNewUserInfo({ nick_name: e.target.value });
     } else if (
@@ -373,7 +378,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
     setErrorMessage("");
   };
 
-  const handlePhoto = e => {
+  const handlePhoto = (e) => {
     const temp = [];
     const photoToAdd = e.target.files;
     if (photoToAdd.length === 0) {
@@ -395,7 +400,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
     imageRef.current.click();
   };
 
-  const handleNickEdit = msg => {
+  const handleNickEdit = (msg) => {
     if (newUserInfo.nick_name !== userInfo.user_nickname) {
       if (msg === "done") {
         setUserInfo({ ...userInfo, user_nickname: newUserInfo.nick_name });
@@ -424,7 +429,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
                 type="file"
                 accpet="image/*"
                 name="profile"
-                onChange={e => handlePhoto(e)}
+                onChange={(e) => handlePhoto(e)}
               />
             </ProfilePhoto>
             <PhotoBtn onClick={onImgInputBtn}>프로필 등록 및 수정</PhotoBtn>
@@ -460,7 +465,10 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
                   </PasswordBtn>
                 </EditPasswordContainer>
               </ProfileData>
-              <PasswordEditBtn onClick={passwordEditClickHandler}>
+              <PasswordEditBtn
+                onClick={passwordEditClickHandler}
+                visible={passBtnIsOpen}
+              >
                 {passwordEditClick ? "변경취소" : "비밀번호 변경"}
               </PasswordEditBtn>
             </ProfileContent>
