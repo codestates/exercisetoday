@@ -77,10 +77,36 @@ const axios = require("axios");
 //     console.log(result)
 //   })
 // });
-db.comment.create({
-  comment_content: 'test댓글',
-  userId: 1,
-  challengeId: 1
-}).then(data =>{
-  console.log(data.dataValues)
-})
+
+// db.comment.create({
+//   comment_content: 'test댓글',
+//   userId: 1,
+//   challengeId: 1
+// }).then(data =>{
+//   console.log(data.dataValues)
+// })
+
+//test
+// db.comment.findAll({
+//     include: [
+//     {
+//       model: db.user
+//     }
+//   ],
+//   where:{
+//     challengeId: 1
+//   }
+// })
+// .findAll({
+//   include: [
+//     {
+//       model: db.progress
+//     }
+//   ],
+//   where:{
+//     userId: 1
+//   } 
+// })
+// .then(data =>{
+//   console.log(data)
+// })
