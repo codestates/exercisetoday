@@ -250,7 +250,7 @@ const ProfileBack = styled.div`
   }
 `;
 
-const Mypage = ({ userData, deleteUserInfo, token }) => {
+const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
   const [userInfo, setUserInfo] = useState(userData);
   const [passwordEditClick, setPasswordEditClick] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -320,10 +320,10 @@ const Mypage = ({ userData, deleteUserInfo, token }) => {
       headers: { authorization: token },
     })
       .then((res) => {
-        console.log("마이페이지 -->", res);
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
+          handleUserInfo(userInfo);
         } else {
           console.log("userInfoUpdate Error", res.data.message);
         }
@@ -337,8 +337,10 @@ const Mypage = ({ userData, deleteUserInfo, token }) => {
         headers: { authorization: token },
       })
         .then((res) => {
+          console.log(userPhoto?.slice(5));
+          console.log(res.data.data);
           if (res.data.message === "ok") {
-            setUserPhoto(res.data.user_photo); //blob제거
+            setUserPhoto(res.data.data); //blob제거
           } else {
             console.log("User Photo Error", res.data.message);
           }

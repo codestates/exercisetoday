@@ -25,7 +25,7 @@ function App() {
   const [isLogin, setIsLogin] = useLocalStorage("isLogin", false);
   const [token, setToken] = useLocalStorage("token", null);
   const [userData, setUserData] = useLocalStorage("userData", userInfoReset);
-  const [challengeInfo, setChallengeInfo] = useState({
+  const [challengeInfo, setChallengeInfo] = useLocalStorage("challengeInfo", {
     progress_id: null,
     user_id: null,
     challenge_id: null,
@@ -55,6 +55,22 @@ function App() {
         }
       })
       .catch(err => console.log("logout err", err));
+  };
+
+  const handleResetChallengeInfo = () => {
+    setChallengeInfo({
+      progress_id: null,
+      user_id: null,
+      challenge_id: null,
+      challenge_name: null,
+      challenge_desc: null,
+      progress_rate: null,
+      progress_buttons: null,
+      progress_liked: null,
+      progress_likes: null,
+      created_at: null,
+      updated_at: null,
+    });
   };
 
   const handleJwtToken = token => {
@@ -141,6 +157,7 @@ function App() {
             isLogin={isLogin}
             userData={userData}
             handleChallengeInfo={handleChallengeInfo}
+            handleResetChallengeInfo={handleResetChallengeInfo}
           />
         </Route>
         <Route path="/signup">
@@ -149,12 +166,17 @@ function App() {
         {isLogin ? (
           <>
             <Route path="/challenge">
-              <ChallengePage challengeInfo={challengeInfo} token={token} />
+              <ChallengePage
+                challengeInfo={challengeInfo}
+                token={token}
+                handleChallengeInfo={handleChallengeInfo}
+              />
             </Route>
             <Route path="/mypage">
               <Mypage
                 userData={userData}
                 deleteUserInfo={deleteUserInfo}
+                handleUserInfo={handleUserInfo}
                 token={token}
               />
             </Route>

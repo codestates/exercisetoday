@@ -1,7 +1,12 @@
 import MainIntro from "./MainIntro";
 import Challenge from "./Challenge";
 
-const MainPage = ({ isLogin, handleChallengeInfo, userData }) => {
+const MainPage = ({
+  isLogin,
+  handleChallengeInfo,
+  userData,
+  handleResetChallengeInfo,
+}) => {
   return (
     <>
       <MainIntro />
@@ -9,6 +14,7 @@ const MainPage = ({ isLogin, handleChallengeInfo, userData }) => {
         isLogin={isLogin}
         handleChallengeInfo={handleChallengeInfo}
         userData={userData}
+        handleResetChallengeInfo={handleResetChallengeInfo}
       />
     </>
   );

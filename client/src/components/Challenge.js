@@ -62,7 +62,7 @@ const SeeMoreBtn = styled.button`
   color: rgb(255, 255, 255);
   cursor: grab;
   :hover {
-    background-color: #${(props) => props.color};
+    background-color: #${props => props.color};
     -webkit-transition: all 0.1s ease-in-out;
     -moz-transition: all 0.1s ease-in-out;
     -ms-transition: all 0.1s ease-in-out;
@@ -88,10 +88,15 @@ const ChallengeText = styled.div`
   font-size: 3rem;
 `;
 
-const Challenge = ({ isLogin, handleChallengeInfo, userData }) => {
+const Challenge = ({
+  isLogin,
+  handleChallengeInfo,
+  userData,
+  handleResetChallengeInfo,
+}) => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const history = useHistory();
-  const handleToChallenge = (id) => {
+  const handleToChallenge = id => {
     if (!isLogin) {
       setLoginModalVisible(true);
       return;
@@ -101,19 +106,21 @@ const Challenge = ({ isLogin, handleChallengeInfo, userData }) => {
       mehtod: "GET",
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/challenge/progressrate?challenge_id=${id}&user_id=${userData.user_id}`,
     })
-      .then((res) => {
+      .then(res => {
+        console.log(res.data);
         if (res.data.message === "ok") {
           handleChallengeInfo(res.data.data);
           history.push("/challenge");
         } else if (res.data.message === "challenge not in progress") {
           console.log(res.data);
+          handleResetChallengeInfo();
           handleChallengeInfo(res.data.data);
           history.push("/challenge");
         } else {
           console.log("Challenge Progress Error", res.data.message);
         }
       })
-      .catch((err) => console.log("Challenge Progress Error", err));
+      .catch(err => console.log("Challenge Progress Error", err));
   };
 
   return (
