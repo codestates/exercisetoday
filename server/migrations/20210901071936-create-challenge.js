@@ -20,6 +20,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.JSON
       },
+      progress_rate: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

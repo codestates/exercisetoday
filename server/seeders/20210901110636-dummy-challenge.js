@@ -32,6 +32,7 @@ module.exports = {
           { buttonId: 13, isFinished: false },
           { buttonId: 14, isFinished: false },
         ]),
+        progress_rate: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -50,6 +51,7 @@ module.exports = {
           { buttonId: 8, isFinished: false },
           { buttonId: 9, isFinished: false }
         ]),
+        progress_rate: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -73,6 +75,7 @@ module.exports = {
           { buttonId: 13, isFinished: false },
           { buttonId: 14, isFinished: false },
         ]),
+        progress_rate: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -101,6 +104,7 @@ module.exports = {
           { buttonId: 18, isFinished: false },
           { buttonId: 19, isFinished: false }
         ]),
+        progress_rate: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -119,6 +123,7 @@ module.exports = {
           { buttonId: 8, isFinished: false },
           { buttonId: 9, isFinished: false }
         ]),
+        progress_rate: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -137,6 +142,7 @@ module.exports = {
           { buttonId: 8, isFinished: false },
           { buttonId: 9, isFinished: false }
         ]),
+        progress_rate: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -155,6 +161,7 @@ module.exports = {
           { buttonId: 8, isFinished: false },
           { buttonId: 9, isFinished: false }
         ]),
+        progress_rate: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },

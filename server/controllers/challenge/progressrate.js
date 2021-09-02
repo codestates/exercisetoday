@@ -73,10 +73,12 @@ module.exports = {
     } else {
 
       const dataToSend = {
+        progress_id: null,
         challenge_id: challenge.id,
         challenge_name: challenge.challenge_name,
         challenge_desc: challenge.challenge_desc, 
-        progress_buttons: challenge.progress_buttons,
+        progress_buttons: challenge.progress_buttons,         
+        progress_rate: challenge.progress_rate,
         progress_liked: false,
         challenge_likes: likes,
       }
