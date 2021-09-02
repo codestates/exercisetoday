@@ -92,8 +92,10 @@ module.exports = {
       let userId = commentsList[i].dataValues.userId
       let challengeId = commentsList[i].dataValues.challengeId
 
-      const userInfo = getUserInfo(userId);
-      const progressInfo = getProgressInfo(userId, challengeId)
+      
+
+      const userInfo = await getUserInfo(userId);
+      const progressInfo = await getProgressInfo(userId, challengeId)
 
 
       obj.user_nickname = userInfo.user_nickname;
