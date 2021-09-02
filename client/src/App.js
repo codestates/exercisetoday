@@ -56,7 +56,12 @@ function App() {
           setUserData(userDataReset);
           setChallengeInfo(challengeInfoReset);
           setToken(null);
-          localStorage.clear();
+          localStorage.removeItem(
+            "isLogin",
+            "token",
+            "userData",
+            "challengeInfo"
+          );
         }
       })
       .catch(err => console.log("logout err", err));
