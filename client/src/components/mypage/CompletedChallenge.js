@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useState } from "react";
 
 const CompletedChallTitle = styled.div`
   margin-left: 100px;
@@ -7,6 +6,7 @@ const CompletedChallTitle = styled.div`
   color: rgba(0, 49, 80, 0.3);
   font-size: 4.3rem;
 `;
+
 const CompletedListTitle = styled.div`
   display: flex;
   flex-direction: column;
@@ -23,12 +23,14 @@ const CompletedListTitle = styled.div`
     color: rgba(0, 0, 0, 0.9);
   }
 `;
+
 const ListContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const NoDataText = styled.div`
   margin-top: 1rem;
   height: 15rem;
@@ -38,13 +40,12 @@ const NoDataText = styled.div`
 `;
 
 const CompletedChall = ({ completedList }) => {
-  const [challList, setChallList] = useState(completedList);
   return (
     <>
       <ListContainer>
         <CompletedChallTitle>완료한 챌린지</CompletedChallTitle>
-        {challList !== null ? (
-          challList.map((el) => {
+        {completedList?.length >= 1 ? (
+          completedList.map((el) => {
             return (
               <CompletedListTitle key={el.challenge_id}>
                 {el.challenge_name}

@@ -14,7 +14,6 @@ const ChallengeContainer = styled.div`
   justify-content: center;
   flex-direction: row;
   align-items: center;
-  //background-color: green;
 `;
 
 const PhotoBtn = styled.button`
@@ -32,7 +31,6 @@ const PhotoBtn = styled.button`
 `;
 
 const ProfileContentContainer = styled.div`
-  // * 그레이
   display: flex;
   flex-direction: column;
   height: 50%;
@@ -126,13 +124,13 @@ const PasswordEditBtn = styled.button`
   :hover {
     border-color: rgba(0, 0, 0, 0.9);
   }
-  display: ${(props) => (props.visible ? "none" : "auto")};
+  display: ${(props) => (props.visible ? "auto" : "none")};
 `;
 
 const NickNameEditOpenBtn = styled.button`
   position: relative;
   height: 2rem;
-  left: ${(props) => (props.visible ? 17.9 : 30)}%; // * 닉네임 버튼
+  left: ${(props) => (props.visible ? 17.9 : 30)}%;
   width: 8rem;
   background-color: white;
   border-color: rgba(0, 0, 0, 0.4);
@@ -161,12 +159,14 @@ const ProfileTitle = styled.div`
   color: rgba(0, 0, 0, 0.7);
   width: 28%;
 `;
+
 const PasswordEditText = styled.div`
   font-size: 1.2rem;
   margin-top: 3%;
   color: rgba(30, 20, 20, 0.5);
-  width: 10vw; // ? 신규비밀번호 글자
+  width: 10vw;
 `;
+
 const ProfileContent = styled.div`
   padding: 1.5%;
   width: 100%;
@@ -184,7 +184,7 @@ const ProfileData = styled.div`
 const BorderBottom = styled.div`
   width: 60rem;
   border-bottom: 2px solid;
-  border-color: rgba(0, 49, 80, 0.3); // * 콘텐트 밑줄
+  border-color: rgba(0, 49, 80, 0.3);
   margin-left: 3%;
   margin-right: 10%;
 `;
@@ -234,6 +234,7 @@ const DelAndSubBtnContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
 `;
+
 const MypageTopContainer = styled.div`
   display: flex;
   width: 100%;
@@ -270,13 +271,10 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
     axios({
       method: "GET",
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
-      responseType: "arraybuffer",
     })
-      .then(async (res) => {
-        console.log("포토 GET then시작", res.data);
+      .then((res) => {
         if (res.data.message === "ok") {
           if (res.data.data === null) {
-            console.log("res.data.data === null 입니다.");
             setUserPhoto(null);
           } else {
             setUserPhoto(res.data.data);
@@ -296,12 +294,12 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
           res.data.data.challenges.forEach((el) => {
             if (el.progress_rate === 100) {
               completedChallData.push(el);
-              setCompletedList(completedChallData);
             } else {
               ongoingChallData.push(el);
-              setChallengeList(ongoingChallData);
             }
           });
+          setCompletedList(completedChallData);
+          setChallengeList(ongoingChallData);
         }
       })
       .catch((err) => console.log("challenges Error", err));
@@ -313,7 +311,6 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
   const deleteModalHandler = () => {
     setDeleteOpen(!deleteOpen);
   };
-
   const userInfoUpdate = () => {
     axios({
       method: "PUT",
@@ -326,7 +323,6 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
       headers: { authorization: token },
     })
       .then((res) => {
-        console.log("유저 정보 axios", res.dat);
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
@@ -336,6 +332,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
         }
       })
       .catch((err) => console.log("userInfoUpdate Error", err));
+
     if (userPhoto !== null && newPhoto !== userPhoto) {
       axios({
         method: "PUT",
@@ -343,14 +340,12 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
         data: { user_photo: userPhoto },
         headers: {
           authorization: token,
-          "Content-Type": "multipart/form-data",
         },
       })
         .then((res) => {
-          console.log("---> res.data ->>", res.data);
           if (res.data.message === "ok") {
-            setNewPhoto(res.data.data); // * axios로만 받아온 데이터. axiosPhoto.
-            setUserPhoto(res.data.data); //* 사용자가 사진 올리자마자 등록된 데이터
+            setNewPhoto(res.data.data);
+            setUserPhoto(res.data.data);
           } else {
             console.log("User Photo Error", res.data.message);
           }
@@ -384,15 +379,19 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
   };
 
   const handlePhoto = (e) => {
+    const temp = [];
     const photoToAdd = e.target.files;
     if (photoToAdd.length === 0) {
       return;
     }
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(e.target.files[0]);
-    fileReader.onload = function (e) {
-      setUserPhoto(e.target.result);
-    };
+    for (let i = 0; i < photoToAdd.length; i++) {
+      temp.push({
+        id: photoToAdd[i].name,
+        file: photoToAdd[i],
+        url: URL.createObjectURL(photoToAdd[i]),
+      });
+    }
+    setUserPhoto(temp[0].url);
   };
 
   const imageRef = useRef();
