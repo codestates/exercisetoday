@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
@@ -11,7 +11,7 @@ import ChallengePage from "./components/ChallengePage";
 import useLocalStorage from "./UseLocalStorage";
 
 function App() {
-  const userInfoReset = {
+  const userDataReset = {
     user_id: null,
     user_kakaoId: null,
     user_email: null,
@@ -22,10 +22,7 @@ function App() {
     created_at: null,
     updated_at: null,
   };
-  const [isLogin, setIsLogin] = useLocalStorage("isLogin", false);
-  const [token, setToken] = useLocalStorage("token", null);
-  const [userData, setUserData] = useLocalStorage("userData", userInfoReset);
-  const [challengeInfo, setChallengeInfo] = useLocalStorage("challengeInfo", {
+  const challengeInfoReset = {
     progress_id: null,
     user_id: null,
     challenge_id: null,
@@ -37,7 +34,14 @@ function App() {
     progress_likes: null,
     created_at: null,
     updated_at: null,
-  });
+  };
+  const [isLogin, setIsLogin] = useLocalStorage("isLogin", false);
+  const [token, setToken] = useLocalStorage("token", null);
+  const [userData, setUserData] = useLocalStorage("userData", userDataReset);
+  const [challengeInfo, setChallengeInfo] = useLocalStorage(
+    "challengeInfo",
+    challengeInfoReset
+  );
   const history = useHistory();
   const handleLogout = () => {
     axios({
@@ -49,7 +53,8 @@ function App() {
         if (res.data.message) {
           setIsLogin(false);
           history.push("/");
-          setUserData(userInfoReset);
+          setUserData(userDataReset);
+          setChallengeInfo(challengeInfoReset);
           setToken(null);
           localStorage.clear();
         }
@@ -58,19 +63,7 @@ function App() {
   };
 
   const handleResetChallengeInfo = () => {
-    setChallengeInfo({
-      progress_id: null,
-      user_id: null,
-      challenge_id: null,
-      challenge_name: null,
-      challenge_desc: null,
-      progress_rate: null,
-      progress_buttons: null,
-      progress_liked: null,
-      progress_likes: null,
-      created_at: null,
-      updated_at: null,
-    });
+    setChallengeInfo(challengeInfoReset);
   };
 
   const handleJwtToken = token => {
@@ -86,7 +79,7 @@ function App() {
   };
 
   const deleteUserInfo = () => {
-    setUserData(userInfoReset);
+    setUserData(userDataReset);
     setIsLogin(false);
     setToken(null);
   };
@@ -99,11 +92,11 @@ function App() {
     setChallengeInfo({ ...challengeInfo, ...data });
   };
 
-  const componentDidMount = async () => {
+  const componentDidMount = () => {
     const url = new URL(window.location.href);
     const authorizationCode = url.searchParams.get("code");
     if (authorizationCode) {
-      await axios({
+      axios({
         method: "POST",
         url: "http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/kakao",
         data: { authorizationCode },
@@ -164,10 +157,11 @@ function App() {
           <SignUpPage handleLoginTrue={handleLoginTrue} />
         </Route>
         {isLogin ? (
-          <>
+          <div>
             <Route path="/challenge">
               <ChallengePage
                 challengeInfo={challengeInfo}
+                userData={userData}
                 token={token}
                 handleChallengeInfo={handleChallengeInfo}
               />
@@ -180,7 +174,7 @@ function App() {
                 token={token}
               />
             </Route>
-          </>
+          </div>
         ) : null}
       </Switch>
       <Footer />

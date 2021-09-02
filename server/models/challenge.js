@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   challenge.init({
     challenge_name: DataTypes.STRING,
     challenge_desc: DataTypes.STRING,
-    challenge_btn_cnt: DataTypes.INTEGER,
+    progress_buttons: DataTypes.JSON,
+    progress_rate: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'challenge',

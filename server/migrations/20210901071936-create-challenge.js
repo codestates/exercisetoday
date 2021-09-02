@@ -16,7 +16,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      challenge_btn_cnt: {
+      progress_buttons: {
+        allowNull: false,
+        type: Sequelize.JSON
+      },
+      progress_rate: {
         allowNull: false,
         type: Sequelize.INTEGER
       },

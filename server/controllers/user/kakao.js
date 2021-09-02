@@ -19,7 +19,8 @@ module.exports = {
         client_secret: clientSecret,
         code: kakaoAuthCode,
         
-        // TODO: redirect_uri 변경하기 *******************
+        // TODO: ******************* redirect_uri 변경하기 *******************
+
         redirect_uri: 'http://localhost:3000',
         grant_type: 'authorization_code'
       }),
