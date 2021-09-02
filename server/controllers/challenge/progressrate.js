@@ -15,7 +15,6 @@ const getLikesInfo = async function(challengeId) {
     where: {liked : true},
   })
 
-  console.log(likedProgress.length)
 
   return likedProgress.filter(el => el.dataValues.challengeId === challengeId).length
 }
@@ -47,7 +46,7 @@ module.exports = {
 
     const progress = await getProgressInfo(userId, challengeId)
 
-    console.log("progress",progress)
+
 
     if(progress.length > 0) {
       
@@ -118,8 +117,6 @@ module.exports = {
         newButtons.push(newobj)
       }
 
-      console.log(buttonCount)
-      console.log("hello " ,newButtons)
 
       const created = await db.progress.create({
         progress_rate: 0, // 첫시작은 0
@@ -150,15 +147,64 @@ module.exports = {
 
   },
   put: async (req, res) => {
-
-    // TODO userexp!!!!!!!
     
     const userId = req.body.user_id;
     const challengeId = req.body.challenge_id;
 
-    const liked = req.body.liked;
+    const liked = req.body.progress_liked;
     const progress_rate = req.body.progress_rate;
+
+// ------------------ user exp -------------------
+    const userInfo = await db.user.findOne({
+      where: { id : userId },
+      attributes: ['user_exp']
+    });
+
+    let userExp = userInfo.dataValues.user_exp;
+    
+    // 기존 유저 경험치 가져옴
+
+    const progressInfo = await db.progress.findOne({
+      where: {
+        userId: userId,
+        challengeId: challengeId
+      },
+      attributes: ['progress_buttons']
+    })
+
+
+    const procBtn = progressInfo.dataValues.progress_buttons;
+    
+
+    const prevBtnCount = procBtn.filter(el => el.isFinished).length;
+    // 기존 버튼에서 누른 개수 가져옴
+
+
     const progress_buttons = req.body.progress_buttons;
+    
+    const newBtnCount = progress_buttons.filter(el => el.isFinished).length;
+    // 새로 누른 버튼 갯수
+
+
+    userExp = userExp - prevBtnCount + newBtnCount;
+    // 원래 있던 경험치에 현재 눌렸던 버튼 갯수 빼고 새로 누른 버튼 갯수 더해줌.
+
+
+    await db.user.update(
+      {
+        user_exp: userExp
+      },
+      {
+        where: {
+          id: userId
+        }
+      }
+    )
+
+
+
+// -----------------------------------------------
+
 
     await db.progress.update(
       {
@@ -170,7 +216,7 @@ module.exports = {
         where: {
           userId: userId,
           challengeId: challengeId
-      }
+        }
     })
     
 
@@ -182,19 +228,17 @@ module.exports = {
 
     const progressVal = progress[0].dataValues
 
-    // console.log(progressVal.progress_buttons)
 
     const dataToSend = {
       progress_id: progressVal.id,
       user_id: userId,
       challenge_id: challenge.id,
       challenge_name: challenge.challenge_name,
-      challenge_desc: challenge.challenge_desc, 
-      challenge_btn_cnt: challenge.challenge_btn_cnt,
+      challenge_desc: challenge.challenge_desc,
       progress_rate: progressVal.progress_rate,
       progress_buttons: progressVal.progress_buttons,
       progress_liked: progressVal.liked,
-      challenge_likes: likes,
+      challenge_likes: likes
     }
 
     res.status(201).json({
