@@ -9,7 +9,7 @@ module.exports = {
     const userId = req.query.user_id;
     
     // TODO Sequelize 로 userId이용해서 사진가져오기
-    console.log(userId)
+    // console.log(userId)
 
     db.user.findAll({
       where: {
@@ -19,7 +19,7 @@ module.exports = {
           
       const value = data[0].dataValues
 
-      console.log(value)
+      // console.log(value)
       res.status(200).json({
         data : value.user_photo,
         message : 'ok'
@@ -118,27 +118,48 @@ module.exports = {
         
         // ! 카카오 토큰있고 유효한경우
         if(!!data.data.id){
-          const image = req.file
-          // console.log(image)
+
           db.user.update({
-            user_photo: image
+            user_photo: photo
           },{
             where: {
               user_kakaoId: data.data.id
             }
           })
           .then(data2 =>{
-            // console.log(data)
             db.user.findAll({
-              where:{
+              where: {
                 user_kakaoId: data.data.id
               }
             })
             .then(data3 =>{
-              // console.log(data3[0].dataValues)
-              res.send(data3[0].dataValues.user_photo);
+              res.status(200).json({
+                data: photo,
+                message: "ok"
+              })
             })
           })
+          // const image = req.file
+          // // console.log(image)
+          // db.user.update({
+          //   user_photo: image
+          // },{
+          //   where: {
+          //     user_kakaoId: data.data.id
+          //   }
+          // })
+          // .then(data2 =>{
+          //   // console.log(data)
+          //   db.user.findAll({
+          //     where:{
+          //       user_kakaoId: data.data.id
+          //     }
+          //   })
+          //   .then(data3 =>{
+          //     // console.log(data3[0].dataValues)
+          //     res.send(data3[0].dataValues.user_photo);
+          //   })
+          // })
         }
       })
       .catch(e => {
