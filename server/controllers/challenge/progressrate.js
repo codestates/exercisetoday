@@ -101,7 +101,6 @@ module.exports = {
 
     const progress = await getProgressInfo(userId, challengeId)
     
-    console.log(likes)
 
     if(progress.length > 0) {
       //진행중이었음
@@ -112,12 +111,15 @@ module.exports = {
 
     } else {
 
-      const buttonCount = challenge.challenge_btn_cnt
+      const buttonCount = challenge.progress_buttons.length
       let newButtons = [];
       for(let i = 0; i < buttonCount; i++) {
         let newobj = { buttonId: i, isFinished: false }
         newButtons.push(newobj)
       }
+
+      console.log(buttonCount)
+      console.log("hello " ,newButtons)
 
       const created = await db.progress.create({
         progress_rate: 0, // 첫시작은 0
@@ -133,7 +135,6 @@ module.exports = {
         challenge_id: challenge.id,
         challenge_name: challenge.challenge_name,
         challenge_desc: challenge.challenge_desc, 
-        challenge_btn_cnt: challenge.challenge_btn_cnt,
         progress_rate: created.progress_rate,
         progress_buttons: created.progress_buttons,
         progress_liked: created.liked,
