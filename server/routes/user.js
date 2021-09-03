@@ -37,7 +37,7 @@ router.post('/signup', signUpController.post);
 router.get('/photo', photoController.get);
 
 // 프사 put /user/photo
-router.put('/photo', upload.single('user_photo'), photoController.put);
+router.put('/photo', /*upload.single('user_photo'), */photoController.put);
 
 // 진행, 완료 챌린지 get /user/challenge
 router.get('/challenge', challengeController.get);
