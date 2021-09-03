@@ -67,7 +67,7 @@ const ProfilePhoto = styled.div`
 `;
 
 const NickNameEditBtn = styled.button`
-  display: ${(props) => (props.visible ? "auto" : "none")};
+  display: ${props => (props.visible ? "auto" : "none")};
   position: relative;
   margin-top: 3px;
   left: 4%;
@@ -83,7 +83,7 @@ const NickNameEditBtn = styled.button`
 `;
 
 const EditPasswordContainer = styled.div`
-  display: ${(props) => (props.visible ? "auto" : "none")};
+  display: ${props => (props.visible ? "auto" : "none")};
 `;
 
 const InputBox = styled.input`
@@ -93,7 +93,7 @@ const InputBox = styled.input`
 `;
 
 const InputBoxNickName = styled.input`
-  display: ${(props) => (props.visibleNick ? "auto" : "none")};
+  display: ${props => (props.visibleNick ? "auto" : "none")};
   font-size: 1.2rem;
   margin: 0.85% 0% 0% 2.9%;
   width: 20%;
@@ -103,7 +103,7 @@ const InputBoxNickName = styled.input`
 `;
 
 const TextNickName = styled.input`
-  display: ${(props) => (props.visibleNickText ? "none" : "auto")};
+  display: ${props => (props.visibleNickText ? "none" : "auto")};
   font-size: 1.2rem;
   margin: 1% 0% 0% 3%;
   width: 15%;
@@ -124,13 +124,13 @@ const PasswordEditBtn = styled.button`
   :hover {
     border-color: rgba(0, 0, 0, 0.9);
   }
-  display: ${(props) => (props.visible ? "auto" : "none")};
+  display: ${props => (props.visible ? "auto" : "none")};
 `;
 
 const NickNameEditOpenBtn = styled.button`
   position: relative;
   height: 2rem;
-  left: ${(props) => (props.visible ? 17.9 : 30)}%;
+  left: ${props => (props.visible ? 17.9 : 30)}%;
   width: 8rem;
   background-color: white;
   border-color: rgba(0, 0, 0, 0.4);
@@ -272,7 +272,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
       method: "GET",
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/photo?user_id=${userData.user_id}`,
     })
-      .then((res) => {
+      .then(res => {
         console.log(res.data.data);
         if (res.data.message === "ok") {
           if (res.data.data === null) {
@@ -282,17 +282,17 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
           }
         }
       })
-      .catch((err) => console.log("Photo Error", err));
+      .catch(err => console.log("Photo Error", err));
 
     axios({
       method: "GET",
       url: `http://ec2-3-36-51-146.ap-northeast-2.compute.amazonaws.com/user/challenge?user_id=${userData.user_id}`,
     })
-      .then((res) => {
+      .then(res => {
         if (res.data.message === "ok") {
           let ongoingChallData = [];
           let completedChallData = [];
-          res.data.data.challenges.forEach((el) => {
+          res.data.data.challenges.forEach(el => {
             if (el.progress_rate === 100) {
               completedChallData.push(el);
             } else {
@@ -303,7 +303,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
           setChallengeList(ongoingChallData);
         }
       })
-      .catch((err) => console.log("challenges Error", err));
+      .catch(err => console.log("challenges Error", err));
     if (token.slice(0, 5) === "kakao") {
       setPassBtnIsOpen(false);
     }
@@ -323,7 +323,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
       },
       headers: { authorization: token },
     })
-      .then((res) => {
+      .then(res => {
         if (res.data.data) {
           const { user_nickname } = res.data.data;
           setUserInfo({ ...userInfo, user_nickname });
@@ -332,7 +332,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
           console.log("userInfoUpdate Error", res.data.message);
         }
       })
-      .catch((err) => console.log("userInfoUpdate Error", err));
+      .catch(err => console.log("userInfoUpdate Error", err));
 
     if (userPhoto !== null && newPhoto !== userPhoto) {
       axios({
@@ -343,7 +343,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
           authorization: token,
         },
       })
-        .then((res) => {
+        .then(res => {
           if (res.data.message === "ok") {
             setNewPhoto(res.data.data);
             setUserPhoto(res.data.data);
@@ -351,11 +351,11 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
             console.log("User Photo Error", res.data.message);
           }
         })
-        .catch((err) => console.log("User Photo Error", err));
+        .catch(err => console.log("User Photo Error", err));
     }
   };
 
-  const handleInputValue = (key) => (e) => {
+  const handleInputValue = key => e => {
     if (key === "nick_name") {
       setNewUserInfo({ nick_name: e.target.value });
     } else if (
@@ -379,7 +379,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
     setErrorMessage("");
   };
 
-  const handlePhoto = (e) => {
+  const handlePhoto = e => {
     const temp = [];
     const photoToAdd = e.target.files;
     if (photoToAdd.length === 0) {
@@ -401,7 +401,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
     imageRef.current.click();
   };
 
-  const handleNickEdit = (msg) => {
+  const handleNickEdit = msg => {
     if (newUserInfo.nick_name !== userInfo.user_nickname) {
       if (msg === "done") {
         setUserInfo({ ...userInfo, user_nickname: newUserInfo.nick_name });
@@ -430,7 +430,7 @@ const Mypage = ({ userData, deleteUserInfo, token, handleUserInfo }) => {
                 type="file"
                 accpet="image/*"
                 name="profile"
-                onChange={(e) => handlePhoto(e)}
+                onChange={e => handlePhoto(e)}
               />
             </ProfilePhoto>
             <PhotoBtn onClick={onImgInputBtn}>프로필 등록 및 수정</PhotoBtn>
