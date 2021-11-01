@@ -33,10 +33,6 @@
 
 ## Flow Chart
 
-### Client-Side flow chart
-
-
-![Screenshot from 2021-09-02 01-48-28](https://user-images.githubusercontent.com/83770790/131889821-351967a2-1b6b-477b-9775-a206d7f81e8a.png)
 
 ### Server-Side flow chart
 
